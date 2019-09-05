@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Confortex.Models.fn_menu_Result>
+
+
+
+<ul class="collapsible collapsible-accordion">
+    @{
+        int men = 0;
+    }
+    @foreach (var item in Model.OrderBy(item => item.MenuOrden))
+    {
+
+        if (item.isMenu == true && (item.IdPantalla != men))
+        {
+            <li>
+                <a href="~/@item.Controlador/@item.Vista" class="waves-effect">@item.Nombre</a>
+            </li>
+        }
+
+
+
+        men = item.IdPantalla.Value;
+    }
+
+
+
+</ul>
+
+
+

@@ -1,0 +1,185 @@
+﻿
+@{
+    ViewBag.Title = "Informe de Costos";
+}
+
+<ng-controller ng-controller="informecostos" ng-cloak>
+    <div class="flex-center row">
+        <div class="card col-md-10">
+
+            <div class="card-block">
+
+                <div class="form-horizontal row">
+                    <form class="col-12">
+                        <p class="h5 text-center col-12">Parámetros</p>
+
+                        <div class="md-form">
+                            <input placeholder="Seleccione una fecha" type="text" id="date-picker" class="form-control datepicker" ng-model=fecha>
+                            <label for="date-picker">Periodo de acumulación de costos</label>
+                        </div>
+
+                        <div class="form-inline">
+                            <label class="col-6">¿Desea que el informe contenga toda la informacíon del año?</label>
+
+                            <div class="switch col-2">
+                                <label>
+                                    No
+                                    <input type="checkbox" value="0" ng-model="IsYear">
+                                    <span class="lever"></span>
+                                    Si
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <a class="btn btn-sm text-right green darken-4" ng-click="generar()">Ver Informe</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-controller>
+<script>
+    app.controller('informecostos', function ($scope, $http, $window) {
+        $scope.IsYear = false;
+        $scope.fecha = "";
+        $scope.generar = function () {
+            if ($scope.fecha == "") {
+                toastr['warning']('Asegúrese de seleccionar una fecha para poder generar el informe');
+
+            } else {
+                setTimeout(function () {
+                    $window.location.href = "../Costos/ReporteCostos?fecha=" + $scope.fecha + "&IsYear=" + $scope.IsYear;
+                }, 100);
+            }
+        }
+    });
+
+
+    $('.datepicker').pickadate({
+
+        // Strings and translations
+        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        showMonthsShort: false,
+        showWeekdaysFull: false,
+
+        // Buttons
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Cerrar',
+
+        // Accessibility labels
+        labelMonthNext: 'Siguiente Mes',
+        labelMonthPrev: 'Mes Anterior',
+        labelMonthSelect: 'Seleccionar un mes',
+        labelYearSelect: 'Seleccionar un año',
+
+        // Formats
+        format: 'mm/yyyy',
+        formatSubmit: 'dd/mm/yyyy',
+        hiddenPrefix: undefined,
+        hiddenSuffix: '_submit',
+        hiddenName: undefined,
+
+        // Editable input
+        editable: undefined,
+
+        // Dropdown selectors
+        selectYears: undefined,
+        selectMonths: undefined,
+
+        // First day of the week
+        firstDay: undefined,
+
+        // Date limits
+        min: undefined,
+        max: undefined,
+
+        // Disable dates
+        disable: undefined,
+
+        // Root picker container
+        container: undefined,
+
+        // Hidden input container
+        containerHidden: undefined,
+
+        // Close on a user action
+        closeOnSelect: true,
+        closeOnClear: true,
+
+        // Events
+        onStart: undefined,
+        onRender: undefined,
+        onOpen: undefined ,
+        onClose: undefined,
+        onSet: undefined,
+        onStop: undefined,
+
+        // Classes
+        klass: {
+
+            // The element states
+            input: 'picker__input',
+            active: 'picker__input--active',
+
+            // The root picker and states *
+            picker: 'picker',
+            opened: 'picker--opened',
+            focused: 'picker--focused',
+
+            // The picker holder
+            holder: 'picker__holder',
+
+            // The picker frame, wrapper, and box
+            frame: 'picker__frame',
+            wrap: 'picker__wrap',
+            box: 'picker__box',
+
+            // The picker header
+            header: 'picker__header',
+
+            // Month navigation
+            navPrev: 'picker__nav--prev',
+            navNext: 'picker__nav--next',
+            navDisabled: 'picker__nav--disabled',
+
+            // Month & year labels
+            month: 'picker__month',
+            year: 'picker__year',
+
+            // Month & year dropdowns
+            selectMonth: 'picker__select--month',
+            selectYear: 'picker__select--year',
+
+            // Table of dates
+            table: 'picker__table',
+
+            // Weekday labels
+            weekdays: 'picker__weekday',
+
+            // Day states
+            day: 'picker__day',
+            disabled: 'picker__day--disabled',
+            selected: 'picker__day--selected',
+            highlighted: 'picker__day--highlighted',
+            now: 'picker__day--today',
+            infocus: 'picker__day--infocus',
+            outfocus: 'picker__day--outfocus',
+
+            // The picker footer
+            footer: 'picker__footer',
+
+            // Today, clear, & close buttons
+            buttonClear: 'picker__button--clear',
+            buttonClose: 'picker__button--close',
+            buttonToday: 'picker__button--today'
+        }
+    }
+        );
+
+</script>

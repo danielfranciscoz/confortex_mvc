@@ -1,0 +1,40 @@
+﻿@model Confortex.Models.Medida
+
+<div class="modal fade right" id="modalmedidacreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-crop" aria-hidden="true"></i> {{gestion}} Medida</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label " })
+
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el nombre de la medida", data_animation = "false", ng_model = "nombre" } })
+
+                    </div>
+
+
+
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

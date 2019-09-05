@@ -1,0 +1,40 @@
+﻿
+<div class="modal fade right" id="modalentrega" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false" >
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-vcard" aria-hidden="true"></i> {{gestion}} Entrega de Ticket</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                <div class="form-horizontal">
+                    <h6 class="h6-responsive font-weight-bold">Seleccione el Empleado</h6>
+                    @Html.DropDownList("Empleados", null, htmlAttributes: new { @class = "mdb-select col-12", data_tooltip = "tooltip", data_placement = "top", title = "seleccione el Empleado para guardar Ticket.", data_animation = "false", style = "display:initial", ng_model = "idempleado", ng_change = "" })
+                    <h6 class="h6-responsive font-weight-bold">Use el lector para asociar ticket al Empleado</h6>
+                    <div class="md-form">
+                        <input ng-model="cod" ng-keyup="codigo($event)" class="col-lg-12 form-control" />           
+                    </div>
+                   
+
+
+
+                   
+
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                           
+                        </div>
+                        <p class="blue-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

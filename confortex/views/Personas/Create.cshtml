@@ -1,0 +1,92 @@
+﻿@model Confortex.Models.Persona
+
+
+<div class="col-md-6 col-sm-12">
+    <b class="h5-responsive form-group font-weight-bold">Información personal</b>
+    <hr />
+    <div class="font-weight-bold font-weight-bold">
+        @Html.LabelFor(model => model.PrimerNombre, "Primer Nombre (*)", htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.PrimerNombre, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba el primer nombre del contacto", data_animation = "false", ng_model = "primernombre" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.SegundoNombre, "Segundo Nombre", htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.SegundoNombre, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba el segundo nombre del contacto", data_animation = "false", ng_model = "segundonombre" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.PrimerApellido, "Primer Apellido (*)", htmlAttributes: new { @class = "control-label" })
+        @Html.EditorFor(model => model.PrimerApellido, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba el primer apellido del contacto", data_animation = "false", ng_model = "primerapellido" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.SegundoApellido, "Segundo Apellido", htmlAttributes: new { @class = "control-label" })
+
+        @Html.EditorFor(model => model.SegundoApellido, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba el segundo apellido del contacto", data_animation = "false", ng_model = "segundoapellido" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.Cedula, "Cédula", htmlAttributes: new { @class = "control-label" })
+
+        @Html.EditorFor(model => model.Cedula, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba la cedula del contacto", data_animation = "false", ng_model = "cedula", mask= "9999999999999A" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.Direccion, "Dirección", htmlAttributes: new { @class = "control-label" })
+
+        @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba la direccion del contacto", data_animation = "false", ng_model = "dircontacto" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.Correo, "Correo Electrónico", htmlAttributes: new { @class = "control-label " })
+
+        @Html.EditorFor(model => model.Correo, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba el correo del contacto", data_animation = "false", ng_model = "correo" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.Telefono, "Teléfono", htmlAttributes: new { @class = "control-label " })
+
+        @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "left", title = "Escriba el numero de telefono del contacto", data_animation = "false", ng_model = "telcontacto", mask = "99999999" } })
+
+    </div>
+</div>
+<div class="col-md-6 col-sm-12">
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.Celular, "Celular (*)", htmlAttributes: new { @class = "control-label " })
+
+        @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el numero de telefono del contacto", data_animation = "false", ng_model = "celular", mask = "99999999" } })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.IdOperadoraTelefonica, "Operador Telefónico (*)", htmlAttributes: new { @class = "control-label" })
+
+        @Html.DropDownList("IdOperadoraTelefonica", null, htmlAttributes: new { @class = "mdb-select", data_tooltip = "tooltip", data_placement = "right", title = "seleccione una operadora telefonica", data_animation = "false", style = "display:initial", ng_model = "operadora" })
+
+    </div>
+
+    <div class="form-group font-weight-bold">
+        @Html.LabelFor(model => model.EstadoCivil, "Estado Civil", htmlAttributes: new { @class = "control-label " })
+
+
+        <select class="mdb-select" ng-model="estadocivil" style="display:initial">
+            <option value="false">Casado(a)</option>
+            <option value="true">Soltero(o)</option>
+        </select>
+
+
+
+
+    </div>
+
+
+
+

@@ -1,0 +1,61 @@
+﻿<div class="modal fade right" id="modalempleadocreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-frame modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-building-o"></i> {{gestion}} Empleado</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                
+                @model Confortex.Models.Empleado
+
+                <div class="form-horizontal row container">
+
+                    @Html.Action("Create", "Personas")
+
+                    <b class="h5-responsive form-group font-weight-bold">Otros Datos</b>
+                    <hr />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.codEmpleado, "Código del empleado",htmlAttributes: new { @class = "control-label" })                       
+                            @Html.EditorFor(model => model.codEmpleado, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el codigo del empleado", data_animation = "false", ng_model = "codempleado", mask = "99999" } })
+                       
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PersonasDependientes,"Cantidad de personas dependientes", htmlAttributes: new { @class = "control-label" })                       
+                            @Html.EditorFor(model => model.PersonasDependientes, new { htmlAttributes = new { type="text",data_tooltip = "tooltip", data_placement = "right", title = "Escriba la cantidad de personas dependiente del empleado", data_animation = "false", ng_model = "personasdependientes", mask = "99" } })
+                        
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CelularFamiliar,"Celular de Familiar", htmlAttributes: new { @class = "control-label" })                      
+                            @Html.EditorFor(model => model.CelularFamiliar, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el celular de un familiar del empleado", data_animation = "false", ng_model = "celularfamiliar", mask = "99999999" } })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Cargo, "Cargo", htmlAttributes: new { @class = "control-label" })                      
+                            @Html.DropDownList("Cargo", null, htmlAttributes: new { style = "display:initial",data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el cargo del empleado", data_animation = "false", ng_model = "cargo" })
+                       
+                    </div>
+                </div>
+
+                <div class="form-group font-weight-bold text-center">
+                    <div class="text-center">
+                        <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                    </div>
+                    <p class="red-text">{{message}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+

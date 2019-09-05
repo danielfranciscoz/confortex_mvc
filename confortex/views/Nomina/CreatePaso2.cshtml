@@ -1,0 +1,132 @@
+﻿
+<div class="modal fade right" id="modalpaso2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-buysellads  "></i>Agregar Empleado a nómina</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+                <div class="row col-12">
+                    <div class="col-8"></div>
+
+                   
+                </div>
+              
+                <div class="row col-12">
+                    <label class="label-responsive font-weight-bold col-8">Empleado:</label><label class="label-responsive  font-weight-bold blue-grey-text " ng-show="empleado>0"> Salario Base / Producción: C${{salario}} </label>
+                </div>
+                @Html.DropDownList("IdEmpleado", null, htmlAttributes: new { id="empleadot",@class = "mdb-select", data_tooltip = "tooltip", data_placement = "right", title = "seleccione un empleado", data_animation = "false", style = "display:initial", ng_model = "empleado", ng_change = "changeempleado()" })
+                <hr />
+                <label class="label-responsive font-weight-bold"> Ingresos:</label>
+                <div class="row">
+                    <label class="label-responsive col-2"> Ajuste:</label>
+                    <input ng-model="ajuste" type="text" class="col-1" mask="9?9?9?9?9?9?.99" />
+                    <label class="label-responsive col-2">Transporte:</label>
+                    <input ng-model="transporte" type="text" class="col-1" mask="9?9?9?9?9?9?.99"/>
+                    <label class="label-responsive col-2">H. Extras:</label>
+                    <input ng-model="horaextra" type="text" class="col-1" mask="9?9?9?9?9?9?.99"/>
+                </div>
+                <hr />
+                <label class="label-responsive font-weight-bold"> Otros Ingresos:</label>
+                <div class="row">
+                    <label class="label-responsive col-2"> Concepto del ingreso:</label>
+                    <input ng-model="concepto1" type="text" class="col-1"  />
+                    <label class="label-responsive col-2">Monto (C$):</label>
+                    <input ng-model="monto1" type="text" class="col-1" mask="9?9?9?9?9?9?.99"/>
+                    <a class="btn btn-floating blue" ng-click="agregartab1()"><i class="fa fa-plus" aria-hidden="true"></i></a><a class="btn btn-floating red" ng-click="eliminartab1()"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                </div>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table1">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    Concepto
+                                </th>
+                                <th>
+                                    Monto
+                                </th>
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get1()"></tbody>
+
+                    </table>
+
+                </div>
+                <hr />
+                <label class="label-responsive font-weight-bold">Deducciones:</label>
+                <div class="row container">
+                    <label class="label-responsive col-3"> Llegadas Tardes (Min):</label>
+                    <input ng-model="llegadastardes" type="text" class="col-2" mask="9?9?9?9?9?9?"/>
+                    <label class="label-responsive col-3">Ausencias (Dias):</label>
+                    <input ng-model="ausencias" type="text" class="col-2" mask="9?9?9?9?9?9?"/>
+
+                </div>
+
+                <div class="row container">
+                    <label class="label-responsive col-3">Prestaciones:</label>
+                    <input ng-model="prestaciones" type="text" class="col-2" mask="9?9?9?9?9?9?.99" />
+                    <label class="label-responsive col-3">INSS:</label>
+                    <input ng-model="inss" type="text" class="col-2" mask="9?9?9?9?9?9?.99" />
+
+                </div>
+                <hr />
+                <label class="label-responsive font-weight-bold"> Otras deducciones:</label>
+                <div class="row">
+                    <label class="label-responsive col-2"> Concepto de la deduccion:</label>
+                    <input ng-model="concepto2" type="text" class="col-1"  />
+                    <label class="label-responsive col-2">Monto (C$):</label>
+                    <input ng-model="monto2" type="text" class="col-1" mask="9?9?9?9?9?9?.99" />
+                    <a class="btn btn-floating blue" ng-click="agregartab2()"><i class="fa fa-plus" aria-hidden="true"></i></a><a class="btn btn-floating red" ng-click="eliminartab2()"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                </div>
+                
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table2">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    Concepto
+                                </th>
+                                <th>
+                                    Monto
+                                </th>
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get2()"></tbody>
+
+                    </table>
+
+                </div>
+                <p class="red-text">{{message}}</p>
+               <a class="btn btn-sm green darken-4" ng-click="gestionar()"> Guardar </a>
+            </div>
+        </div>
+    </div>
+</div>
+

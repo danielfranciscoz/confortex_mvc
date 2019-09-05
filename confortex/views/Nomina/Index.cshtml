@@ -1,0 +1,436 @@
+﻿@{
+    ViewBag.Tittle = "Listado de Nóminas";
+}
+<style>
+   
+
+
+    #table1_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+
+
+    #table2_paginate {
+        display: none;
+    }
+</style>
+
+<ng-controller ng-controller="connomina">
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Planillas de Pago</h4>
+
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                           Planilla
+                        </th>
+                        <th>
+                            Referencia
+                        </th>
+                        <th>
+                            Inicia
+                        </th>
+                        <th>
+                            Finaliza
+                        </th>
+                        <th>
+                            Estado
+                        </th>
+                        <th>
+                          Observaciones
+                        </th>
+                        <th>
+                            FechaCreacion
+                        </th>
+                        <th>
+                            PagoTotal
+                        </th>
+
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <hr />
+        <h4 class="h4-responsive  font-weight-bold">Consolidado de Ingresos y Egresos por Trabajador</h4>
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table2">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                           Colilla
+                        </th>
+                        <th>
+                           Nombre
+                        </th>
+                        <th>
+                           Ingresos
+                        </th>
+                        <th>
+                           Egresos
+                        </th>
+                        
+
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating purple" data-animation="false" ng-click="pagarr()" data-tooltip=tooltip data-placement="left" title="Pagar Nómina"><i class="fa fa-money"></i></a></li>
+
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Generar una nueva Planilla  "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Editar Planilla  seleccionada."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Eliminar Planilla  seleccionada."><i class="fa fa-trash-o"></i></a></li>
+                <li><a class="btn-floating blue" data-animation="false" ng-click="informe()" data-tooltip=tooltip data-placement="left" title="Ver informe de la  Planilla "><i class="fa fa-sticky-note-o"></i></a></li>
+
+            </ul>
+        </div>
+    </div>
+
+    @Html.Action("DeleteGeneral", "Home")
+</ng-controller>
+
+<script>
+    $('.datepicker').pickadate({
+
+        // Strings and translations
+        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        showMonthsShort: false,
+        showWeekdaysFull: false,
+
+        // Buttons
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Cerrar',
+
+        // Accessibility labels
+        labelMonthNext: 'Siguiente Mes',
+        labelMonthPrev: 'Mes Anterior',
+        labelMonthSelect: 'Seleccionar un mes',
+        labelYearSelect: 'Seleccionar un año',
+
+        // Formats
+        format: 'mm/yyyy',
+        formatSubmit: 'dd/mm/yyyy',
+        hiddenPrefix: undefined,
+        hiddenSuffix: '_submit',
+        hiddenName: undefined,
+
+        // Editable input
+        editable: undefined,
+
+        // Dropdown selectors
+        selectYears: undefined,
+        selectMonths: undefined,
+
+        // First day of the week
+        firstDay: undefined,
+
+        // Date limits
+        min: undefined,
+        max: undefined,
+
+        // Disable dates
+        disable: undefined,
+
+        // Root picker container
+        container: undefined,
+
+        // Hidden input container
+        containerHidden: undefined,
+
+        // Close on a user action
+        closeOnSelect: true,
+        closeOnClear: true,
+
+        // Events
+        onStart: undefined,
+        onRender: undefined,
+        onOpen: undefined,
+        onClose: undefined,
+        onSet: undefined,
+        onStop: undefined,
+
+        // Classes
+        klass: {
+
+            // The element states
+            input: 'picker__input',
+            active: 'picker__input--active',
+
+            // The root picker and states *
+            picker: 'picker',
+            opened: 'picker--opened',
+            focused: 'picker--focused',
+
+            // The picker holder
+            holder: 'picker__holder',
+
+            // The picker frame, wrapper, and box
+            frame: 'picker__frame',
+            wrap: 'picker__wrap',
+            box: 'picker__box',
+
+            // The picker header
+            header: 'picker__header',
+
+            // Month navigation
+            navPrev: 'picker__nav--prev',
+            navNext: 'picker__nav--next',
+            navDisabled: 'picker__nav--disabled',
+
+            // Month & year labels
+            month: 'picker__month',
+            year: 'picker__year',
+
+            // Month & year dropdowns
+            selectMonth: 'picker__select--month',
+            selectYear: 'picker__select--year',
+
+            // Table of dates
+            table: 'picker__table',
+
+            // Weekday labels
+            weekdays: 'picker__weekday',
+
+            // Day states
+            day: 'picker__day',
+            disabled: 'picker__day--disabled',
+            selected: 'picker__day--selected',
+            highlighted: 'picker__day--highlighted',
+            now: 'picker__day--today',
+            infocus: 'picker__day--infocus',
+            outfocus: 'picker__day--outfocus',
+
+            // The picker footer
+            footer: 'picker__footer',
+
+            // Today, clear, & close buttons
+            buttonClear: 'picker__button--clear',
+            buttonClose: 'picker__button--close',
+            buttonToday: 'picker__button--today'
+        }
+    }
+   );
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+
+    app.controller('connomina', function ($scope, $http, $window) {
+        $scope.nomina = 0;
+        $scope.edit = false;
+        $scope.delete = false;
+        $scope.pagar = false;
+        var table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Nomina/searchNomina",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                      { "data": "Nomina", "name": "Nomina" },
+                       { "data": "Referencia", "name": "Referencia" },
+                        { "data": "Inicia", "name": "Inicia" },
+                         { "data": "Finaliza", "name": "Finaliza" },
+                          { "data": "Estado", "name": "Estado" },
+                           { "data": "Observaciones", "name": "Observaciones" },
+                            { "data": "FechaCreacion", "name": "FechaCreacion" },
+                            { "data": "PagoTotal", "name": "PagoTotal", render: function (data) { return data.toFixed(2) } }
+
+
+            ],
+
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table2 = $('#table2').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Nomina/searchDetalle",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                   { "data": "NoColilla", "name": "NoColilla" },
+                      { "data": "Nombre", "name": "Nombre" },
+                       { "data": "Ingresos", "name": "Ingresos", render: function (data) { return data.toFixed(2) } },
+                        { "data": "Egresos", "name": "Egresos", render: function (data) { return data.toFixed(2) } }
+
+
+            ],
+
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        $scope.maxid = "@ViewBag.idnominan";
+        $('#table1 tbody').on('click', 'td', function () {
+
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+
+                $scope.nomina = table.cell(idt, 0).data();
+                $scope.referencia = table.cell(idt, 1).data();
+                $scope.inicia = table.cell(idt, 2).data();
+                $scope.finaliza = table.cell(idt, 3).data();
+                $scope.estado = table.cell(idt, 4).data();
+                $scope.observaciones = table.cell(idt, 5).data();
+                $scope.fechacreacion = table.cell(idt, 6).data();
+                $scope.pagototal = table.cell(idt, 7).data();
+                if ($scope.estado == 'Generado' || $scope.estado == 'En borrador') {
+                    $scope.edit = true;
+                    $scope.delete = true;
+                   
+                } else {
+                    $scope.edit = false;
+                    $scope.delete = false;
+                    $scope.pagar = false;
+                }
+                if ($scope.estado == 'Generado' ) {
+                    $scope.pagar = true;
+                }
+              
+                table2.search($scope.nomina).draw();
+            }, 100);
+
+
+        });
+
+
+        $scope.nuevo = function () {
+            $window.location.href = "../Nomina/Paso1?nomina=0";
+        }
+
+        $scope.editar = function () {
+            if ($scope.nomina > 0 && $scope.edit == true) {
+                $window.location.href = "../Nomina/Paso1?nomina=" + $scope.nomina;
+            }
+
+
+        };
+        $scope.informe = function () {
+            $window.location.href = "../Nomina/ReporteNomina?nomina=" + $scope.nomina;
+
+
+        };
+
+        $scope.pagarr = function () {
+            if ($scope.nomina > 0 && $scope.pagar == true) {
+
+                $http({
+                    url: "../Nomina/PagoNomina",
+                    method: "POST",
+                    data: {
+                        IdNomina: $scope.nomina
+                    },
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        window.location.href = "../Nomina/Index";
+
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+
+
+            }
+        }
+
+        $scope.eliminar = function () {
+
+            if ($scope.nomina > 0 && $scope.delete==true) {
+                $scope.message = "";
+                $('#Modaldelete').modal({
+                    show: true
+                });
+            }
+        }
+
+        $scope.anular = function () {
+            $http({
+                url: "../nomina/Delete",
+                method: "POST",
+                data: $.param({ "Id": $scope.nomina }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldelete').modal('hide');
+                    $('#table1').DataTable().ajax.reload();
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            })
+        };
+
+      
+
+
+    });
+
+</script>

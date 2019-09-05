@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Cotización";
+}
+
+<ng-controller ng-controller="ConPaso1" ng-cloak>
+
+    <div class="card card-block rounded smooth-scroll">
+
+        <div class="row col-12">
+            <div class="col-8"></div>
+            <h2 class="h2-responsive  font-weight-bold blue-grey-text"> Cotización No. {{idcotizacion}}</h2>
+        </div>
+        <div class="row col-12">
+            <div class="col-5">
+                <h4 class="h4-responsive"> Cliente que realiza la cotización</h4>
+                @Html.DropDownList("IdCliente", null, htmlAttributes: new { @class = "mdb-select col-12 ", data_tooltip = "tooltip", data_placement = "top", title = "seleccione el cliente que solicita la cotización", data_animation = "false", style = "display:initial", ng_model = "cliente", ng_change = "" })
+
+
+            </div>
+            <div class="col-5">
+                <h4 class="h4-responsive"> Días de entrega</h4>
+                <input type="text" ng-model="dias" />
+
+            </div>
+        </div>
+      
+        <hr />
+        <h4 class="h4-responsive  ">Etapas de la cotización</h4>
+        @Html.Action("ListEtapas", "Cotizaciones")
+        <hr />
+        <div class="row">
+
+            <div class="progress col-12">
+                <div class="progress-bar" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+             <a class="col-9">Paso 1 de 3 {{message}}</a>
+
+            <a class="btn btn-sm green darken-4 col-2" ng-click="siguiente()">Siguiente <i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
+        </div>
+    </div>
+</ng-controller>
+
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+
+
+    app.controller('ConPaso1', function ($scope, $http,$window) {
+        $scope.Funcion =[];
+        $scope.NombreFuncion =[];
+        $scope.idcotizacion = @ViewBag.cotizacion;
+        $scope.dias = @ViewBag.dias;
+
+        $http({
+            url: "../Cotizaciones/clienteEtapas",
+            method: "POST",
+            data: {"idcotizacion":$scope.idcotizacion},
+        }).then(function (response) {
+            $scope.cliente = response.data.cliente +"";
+
+
+            $.each(response.data.funciones, function(i, val){
+                $scope.Funcion[response.data.funciones[i]] = true;
+
+
+            });
+
+        });
+
+        $scope.siguiente = function(){
+            $scope. jfuncion = "";
+
+            $scope.temptfuncion = $scope.Funcion.length;
+            for ($scope.i = 0; $scope.i < $scope.temptfuncion; $scope.i++) {
+                if ($scope.Funcion[$scope.i] == true) {
+                    $scope.jfuncion = $scope.jfuncion + '{"NombreFuncion": "' + $scope.NombreFuncion[$scope.i] + '","IdCotizacion" : '+$scope.idcotizacion+' }';
+
+
+                    if ($scope.i < $scope.temptfuncion - 1) {
+                        $scope.jfuncion = $scope.jfuncion + ",";
+                    }
+
+                }
+            }
+            var jt = JSON.parse("[" + $scope.jfuncion + "]");
+
+            var parameter = JSON.stringify({IdCotizacion:$scope.idcotizacion,diasEntrega:$scope.dias,  idCliente: $scope.cliente, CotizacionFuncion: jt});
+
+            if($scope.cliente>0 && $scope.Funcion.length>0){
+
+                $http({
+                    url: "../Cotizaciones/gestionPaso1",
+                    method: "POST",
+                    data: parameter,
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $window.location.href = "../Cotizaciones/Paso2?cotizacion=" + $scope.idcotizacion;
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+
+            }else{
+                toastr['warning']('Debe seleccionar un cliente y al menos una etapa para seguir cotizando');
+            }
+
+
+
+        }
+
+
+
+    });
+
+
+</script>

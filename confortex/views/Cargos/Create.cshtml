@@ -1,0 +1,50 @@
+﻿@model Confortex.Models.Cargo
+
+<div class="modal fade right" id="modalcargocreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Puesto de Trabajo</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+                        <label class="control-label">Nombre del Cargo</label>
+
+                        @Html.EditorFor(model => model.NombreCargo, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el nombre del cargo", data_animation = "false", ng_model = "nombre", ng_readonly= "gestion" } })
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label">Salario Básico</label>
+
+                        @Html.EditorFor(model => model.SalarioBase, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el salario base del cargo", data_animation = "false", ng_model = "salario", mask="9?9?9?9?9?.99" } })
+
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox1" ng-model="iscargo">
+                        <label for="checkbox1">Es Salario Fijo?</label>
+                    </div>
+
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

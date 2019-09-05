@@ -1,0 +1,190 @@
+﻿@model Confortex.Models.Pieza
+
+
+<div class="modal fade right" id="modalpiezacreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-full-height modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-pied-piper" aria-hidden="true"></i> {{gestion}} Pieza</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-12 row">
+                            <div class="form-group col-3">
+                                @Html.LabelFor(model => model.Nombre, htmlAttributes: new { @class = "control-label " })
+                                @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el nombre de la pieza", data_animation = "false", ng_model = "nombre" } })
+
+                            </div>
+                            <div class="form-group col-3">
+                                @Html.LabelFor(model => model.CantidadTela, "Cantidad de tela (Yardas)", htmlAttributes: new { @class = "control-label " })
+                                @Html.EditorFor(model => model.CantidadTela, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba la cantidad de tela de la pieza", data_animation = "false", ng_model = "cantidadtela"} })
+
+                            </div>
+
+                            <div class="form-group col-6">
+                                @Html.LabelFor(model => model.SexoPieza, "Sexo de la Pieza", htmlAttributes: new { @class = "control-label " })
+                                <form class="form-inline row">
+
+                                    <div class="form-group col-3">
+                                        <input name="group1" type="radio" id="radio11" value="F" ng-model="sexo">
+                                        <label for="radio11">Femenino</label>
+                                    </div>
+
+                                    <div class="form-group col-3">
+                                        <input name="group1" type="radio" id="radio21" value="M" ng-model="sexo">
+                                        <label for="radio21">Masculino</label>
+                                    </div>
+
+                                    <div class="form-group col-3">
+                                        <input name="group1" type="radio" id="radio31" value="U" ng-model="sexo">
+                                        <label for="radio31">Unisex</label>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="row">
+                                <label class="col-5">Actividad </label>
+                                @Html.DropDownList("IdFuncion", null, htmlAttributes: new { @class = "mdb-select col-7", data_tooltip = "tooltip", data_placement = "top", title = "seleccione una actividad a realizar", data_animation = "false", style = "display:initial", ng_model = "funcion" })
+                            </div>
+
+                            <div class="row">
+                                <label class="col-5">Duracion (Minutos) </label>
+                                <input class="col-7" ng-model="cantidad" mask="9?9?9?9?9?" />
+                            </div>
+
+                            <div class="row">
+                                <label class="col-5">Costo M.O (C$) </label>
+                                <input class="col-7" ng-model="precio" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <a class="btn-floating btn-lg green darken-4 " ng-click="agregartab1()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                <a class="btn-floating btn-lg red darken-4" ng-click="eliminartab1()"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                            <div class="col-6">
+                                <table class="table table-hover  table-bordered table-striped" id="table5">
+                                    <thead class="light-green  white-text">
+                                        <tr>
+                                            <th>
+                                                Id
+                                            </th>
+                                            <th>
+                                                Pieza
+                                            </th>
+                                            <th>
+                                                Actividad
+                                            </th>
+                                            <th>
+                                                Duración (Minutos)
+                                            </th>
+                                            <th>
+                                                Costo M.O (C$)
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody ng-click="get2()"></tbody>
+                                </table>
+                            </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <label class="col-5">Insumo: </label>
+                                @Html.DropDownList("IdAccesorio", null, htmlAttributes: new { @class = "mdb-select col-7", data_tooltip = "tooltip", data_placement = "top", title = "seleccione un insumo a agregar", data_animation = "false", style = "display:initial", ng_model = "insumo" })
+                            </div>
+
+                            <div class="row">
+                                <label class="col-5">Cantidad (Und) </label>
+                                <input class="col-7" ng-model="cantidadinsumo" nmask="9?9?9?9?9?" />
+                            </div>
+
+                            <div class="row">
+                                <div class="col-5"></div>
+                                <a class="btn-floating btn-lg green darken-4 " ng-click="agregartab2()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                <a class="btn-floating btn-lg red darken-4" ng-click="eliminartab2()"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <table class="table table-hover  table-bordered table-striped" id="table7">
+                                <thead class="light-green  white-text">
+                                    <tr>
+                                        <th>
+                                            Id
+                                        </th>
+                                        <th>
+                                            Insumo
+                                        </th>
+                                        <th>
+                                            Insumo
+                                        </th>
+                                        <th>
+                                            cantidad
+                                        </th>                                        
+                                    </tr>
+                                </thead>
+
+                                <tbody ng-click="get3()"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12">
+                            <label>Asociar Tallas: </label>
+                            <div class="form-group">
+                                @Html.Action("ListaTallas", "Tallas")
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-12">
+                            <label>Asociar Medidas: </label>
+                            <div class="form-group">
+                                @Html.Action("ListaMedidas", "Medidas")
+
+                            </div>
+                        </div>
+                    </div>
+                   
+
+                    <p class="red-text">{{messageCant}}</p>
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+
+
+</script>

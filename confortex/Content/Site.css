@@ -1,0 +1,12 @@
+﻿.toolbardemoBasicUsage md-toolbar md-icon.md-default-theme {
+    color: white;
+}
+
+.loginBox {
+    max-width: 90%;
+    width: 500px
+}
+
+.stretch input {
+    width: 100%
+}

@@ -1,0 +1,9 @@
+﻿@model Confortex.Models.CheckBoxListItem
+
+@{
+    Html.HiddenFor(v => v.Id);
+    Html.CheckBoxFor(v => v.IsChecked);
+    Html.LabelFor(v => v.IsChecked, Model.Display);
+}
+
+

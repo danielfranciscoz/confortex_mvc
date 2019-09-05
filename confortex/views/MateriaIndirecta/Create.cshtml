@@ -1,0 +1,53 @@
+﻿@model Confortex.Models.Accesorio
+
+<div class="modal fade right" id="modalaccesoriocreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-buysellads  "></i> {{gestion}} Insumo</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Nombre,"Nombre del Insumo", htmlAttributes: new { @class = "control-label " })
+
+                        @Html.EditorFor(model => model.Nombre, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el nombre del Insumo", data_animation = "false", ng_model = "nombre" } })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Descripcion,"Descripción", htmlAttributes: new { @class = "control-label " })
+
+                        @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba la descripción del Insumo", data_animation = "false", ng_model = "descripcion" } })
+
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label ">Precio Unitario</label>
+
+                        <input class="text-box single-line" type="text" data-tooltip="tooltip" data-placement="right" title="Escriba el Precio unitario  del Material indirecto" data-animation="false" ng-model="precio" ng-keyup="EsPrecio()" />
+
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox1" ng-model="isaccesorio">
+                        <label for="checkbox1">¿Es un Accesorio?</label>
+                    </div>
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

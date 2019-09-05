@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Confortex.Models.fn_menu_Result>
+
+
+
+<ul class="collapsible collapsible-accordion">
+    @{
+        int men = 0;
+    }
+    @foreach (var item in Model.OrderBy(item => item.MenuOrden))
+    {
+
+
+        if (item.isMenu == true  && item.MenuPadre == null && (item.IdPantalla != men))
+        {
+
+
+            <li>
+                <a class="collapsible-header waves-effect arrow-r"><i class="fa fa-chevron-right"></i>@Html.DisplayFor(modelItem => item.Nombre)<i class="fa fa-angle-down rotate-icon"></i></a>
+                <div class="collapsible-body">
+                    <ul>
+
+                        @Html.Action( "SubMenus", "Pantallas", new { id = item.IdPantalla })
+
+                    </ul>
+                </div>
+            </li>
+        }
+
+        men = item.IdPantalla.Value;
+    }
+
+
+
+</ul>
+
+

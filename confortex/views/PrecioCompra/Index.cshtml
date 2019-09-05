@@ -1,0 +1,408 @@
+﻿@{
+    ViewBag.Title = "Precios de Compra";
+}
+<style>
+  #table1_filter {
+        display: none;
+    }
+
+
+    #table1_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+
+
+    #table2_paginate {
+        display: none;
+    }
+</style>
+
+<ng-controller ng-controller="Concompra">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive font-weight-bold">Compras por pedido</h4>
+
+        <h6 class="h6-responsive font-weight-bold">Seleccione el pedido</h6>
+        <div class="row">
+        @Html.DropDownList("IdCotizacion", null, htmlAttributes: new { @class = "mdb-select col-12", data_tooltip = "tooltip", data_placement = "top", title = "seleccione un pedido.", data_animation = "false", style = "display:initial", ng_model = "idcotizacion", ng_change = "selec_coti()" })
+            <a class="btn btn-sm green darken-4 col-3 font-weight-bold" data-animation="false" data-tooltip=tooltip data-placement="left" ng-click="reportecompras()" title="Generar Informe de Mat. y Suministros"><i class="fa fa-file-o "></i> Informe de Materiales y Suministros</a>
+        </div>
+          <hr />
+        <ul class="nav nav-tabs nav-justified green darken-4">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#panel1" ng-click="clean()" role="tab">Precios de Tela</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel2" ng-click="clean()"  role="tab">Precios de Suministros</a>
+            </li>
+      
+        </ul>
+      
+
+        <div class="tab-content card">
+            <!--Panel 1-->
+            <div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+
+
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table1">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    No.Cotización
+                                </th>
+                                <th>
+                                   id
+                                </th>
+                                <th>
+                                  Tela
+                                </th>
+                                <th>
+                                    Precio Actual en sistema
+                                </th>
+
+
+                                <th>
+                                    Precio Consignado
+                                </th>
+                                <th>
+                                    Igualar precio al sistema
+                                </th>
+                                
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get()"></tbody>
+
+                    </table>
+
+                </div>
+              
+
+            </div>
+            <div class="tab-pane fade" id="panel2" role="tabpanel">
+
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table2">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    No.Cotización
+                                </th>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    Suministro
+                                </th>
+                                <th>
+                                    Precio Actual en sistema
+                                </th>
+
+
+                                <th>
+                                    Precio Consignado
+                                </th>
+                                <th>
+                                    Igualar precio al sistema
+                                </th>
+                            
+                                      </tr>
+                        </thead>
+
+                        <tbody ng-click="get()"></tbody>
+
+                    </table>
+
+                </div>
+              
+
+            </div>
+           
+       </div>
+
+            <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+               <a class="btn-floating yellow darken-1" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Editar precio de un material seleccionado."><i class="fa fa-pencil"></i></a>
+
+
+                   
+            </div>
+        </div>
+
+    @Html.Action("DeleteGeneral", "Home")
+
+    <div class="modal fade right" id="modalcompra" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-full-height modal-sm" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header light-green  white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-money" aria-hidden="true"></i> {{gestion}} Compra</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                    <h6 class="h6-responsive font-weight-bold">Precio Actual:</h6>
+                  
+                        <input ng-model="preciosu" ng-keyup="" class="col-lg-12 form-control"  type="text" readonly/>
+               
+                    <h6 class="h6-responsive font-weight-bold">Precio nuevo:</h6>
+                 
+                        <input ng-model="precio" ng-keyup="precioss()" class="col-lg-12 form-control"type="text" />
+                   <a class="btn btn-sm green darken-4" ng-click="modi()">Guardar</a>
+                    {{message}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-controller>
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+    var cotizacion = 0;
+    var idtela = 0;
+    var idmaterial = 0;
+
+    function igualart() {
+        setTimeout(function () {
+            $.ajax({
+                data: { IdCotizacion: cotizacion, IdTela: idtela, MantenerPrecio: true,PrecioNuevo:0 },
+                url: '../PrecioCompra/PrecioTela',
+                type: 'post',
+                success: function (response) {
+                    if (response.Message == "Exito") {
+                        $('#table1').DataTable().ajax.reload();
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+                }
+            });
+        }, 1000);
+            
+    }
+    function igualarm() {
+        setTimeout(function () {
+            $.ajax({
+                data: { IdCotizacion: cotizacion, IdAccesorio: idmaterial, MantenerPrecio: true, PrecioNuevo: 0 },
+                url: '../PrecioCompra/PrecioAccesorio',
+                type: 'post',
+                success: function (response) {
+                    if (response.Message == "Exito") {
+                        $('#table2').DataTable().ajax.reload();
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+                }
+            });
+        }, 1000);
+
+    }
+
+    app.controller('Concompra', function ($scope, $http, $window) {
+        $scope.idtela = 0;
+        $scope.idmaterial = 0;
+        var table1 = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../PrecioCompra/searchPrecioConsignadoTela",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                    { "data": "IdCotizacion", "name": "IdCotizacion", visible: false },
+                    { "data": "IdTela", "name": "IdTela", visible: false },
+                    { "data": "Tela", "name": "Tela" },
+                    { "data": "PrecioActualSistema", "name": "PrecioActualSistema" },
+                    { "data": "PrecioConsignado", "name": "PrecioConsignado" },
+                    { "data": "isConsignado", "name": "isConsignado", render: function (data) { if (data == true) { return "" } else { return '<a class="btn btn-sm yellow" onclick="igualart()"><i class="fa fa-check" aria-hidden="true"></i></a>' } } }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No ha seleccionado ningún pedido",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table2 = $('#table2').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../PrecioCompra/searchPrecioConsignadoMateria",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                    { "data": "IdCotizacion", "name": "IdCotizacion", visible: false },
+                    { "data": "IdAccesorio", "name": "IdAccesorio", visible: false },
+                    { "data": "Material", "name": "Material" },
+                    { "data": "PrecioActualSistema", "name": "PrecioActualSistema" },
+                    { "data": "PrecioConsignado", "name": "PrecioConsignado" },
+                    { "data": "isConsignado", "name": "isConsignado", render: function (data) { if (data == true) { return "" } else { return '<a class="btn btn-sm yellow" onclick="igualarm()"><i class="fa fa-check" aria-hidden="true"></i></a>' } } }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No ha seleccionado ningún pedido",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+
+       
+
+        $scope.selec_coti = function () {
+            table1.search($scope.idcotizacion).draw();
+            table2.search($scope.idcotizacion).draw();
+        };
+
+        $('#table1 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table1.row('.selected').index();
+                cotizacion = table1.cell(idt, 0).data();
+                idtela = table1.cell(idt, 1).data();
+                $scope.idtela = table1.cell(idt, 1).data();
+                $scope.preciosu = table1.cell(idt, 3).data();
+                $scope.precio= table1.cell(idt, 4).data();
+               
+            }, 100);
+        });
+
+        $('#table2 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table2.row('.selected').index();
+                cotizacion = table2.cell(idt, 0).data();
+                idmaterial = table2.cell(idt, 1).data();
+                $scope.idmaterial = table2.cell(idt, 1).data();
+                $scope.preciosu = table2.cell(idt, 3).data();
+                $scope.precio = table2.cell(idt, 4).data();
+
+            }, 100);
+        });
+
+
+        $scope.precioss = function () {
+            $scope.precio = NoLetras($scope.precio);
+        }
+
+
+        $scope.nuevo = function () {
+            if($scope.idmaterial >0 || $scope.idtela >0)
+            $('#modalcompra').modal({
+                show: true
+            });
+        };
+
+     
+        $scope.clean = function () {
+            $scope.idtela = 0;
+            $scope.idmaterial = 0;
+            $scope.precio = "";
+            $scope.preciosu = "";
+
+            $scope.message = "";
+        }
+
+        $scope.reportecompras = function () {
+            if ($scope.idcotizacion > 0) {
+                $window.open("../PrecioCompra/RequerimientosCompra?cotizacion=" + $scope.idcotizacion, '_blank');
+            }
+        };
+
+        $scope.modi = function () {
+            if ($scope.idtela > 0) {
+                $http({
+                    url: "../PrecioCompra/PrecioTela",
+                    method: "POST",
+                    data: $.param({ IdCotizacion:$scope.idcotizacion,IdTela:$scope.idtela, MantenerPrecio:false, PrecioNuevo :$scope.precio}),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalcompra').modal('hide');
+                        $('#table1').DataTable().ajax.reload();
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                })
+            
+            }
+            if ($scope.idmaterial > 0) {
+                $http({
+                    url: "../PrecioCompra/PrecioAccesorio",
+                    method: "POST",
+                    data: $.param({ IdCotizacion: $scope.idcotizacion, IdAccesorio: $scope.idmaterial, MantenerPrecio: false, PrecioNuevo: $scope.precio }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalcompra').modal('hide');
+                        $('#table2').DataTable().ajax.reload();
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                })
+
+            }
+        }
+
+        $('#modalcompra').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+           
+    });
+</script>

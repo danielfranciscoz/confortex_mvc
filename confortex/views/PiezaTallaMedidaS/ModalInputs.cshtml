@@ -1,0 +1,19 @@
+﻿
+@model IEnumerable<Confortex.Models.PiezaMedida>
+    @{
+        int i = 0;
+}
+<div class="row">
+    @foreach (var item in Model.OrderBy(item =>item.Medida.Nombre))
+    {
+        <div class="col-12">
+            <label>@item.Medida.Nombre</label>
+            <input type="text"  ng-model="tempvalor[@i]" ng-keyup="EsNumero(@i)" />          
+            
+        
+        </div>
+        i++;
+    }
+</div>
+
+<input type="hidden" ng-model="tamcolumns" value="@i" ng-init="tamcolumns=@i" />       

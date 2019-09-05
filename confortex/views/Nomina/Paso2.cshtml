@@ -1,0 +1,753 @@
+﻿@{
+    ViewBag.Title = "Planilla - Paso 2";
+}
+
+<style>
+       #table1_filter {
+        display: none;
+    }
+
+
+    #table1_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+
+
+    #table2_paginate {
+        display: none;
+    }
+     #table3_filter {
+        display: none;
+    }
+
+
+    #table3_paginate {
+        display: none;
+    }
+     #table4_filter {
+        display: none;
+    }
+
+
+    #table4_paginate {
+        display: none;
+    }
+      #table5_filter {
+        display: none;
+    }
+
+
+    #table5_paginate {
+        display: none;
+    }
+
+</style>
+
+<ng-controller ng-controller="ConPason2" ng-cloak>
+
+    <div class="card card-block rounded smooth-scroll">
+
+        <h4 class="h4-responsive  font-weight-bold">Listado de Empleados de la Planilla</h4>
+
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table3">
+                <thead class="light-green  white-text">
+                    <tr><th>
+    IdDetalle
+</th>
+                        <th>
+                            IdDetalle
+                        </th>
+                        <th>
+                            Empleado
+                        </th>
+                        <th>
+                            Salario Base
+                        </th>
+                        <th>
+                            Septimo Dia
+                        </th>
+                        <th>
+                            Viaticos
+                        </th>
+                        <th>
+                            Ajustes
+                        </th>
+                        <th>
+                            Transporte
+                        </th>
+                        <th>
+                            Horas Extas
+                        </th>
+                        <th>
+                            Total Otros ingresos
+                        </th>
+                        <th>
+                            Ausencia
+                        </th>
+                        <th>
+                            Minutos Tardes
+                        </th>
+                        <th>
+                            Prestamo
+                        </th>
+                        <th>
+                            INSS
+                        </th>
+                        <th>
+                            Total Otras Deducciones
+                        </th>
+                    </tr>
+                </thead>
+                <tbody ng-click="get()"></tbody>
+            </table>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-6">
+                <h5 class="h5-responsive font-weight-bold">Otros Ingresos</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover  table-bordered table-striped" id="table4">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    IdDetalle
+                                </th>
+                                <th>
+                                    IdDetalle
+                                </th>
+                                <th>
+                                    Concepto
+                                </th>
+                                <th>
+                                    Monto (C$)
+                                </th>
+
+                            </tr>
+                        </thead>
+                       
+                    </table>
+                </div>
+            </div>
+            <div class="col-6">
+                <h5 class="h5-responsive font-weight-bold">Otros Egresos</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover  table-bordered table-striped" id="table5">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    IdDetalle
+                                </th>
+                                <th>
+                                    IdDetalle
+                                </th>
+                                <th>
+                                    Concepto
+                                </th>
+                                <th>
+                                    Monto (C$)
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="progress col-12">
+                <div class="progress-bar" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <a class="btn btn-sm green darken-4 col-2" ng-click="atras()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras </a>
+            <a class="col-7">Paso 2 de 2 </a>
+            <a class="btn btn-sm green darken-4 col-2" ng-click="siguiente()">Generar <i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
+        </div>
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar empleado "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita el registro del empleado seleccionado."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina el empleado seleccionado."><i class="fa fa-trash-o"></i></a></li>
+
+            </ul>
+        </div>
+
+    </div>
+    @Html.Action("CreatePaso2", "Nomina", new { nomina = ViewBag.nomina })
+    @Html.Action("DeleteGeneral", "Home")
+</ng-controller>
+
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+   
+
+
+    app.controller('ConPason2', function ($scope, $http, $window) {
+
+        $scope.nomina = "@ViewBag.nomina";
+        $scope.empleado = 0;
+        $scope.viatico = "";
+        $scope.salario = 0;
+        $scope.iddetalle = 0;
+        
+        var table1 = $('#table1').DataTable({
+            select: true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "columnDefs": [{
+                "targets": [0],
+                "visible": false
+            },
+            {
+                "targets": [1],
+                "visible": false
+            }],
+
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No sean agregado otros ingresos",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table2 = $('#table2').DataTable({
+            select: true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "columnDefs": [{
+                "targets": [0],
+                "visible": false
+            },{
+                "targets": [1],
+                "visible": false
+            }],
+
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No sean agregado otras deducciones",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table3 = $('#table3').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "searching": true,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "ajax": {
+                "url": "../Nomina/searchDetalleEmpleados",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                  { "data": "ColillaNo", "name": "ColillaNo", visible: false },
+                    { "data": "IdEmpleado", "name": "IdEmpleado", visible: false },
+                { "data": "NombreCompleto", "name": "NombreCompleto" },
+                { "data": "Produccion", "name": "Produccion", render: function (data) { return data.toFixed(2) } },
+                  { "data": "C7mo", "name": "C7mo", render: function (data) { return data.toFixed(2) } },
+                  { "data": "Viatico", "name": "Viatico" ,render: function (data) { return data.toFixed(2) } },
+                  { "data": "Ajuste", "name": "Ajuste" },
+                  { "data": "Transporte", "name": "Transporte" },
+                  { "data": "HorasExtra", "name": "HorasExtra" },
+                  { "data": "TotalOtrosIngresos", "name": "TotalOtrosIngresos" },
+                  { "data": "Ausencia", "name": "Ausencia" },
+                  { "data": "MinutosTarde", "name": "MinutosTarde" },
+                  { "data": "Prestamo", "name": "Prestamo" },
+                  { "data": "INSS", "name": "INSS" },
+                  { "data": "TotalOtrosEgresos", "name": "TotalOtrosEgresos" }
+            ], "pageLength": 50,
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table4 = $('#table4').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "searching": true,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "ajax": {
+                "url": "../Nomina/searchDetalleNominaIngresos",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                  { "data": "IdOtroIngresoEgreso", "name": "IdOtroIngresoEgreso", visible: false },
+      { "data": "IdDetalleNomina", "name": "IdDetalleNomina", visible: false },
+      { "data": "Concepto", "name": "Concepto" },
+      { "data": "Monto", "name": "Monto"},
+                
+            ], "pageLength": 50,
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table5 = $('#table5').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "searching": true,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "ajax": {
+                "url": "../Nomina/searchDetalleNominaEgresos",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                  { "data": "IdOtroIngresoEgreso", "name": "IdOtroIngresoEgreso", visible: false },
+      { "data": "IdDetalleNomina", "name": "IdDetalleNomina", visible: false },
+      { "data": "Concepto", "name": "Concepto" },
+      { "data": "Monto", "name": "Monto" },
+
+            ], "pageLength": 50,
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+       
+
+        table3.search($scope.nomina).draw();
+
+
+        //$http({
+        //    url: "../Nomina/detallepaso2",
+        //    method: "POST",
+        //    data: { "nomina": $scope.nomina },
+        //}).then(function (response) {
+        //    $scope.cliente = response.data.cliente ;
+        //    $scope.referencia = response.data.referencia;
+        //    $scope.fechainicio = response.data.fechainicio ;
+        //    $scope.fechafin = response.data.fechafin ;
+        //    $scope.observaciones = response.data.observaciones ;
+            
+            
+
+        //});
+
+        $scope.atras = function () {
+            window.location.href = "../Nomina/Paso1?nomina="+$scope.nomina;
+
+        }
+        $scope.siguiente = function () {
+            if (table3.column(0).data().length > 0) {
+                $http({
+                    url: "../Nomina/GenerarNomina",
+                    method: "POST",
+                    data: {
+                        IdNomina: $scope.nomina
+                    },
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        window.location.href = "../Nomina/ReporteNomina?nomina=" + $scope.nomina;
+
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+               
+            } else {
+                toastr['warning']('Debe agregar al menos un empleado a la nómina');
+            }
+            
+
+        }
+
+
+        $scope.changeempleado = function () {
+
+            $http({
+                url: "../Nomina/empleado",
+                method: "POST",
+                data: { "empleado": $scope.empleado, "nomina": $scope.nomina },
+            }).then(function (response) {
+              
+                $scope.viatico = response.data.viatico;
+                $scope.salario = response.data.salario;
+
+
+            });
+        }
+
+        $scope.abrirmodal = function () {
+
+            $('#modalpaso2').modal({
+                show: true
+            });
+        }
+
+        $scope.nuevo = function () {
+          
+            if ($scope.iddetalle == 0) {               
+                $scope.abrirmodal();
+               
+            } else {
+                $scope.clean();
+                $scope.abrirmodal();
+            }
+            $('#empleadot').attr('disabled', false);
+
+        };
+
+        $scope.gestionar = function () {
+          
+            if ($scope.iddetalle > 0) {
+                $scope.guardar();
+            } else {
+                $scope.guardar();
+            }
+          
+
+        }
+
+        $scope.editar = function () {
+
+            if ($scope.iddetalle > 0) {
+                $scope.abrirmodal();
+            }
+            $('#empleadot').attr('disabled', true);
+        };
+
+        $('#table3 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table3.row('.selected').index();
+                $scope.iddetalle = table3.cell(idt, 0).data();
+                $scope.empleado = table3.cell(idt, 1).data()+"";
+                $scope.nombre = table3.cell(idt, 2).data();
+                $scope.salario = table3.cell(idt, 3).data().toFixed();
+                $scope.viatico = table3.cell(idt, 5).data().toFixed();
+                $scope.ajuste = table3.cell(idt, 6).data();
+                $scope.transporte = table3.cell(idt, 7).data();
+                $scope.horaextra = table3.cell(idt, 8).data();
+                $scope.llegadastardes = table3.cell(idt, 11).data();
+                $scope.ausencias = table3.cell(idt, 10).data();
+                $scope.prestaciones = table3.cell(idt, 12).data();
+                $scope.inss = table3.cell(idt, 13).data();
+                
+                table4.search($scope.iddetalle).draw();
+                table5.search($scope.iddetalle).draw();
+
+                toastr['success']('Actualmente esta seleccionando el empleado ' + $scope.nombre);
+
+
+                setTimeout(function () {
+                    table1.clear().draw();
+                   
+                    var TamTab4 = table4.column(0).data().length;
+                    for (var i = 0; i < TamTab4; i++) {
+                        table1.row.add([table4.cell(i, 0).data(), table4.cell(i, 1).data(), table4.cell(i, 2).data(), table4.cell(i, 3).data()]).draw();
+                    }
+
+                }, 300);
+                setTimeout(function () {
+                    table2.clear().draw();
+                    var TamTab5 = table5.column(0).data().length;
+                    for (var i = 0; i < TamTab5; i++) {
+                        table2.row.add([table5.cell(i, 0).data(), table5.cell(i, 1).data(), table5.cell(i, 2).data(), table5.cell(i, 3).data()]).draw();
+                    }
+
+                }, 300);
+              
+            }, 100);
+
+        });
+
+        $('#table1 tbody').on('click', 'td', function () {
+
+            setTimeout(function () {
+                $scope.row1 = table1.row('.selected').index();
+
+
+
+            }, 100);
+        });
+
+
+        $('#table2 tbody').on('click', 'td', function () {
+
+            setTimeout(function () {
+                $scope.row2 = table2.row('.selected').index();
+
+
+
+            }, 100);
+        });
+
+        $scope.clean = function () {
+
+            $scope.salario = "";
+            $scope.viatico = "";
+            $scope.iddetalle = 0;
+            $scope.empleado = "";
+            $scope.nombre = "";
+            $scope.septimodia = "";
+            $scope.ajuste = "";
+            $scope.transporte = "";
+            $scope.horaextra = "";
+            $scope.llegadastardes = "";
+            $scope.ausencias = "";
+            $scope.prestaciones = "";
+            $scope.inss = "";
+            $scope.monto1 = "";
+            $scope.monto2 = "";
+            $scope.concepto1 = "";
+            $scope.concepto2 = "";
+            $scope.message = "";
+
+            setTimeout(function () {
+            table1.clear().draw();
+            table2.clear().draw();
+            $('#table3').DataTable().ajax.reload();
+            table4.search("").draw();
+            table5.search("").draw();
+            }, 100);
+        }
+
+        $scope.eliminartab1 = function () {
+            if ($scope.row1 >= 0) {
+                table1.row($scope.row1).remove().draw();
+
+            }
+        }
+        $scope.eliminartab2 = function () {
+            if ($scope.row2>= 0) {
+                table2.row($scope.row2).remove().draw();
+
+            }
+        }
+        
+        $scope.agregartab1 = function () {
+            if ($scope.concepto1.length > 0 && $scope.monto1 > 0) {
+                var tempc = $scope.monto1;
+
+                var TamTab = table1.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (table1.cell(i, 2).data() == $scope.concepto1) {
+                        table1.row(i).remove().draw();
+                    }
+
+                }
+                table1.row.add([0, $scope.iddetalle,$scope.concepto1,$scope.monto1]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe escribir un concepto y un monto ";
+            }
+
+
+        }
+        $scope.agregartab2 = function () {
+            if ($scope.concepto2.length > 0 && $scope.monto2 > 0) {
+                var tempc = $scope.monto2;
+
+                var TamTab = table2.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (table2.cell(i, 2).data() == $scope.concepto2) {
+                        table2.row(i).remove().draw();
+                    }
+
+                }
+                table2.row.add([0, $scope.iddetalle, $scope.concepto2, $scope.monto2]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe escribir un concepto y un monto ";
+            }
+
+
+        }
+
+
+        $scope.eliminar = function () {
+            if ($scope.iddetalle > 0) {
+                $('#Modaldelete').modal({
+                    show: true
+                });
+            }
+        }
+
+        $('#modalpaso2').on('hidden.bs.modal', function (e) {
+
+            $scope.clean();
+
+        });
+
+        $('#Modaldelete').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+
+        $scope.anular = function () {
+            $http({
+                url: "../Nomina/DeleteDetalle",
+                method: "POST",
+                data: $.param({ "IdDetalleNomina": $scope.iddetalle }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldelete').modal('hide'); 
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+
+
+        $scope.guardar = function () {
+            $scope.jing = "";
+            $scope.temping = table1.column(0).data().length;;
+            for ($scope.i = 0; $scope.i < $scope.temping; $scope.i++) {
+             
+                $scope.jing = $scope.jing + '{"IdOtroIngresoEgreso": ' + table1.cell($scope.i, 0).data() + ' ,"IdDetalleNomina": ' + $scope.iddetalle + ',"Concepto": "' + table1.cell($scope.i, 2).data() + '","Monto":' + table1.cell($scope.i, 3).data() + ',"IsIngreso" : "true" }';
+
+
+                    if ($scope.i < $scope.temping - 1) {
+                        $scope.jing= $scope.jing + ",";
+                    }
+                
+            }
+
+          
+            $scope.tempeng = table2.column(0).data().length;;
+            for ($scope.i = 0; $scope.i < $scope.tempeng; $scope.i++) {
+
+                if ($scope.i == 0 && $scope.temping >0) {
+                    $scope.jing = $scope.jing + ",";
+                }
+
+                $scope.jing = $scope.jing + '{"IdOtroIngresoEgreso": ' + table2.cell($scope.i, 0).data() + ' ,"IdDetalleNomina": ' + $scope.iddetalle + ',"Concepto": "' + table2.cell($scope.i, 2).data() + '","Monto":' + table2.cell($scope.i, 3).data() + ',"IsIngreso" : "false" }';
+
+
+                if ($scope.i < $scope.tempeng - 1) {
+                    $scope.jing = $scope.jing + ",";
+                }
+
+            }
+            console.log($scope.jing);
+            
+            var ji = JSON.parse("[" + $scope.jing + "]");
+            var parameter = JSON.stringify({ "otroIngreso": ji,IdDetalleNomina: $scope.iddetalle,IdNomina: $scope.nomina,IdEmpleado:$scope.empleado,Ajuste:$scope.ajuste,Transporte:$scope.transporte,HorasExtra:$scope.horaextra,Ausencia:$scope.ausencias,MinutosTarde:$scope.llegadastardes,Prestamo:$scope.prestaciones,INSS:$scope.inss});
+           
+
+
+
+            if ($scope.empleado > 0
+                ) {
+                $http({
+                    url: "../Nomina/CreateDetalle",
+                    method: "POST",
+                    data: parameter,
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalpaso2').modal('hide');
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el nombre,sexo, cantidad,precio y las actividades de la pieza');
+            }
+        };
+
+     
+
+    });
+
+
+</script>

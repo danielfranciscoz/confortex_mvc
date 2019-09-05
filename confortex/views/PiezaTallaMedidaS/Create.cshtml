@@ -1,0 +1,81 @@
+﻿@model Confortex.Models.PiezaTallaMedida_Standar
+
+
+
+
+<div class="modal fade right" id="modalpiezacreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-full-height modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-pied-piper" aria-hidden="true"></i> {{gestion}} Pieza</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+                <div class="form-group">
+                  @Html.LabelFor(model => model.IdPieza, "Pieza", htmlAttributes: new { @class = "control-label" })
+                  @Html.DropDownList("IdPieza", null, htmlAttributes: new { @class = "mdb-select ", data_tooltip = "tooltip", data_placement = "top", title = "seleccione una pieza a guardar sus medidas estándar", data_animation = "false", style = "display:initial", ng_model = "pieza", ng_change = "dinamictable()" })
+                     
+                </div>
+
+                <div id="tableDiv">  
+                    <div class="table-responsive"><table id="displayTable" class="table table-fixed" cellspacing="0" width="100%">
+                        <thead>                      
+                        </thead>
+                        </table>
+                    </div>                     
+                </div>
+
+
+
+
+                @*<h4>PiezaTallaMedida_Standar</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IdPieza, "IdPieza", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("IdPieza", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IdPieza, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IdTalla, "IdTalla", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("IdTalla", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.IdTalla, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Medida, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Medida, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Medida, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.cod_RA, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.cod_RA, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.cod_RA, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+</script>

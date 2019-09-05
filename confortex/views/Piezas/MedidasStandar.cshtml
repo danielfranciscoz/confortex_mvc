@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "Medidas Estandares";
+}
+
+<style>
+ #table1_filter {
+        display: none;
+    }
+
+
+    #table1_paginate {
+        display: none;
+    }
+    </style>
+<ng-controller ng-controller="ConMedidasStandar">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Medidas Estándar de @ViewBag.nombre</h4>
+
+        <div class="table-responsive ">
+            <table class="table " id="table1">
+                <thead class="light-green  white-text" id="thdina">
+
+                </thead>
+
+                <tbody ng-click="get()" ></tbody>
+
+            </table>
+
+        </div>
+
+
+
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 " ng-href="../piezas">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </a>
+
+
+        </div>
+    </div>
+
+    <div class="modal fade right" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-full-height modal-sm" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header light-green  white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-pied-piper" aria-hidden="true"></i> Editando Medidas de la Talla {{Talla}}</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                
+                    @Html.Action("ModalInputs", "PiezaTallaMedidaS",new {idpieza = ViewBag.IdTalla })
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="editar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-controller>
+<script>
+    var editor; 
+    $( document ).ready(function() {
+        var cellData = "";
+        var r= "";
+        var c = "";
+   
+    });
+
+   
+
+    app.controller('ConMedidasStandar', function ($scope, $http) {
+        $scope.AidMedida = [];
+       
+        $scope.tempvalor =[];
+        $scope.idpieza = @ViewBag.Idtalla;
+        $scope.idtalla = 0;
+        $scope.Esnumero = function () {
+           // $scope.tempedit = NoLetras($scope.tempedit);
+        }
+
+
+        $http({
+            url: "../PiezaTallaMedidaS/ObtenerCatalogo",
+            method: "POST",
+            data: $.param({ "IdPieza": $scope.idpieza }),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (response) {
+            var tableHeaders;
+            var inputs
+            $.each(response.data.columns, function(i, val){
+                tableHeaders += "<th></th>";
+            });
+            $("#thdina").append('<tr>' + tableHeaders + '</tr>');
+         
+
+            setTimeout(function () {
+                $scope.columns = response.data.columns; 
+
+                tablep = $('#table1').DataTable({
+                    "select": true,
+                    "bInfo": false,
+                    "bSort": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bPagination": false,
+                    "pageLength": 100,
+                    "aaData": response.data.data,
+                    "aoColumns": response.data.columns,
+                    "bLengthChange": false,
+                    "columnDefs": [{
+                        "targets": [0],
+                        "visible": false
+                    }],
+                    select: true
+                });
+            
+                console.log($scope.tamcolumns);
+                for(var i=2; i<$scope.tamcolumns+2;i++){
+                    $scope.AidMedida[i-2]= tablep.cell(0,i ).data();    
+                }      
+      
+              
+                tablep.row(0).remove().draw(false);
+                 
+
+            },200);
+
+            
+            $scope.EsNumero = function ($i) {
+                $scope.tempvalor[$i] = NoLetras($scope.tempvalor[$i]);
+            }
+
+            $scope.editar = function(){
+                for(var i=2; i<$scope.tamcolumns+2;i++){
+                    tablep.cell(r,i ).data($scope.tempvalor[i-2]).draw();
+                   
+                }   
+             
+                $scope.jm1 = "";
+                for (var i = 2; i < $scope.tamcolumns+2; i++) {
+                    $scope.jm1=  $scope.jm1+'{"IdPieza":'+$scope.idpieza+',"IdTalla":'+$scope.idtalla+',"IdMedida": '+$scope.AidMedida[i-2]+',"Medida":'+$scope.tempvalor[i-2]+'}';
+
+                    if(i != $scope.tamcolumns+1){
+                        $scope.jm1=  $scope.jm1+',';
+                    }        
+                }
+                var jm = JSON.parse("[" + $scope.jm1 + "]");
+                var parameter = JSON.stringify({"PiezaTallaMedida": jm });
+                $http({
+                    url: "../PiezaTallaMedidaS/Create",
+                    method: "POST",
+                    data: parameter,
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modaledit').modal('hide');
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+              
+            }
+                
+            $('#table1 tbody').on( 'click', 'td', function () {
+                cellData = tablep.cell( this ).data();     
+                r = tablep.row( this ).index();
+                c = tablep.column( this ).index(); 
+                for(var i=2; i<$scope.tamcolumns+2;i++){
+                    $scope.tempvalor[i-2]= tablep.cell(r,i ).data();
+                   
+                }            
+              
+                $scope.idtalla = tablep.cell(r,0 ).data();
+                $scope.Talla = tablep.cell(r,1 ).data();
+                $('#modaledit').modal({
+                    show: true
+                });
+                           
+            } );
+
+        });
+        $('#modaledit').on('hidden.bs.modal', function (e) {
+
+            $scope.message = "";
+
+        });
+
+    });
+    
+    
+</script>

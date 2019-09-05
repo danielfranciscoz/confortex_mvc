@@ -1,0 +1,526 @@
+﻿@{
+    ViewBag.Title = "Planilla  - Paso 1";
+}
+<style>
+    #table1_filter {
+        display: none;
+    }
+
+
+    #table1_paginate {
+        display: none;
+    }
+    </style>
+
+<ng-controller ng-controller="ConPason1" ng-cloak>
+
+    <div class="card card-block rounded smooth-scroll">
+
+        <div class="row col-12">
+            <div class="col-8"></div>
+            <h2 class="h2-responsive  font-weight-bold blue-grey-text"> Planilla número. {{numero}}</h2>
+        </div>
+
+        <h4 class="h4-responsive"> Referencia de Pago:</h4>
+       <input type="text" ng-model="referencia"/>
+        <hr />
+        <h4 class="h4-responsive  ">Pago de la Jornada productiva </h4>
+        <h4 class="h4-responsive  ">Inicia:</h4>
+            <input placeholder="Fecha de inicio de jornada" type="text" id="date-picker" class="form-control datepicker" ng-model="fechainicio">
+        <h4 class="h4-responsive  ">Finaliza:</h4>
+        <input placeholder="Fecha de fin de jornada" type="text" id="date-picker" class="form-control datepicker" ng-model="fechafin">
+        <h4 class="h4-responsive"> Observaciones:</h4>
+        <input type="text" ng-model="observaciones" />
+
+
+        <br />
+        <hr />
+
+        <br />
+        <h4 class="h4-responsive font-weight-bold"> Dias libres</h4>
+        <div class="row">
+           
+                <label class="col-1">Concepto:</label>
+                <input type="text" ng-model="concepto"  class="col-2"/>
+                <label class="col-1">Fecha:</label>
+                <input placeholder="Fecha de fin de jornada" type="text" id="date-picker" class="datepicker col-2" ng-model="dialibre">
+                 <a class="btn-floating blue" data-animation="false" ng-click="agregartab()" data-tooltip=tooltip data-placement="left" title="Agrega una nueva fecha de dia libre"><i class="fa fa-plus"></i></a>
+            <a class="btn-floating red" data-animation="false" ng-click="eliminartab()" data-tooltip=tooltip data-placement="left" title="Quitar una fecha de dia libre"><i class="fa fa-minus"></i></a>
+
+            
+        </div>
+        <div class="table-responsive col-6" >
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            iddes
+                        </th>
+                        <th>
+                            iddes
+                        </th>
+                        <th>
+                            Concepto
+                        </th>
+
+                        <th>
+                            Dias libres
+                        </th>                      
+
+                    </tr>
+                </thead>
+
+
+            </table>
+
+        </div>
+
+        <div class="row">
+
+            <div class="progress col-12">
+                <div class="progress-bar" role="progressbar" style="width:50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <a class="btn btn-sm green darken-4 col-2" ng-click="atras()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Atras </a>
+             <a class="col-7">Paso 1 de 2 {{message}}</a>
+            <a class="btn btn-sm green darken-4 col-2" ng-click="siguiente()">Siguiente <i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
+        </div>
+    </div>
+</ng-controller>
+
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+    $('.datepicker').pickadate({
+
+        // Strings and translations
+        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        showMonthsShort: false,
+        showWeekdaysFull: false,
+
+        // Buttons
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Cerrar',
+
+        // Accessibility labels
+        labelMonthNext: 'Siguiente Mes',
+        labelMonthPrev: 'Mes Anterior',
+        labelMonthSelect: 'Seleccionar un mes',
+        labelYearSelect: 'Seleccionar un año',
+
+        // Formats
+        format: 'd/m/yyyy',
+        formatSubmit: 'd/m/yyyy',
+        hiddenPrefix: undefined,
+        hiddenSuffix: '_submit',
+        hiddenName: undefined,
+
+        // Editable input
+        editable: undefined,
+
+        // Dropdown selectors
+        selectYears: undefined,
+        selectMonths: undefined,
+
+        // First day of the week
+        firstDay: undefined,
+
+        // Date limits
+        min: undefined,
+        max: undefined,
+
+        // Disable dates
+        disable: undefined,
+
+        // Root picker container
+        container: undefined,
+
+        // Hidden input container
+        containerHidden: undefined,
+
+        // Close on a user action
+        closeOnSelect: true,
+        closeOnClear: true,
+
+        // Events
+        onStart: undefined,
+        onRender: undefined,
+        onOpen: undefined,
+        onClose: undefined,
+        onSet: undefined,
+        onStop: undefined,
+
+        // Classes
+        klass: {
+
+            // The element states
+            input: 'picker__input',
+            active: 'picker__input--active',
+
+            // The root picker and states *
+            picker: 'picker',
+            opened: 'picker--opened',
+            focused: 'picker--focused',
+
+            // The picker holder
+            holder: 'picker__holder',
+
+            // The picker frame, wrapper, and box
+            frame: 'picker__frame',
+            wrap: 'picker__wrap',
+            box: 'picker__box',
+
+            // The picker header
+            header: 'picker__header',
+
+            // Month navigation
+            navPrev: 'picker__nav--prev',
+            navNext: 'picker__nav--next',
+            navDisabled: 'picker__nav--disabled',
+
+            // Month & year labels
+            month: 'picker__month',
+            year: 'picker__year',
+
+            // Month & year dropdowns
+            selectMonth: 'picker__select--month',
+            selectYear: 'picker__select--year',
+
+            // Table of dates
+            table: 'picker__table',
+
+            // Weekday labels
+            weekdays: 'picker__weekday',
+
+            // Day states
+            day: 'picker__day',
+            disabled: 'picker__day--disabled',
+            selected: 'picker__day--selected',
+            highlighted: 'picker__day--highlighted',
+            now: 'picker__day--today',
+            infocus: 'picker__day--infocus',
+            outfocus: 'picker__day--outfocus',
+
+            // The picker footer
+            footer: 'picker__footer',
+
+            // Today, clear, & close buttons
+            buttonClear: 'picker__button--clear',
+            buttonClose: 'picker__button--close',
+            buttonToday: 'picker__button--today'
+        }
+    }
+  );
+
+    app.controller('ConPason1', function ($scope, $http, $window) {
+
+        $scope.nomina = "@ViewBag.nomina";
+        $scope.referencia = "";
+        $scope.fechainicio = "";
+        $scope.fechafin = "";
+        $scope.observaciones = "";
+        $scope.concepto = "";
+        $scope.dialibre = "";
+        var table1 =  $('#table1').DataTable({
+            "select": true,
+            "bInfo": false,
+            "bSort": false,
+            "bDestroy": true,
+            "bFilter": false,
+            "bPagination": false,
+            "bLengthChange": false,
+            "columnDefs": [{
+                "targets": [0],
+                "visible": false
+            }, {
+                "targets": [1],
+                "visible": false
+            }, {
+                "targets": [2],
+                "visible": true
+            }, {
+                "targets": [3],
+                "visible": true
+            }
+            ],
+
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no hay dias libres registrados",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+      
+
+        $http({
+            url: "../Nomina/detallepaso1",
+            method: "POST",
+            data: { "nomina": $scope.nomina },
+        }).then(function (response) {
+            if ($scope.nomina == 0) {
+                $scope.numero = "@ViewBag.Maxnomina";
+            } else {
+                $scope.numero = $scope.nomina;
+            }
+            $scope.cliente = response.data.cliente ;
+            $scope.referencia = response.data.referencia;
+            $scope.fechainicio = response.data.fechainicio ;
+            $scope.fechafin = response.data.fechafin ;
+            $scope.observaciones = response.data.observaciones;
+            $scope.datainicio = response.data.dias;
+            
+            $.each(response.data.dias, function (i, val) {
+                table1.row.add([response.data.dias[i].IdNomina, response.data.dias[i].IdNominaDiaLibre, response.data.dias[i].Concepto, response.data.dias[i].FechaLibre]).draw();
+            });
+
+            
+
+        });
+
+        //var table1 = $('#table1').DataTable({
+        //    select: true,
+        //    "processing": true,
+        //    "serverSide": true,
+        //    "orderMulti": false,
+        //    "bFilter": false,
+        //    bInfo: false,
+        //    "bLengthChange": false,
+        //    "searching": true,
+        //    "ajax": {
+        //        "url": "../Nomina/searchDiaslibres",
+        //        "type": "POST",
+        //        "dataType": "JSON"
+
+        //    },
+        //    "columns": [
+        //          { "data": "IdNomina", "name": "IdNomina", visible: false },
+        //        { "data": "IdNominaDiaLibre", "name": "IdNominaDiaLibre", visible: false },
+        //            { "data": "Concepto", "name": "Concepto", visible: true },
+        //             { "data": "FechaLibre", "name": "FechaLibre", visible: true },
+
+
+
+        //    ],
+        //    "language": {
+        //        "lengthMenu": "Mostrando _MENU_ Entradas por página",
+        //        "zeroRecords": "Lo sentimos, no hay dias libres registrados",
+        //        "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+        //        "infoEmpty": "No hay entradas Disponibles",
+        //        "infoFiltered": "(filtrar por _MAX_ total entradas)",
+        //        "search": "Buscar",
+        //        "paginate": {
+        //            "previous": "Anterior",
+        //            "next": "Siguiente"
+        //        }, "select": {
+        //            rows: " "
+        //        }
+        //    }
+
+        //});            
+        
+        
+
+        $scope.atras = function () {
+            $window.location.href = "../Nomina/index";
+
+        }
+        $scope.siguiente = function () {
+            if ($scope.referencia.length > 0 && $scope.fechafin.length > 0 && $scope.fechainicio.length > 0) {
+                $scope.jing = "";
+                $scope.temping = table1.column(0).data().length;;
+                for ($scope.i = 0; $scope.i < $scope.temping; $scope.i++) {
+
+                    $scope.jing = $scope.jing + '{"IdNomina": ' + table1.cell($scope.i, 0).data() + ' ,"IdNominaDiaLibre": ' + table1.cell($scope.i, 1).data() + ',"Concepto": "' + table1.cell($scope.i, 2).data() + '","FechaLibre": "' + table1.cell($scope.i, 3).data() +'"}';
+
+
+                    if ($scope.i < $scope.temping - 1) {
+                        $scope.jing = $scope.jing + ",";
+                    }
+
+                }
+               
+                var ji = JSON.parse("[" + $scope.jing + "]");
+
+
+                $http({
+                    url: "../Nomina/create",
+                    method: "POST",
+                    data: { "IdNomina": $scope.nomina, "NombreReferencia": $scope.referencia, "FechaInicio": $scope.fechainicio, "fechaFin": $scope.fechafin, "Observaciones": $scope.observaciones, "diasLibres" : ji },
+                }).then(function (response) {
+                    if(response.data.Message=="Exito")
+                    {
+                        if (response.data.IdNomina >0) {
+                            $scope.nomina = response.data.IdNomina;
+                        }
+
+                        $scope.message = "Se ha guardado con exito"
+                        $window.location.href = "../Nomina/Paso2?nomina="+$scope.nomina;
+                    }
+                    else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+                });
+
+            } else {
+                toastr['warning']('Debe escribir la referencia de pago y las fechas de pago');
+            }
+
+
+        }
+
+
+        $scope.agregartab = function () {
+           
+            
+            if ($scope.concepto.length > 0 && $scope.dialibre.length > 0) {
+                var tempc = $scope.dialibre;
+              
+                $scope.idnominadialibre = 0;
+
+                var TamTab = table1.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (table1.cell(i, 3).data() == $scope.dialibre) {
+                        $scope.idnominadialibre = table1.cell(i, 1).data();
+                        table1.row(i).remove().draw();
+                    }
+
+                }
+                table1.row.add([$scope.nomina, $scope.idnominadialibre, $scope.concepto, $scope.dialibre]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe escribir un concepto y una fecha ";
+            }
+
+
+        }
+
+        $scope.eliminartab = function () {
+            if ($scope.row1 >= 0) {
+                table1.row($scope.row1).remove().draw();
+
+            }
+        }
+
+
+        $scope.t = function () {
+            
+
+            var table2 = $('#table2').DataTable({
+                select: true,
+                "orderMulti": false,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "searching": true,
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false
+                }, {
+                    "targets": [1],
+                    "visible": false
+                }, {
+                    "targets": [2],
+                    "visible": true
+                }, {
+                    "targets": [3],
+                    "visible": true
+                }
+                ],
+
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                    "zeroRecords": "Lo sentimos, no hay dias libres registrados",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+
+            var TamTab1 = table1.column(0).data().length;
+            for (var i = 0; i < TamTab1; i++) {
+                table2.row.add([table1.cell(i, 0).data(), table1.cell(i, 1).data(), table1.cell(i, 2).data(), table1.cell(i, 3).data()]).draw();
+            }
+            table1.destroy();
+            var table1 = $('#table1').DataTable({
+                select: true,
+                "orderMulti": false,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "searching": true,
+                "columnDefs": [{
+                    "targets": [0],
+                    "visible": false
+                }, {
+                    "targets": [1],
+                    "visible": false
+                }, {
+                    "targets": [2],
+                    "visible": true
+                }, {
+                    "targets": [3],
+                    "visible": true
+                }
+                ],
+
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                    "zeroRecords": "Lo sentimos, no hay dias libres registrados",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+
+            var TamTab2 = table2.column(0).data().length;
+            for (var i = 0; i < TamTab2; i++) {
+                table1.row.add([table2.cell(i, 0).data(), table2.cell(i, 1).data(), table2.cell(i, 2).data(), table2.cell(i, 3).data()]).draw();
+            }
+
+        }
+
+        $('#table1 tbody').on('click', 'td', function () {
+
+            setTimeout(function () {
+                $scope.row1 = table1.row('.selected').index();
+
+
+
+            }, 100);
+        });
+
+    });
+
+
+</script>

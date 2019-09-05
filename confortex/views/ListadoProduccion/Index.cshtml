@@ -1,0 +1,379 @@
+﻿@{
+    ViewBag.Title = "Listado de Produccion";
+}
+<style>
+    #table1_filter {
+        display: none;
+    }
+
+    #table_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+</style>
+
+<ng-controller ng-controller="ConListado">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive font-weight-bold">Tickets por pedido</h4>
+
+        <h6 class="h6-responsive font-weight-bold">Seleccione el pedido</h6>
+        <div class="row">
+            @Html.DropDownList("IdCotizacion", null, htmlAttributes: new { @class = "mdb-select col-8", data_tooltip = "tooltip", data_placement = "top", title = "seleccione un pedido.", data_animation = "false", style = "display:initial", ng_model = "idcotizacion", ng_change = "selec_coti()" })
+            <a class="btn btn-sm green darken-4 font-weight-bold col-3" data-animation="false" ng-click="toexcel1()" data-tooltip=tooltip data-placement="left" title="Generar Listado de corte"><i class="fa fa-file-o "></i> Generar Listado de corte</a>
+        </div>
+    <div class="row">
+        <a class="btn btn-sm green darken-4 font-weight-bold" data-animation="false" ng-click="reporteticketcotizacion()" data-tooltip=tooltip data-placement="left" title="Generar Listado de Ticket por pedido"><i class="fa fa-file-o "></i> Generar Tickets de medida</a>
+        <a class="btn btn-sm green darken-4  col-3 font-weight-bold" data-animation="false" ng-click="reporteticketcotizacionf()" data-tooltip=tooltip data-placement="left" title="Generar Listado de Ticket para entrega por pedido"><i class="fa fa-file-o "></i> Generar Tickets  de entrega</a>
+    </div>
+    <div class="table-responsive ">
+        <table class="table table-hover  table-bordered table-striped" id="table1">
+            <thead class="light-green  white-text">
+                <tr>
+                    <th>
+                        No.Pedido
+                    </th>
+                    <th>
+                        iddes
+                    </th>
+                    <th>
+                        idpieza
+                    </th>
+                    <th>
+                        Pieza
+                    </th>
+
+
+                    <th>
+                        Descripción Hechura
+                    </th>
+                    <th>
+                        Cantidad Requerida
+                    </th>
+                    <th>
+                        Pendiente de Asignar
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody ng-click="get()"></tbody>
+
+        </table>
+
+    </div>
+    <hr />
+    <br />
+    <h4 class="h4-responsive  font-weight-bold">Listado de Tickets</h4>
+    <div class="row">
+        <a class="btn btn-sm green darken-4 col-3 font-weight-bold" data-animation="false" ng-click="reporteticket()" data-tooltip=tooltip data-placement="left" title="Generar ticket para impresión."><i class="fa  fa-ticket  "></i> Generar Ticket de medida individual</a>
+        <a class="btn btn-sm green darken-4  col-3 font-weight-bold" data-animation="false" ng-click="reporteticketf()" data-tooltip=tooltip data-placement="left" title="Generar ticket para entrega."><i class="fa  fa-ticket  "></i> Generar Ticket de entrega individual</a>
+        <a class="btn btn-sm green darken-4 font-weight-bold col-3" data-animation="false" ng-click="toexcel2()" data-tooltip=tooltip data-placement="left" title="Generar Listado de corte"><i class="fa fa-file-o "></i> Generar Listado de corte por ticket</a>
+    </div>
+    <div class="table-responsive ">
+        <table class="table table-hover  table-bordered table-striped" id="table2">
+            <thead class="light-green  white-text">
+                <tr>
+                    <th>
+                        Iddes
+                    </th>
+                    <th>
+                        No.Ticket
+                    </th>
+                    <th>
+                        idtalla
+                    </th>
+                    <th>
+                        Talla
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        Cantidad
+                    </th>
+                    <th>
+                        Estado
+                    </th>
+                    <th>
+                        Tipo
+                    </th>
+                    <th>
+                        Observaciones
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody ng-click="get()"></tbody>
+
+        </table>
+
+    </div>
+
+
+
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+        <a class="btn-floating btn-large green darken-4 ">
+            <i class="fa fa-cogs"></i>
+        </a>
+
+        <ul>
+            <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agrega un nuevo ticket"><i class="fa fa-plus"></i></a></li>
+            <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita un ticket seleccionado."><i class="fa fa-pencil"></i></a></li>
+            <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina un ticket seleccionado."><i class="fa fa-trash-o"></i></a></li>
+
+        </ul>
+    </div>
+</div>
+
+    @Html.Action("DeleteGeneral", "Home")
+
+    <div class="modal fade right" id="modalticketcreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-full-height modal-lg" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header light-green  white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-ticket" aria-hidden="true"></i> {{gestion}}Ticket</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                    @*<iframe ng-src="{{urlmodal}}"
+                        style="border:none; width:100%;"></iframe>*@
+                    @*@Html.Action("Create","ListadoProduccion");*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-controller>
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+    app.controller('ConListado', function ($scope, $http, $window, $sce) {
+        var table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../ListadoProduccion/searchResumenDescripcionHechura",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                    { "data": "IdCotizacion", "name": "IdCotizacion", visible: false },
+                    { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura", visible: false },
+                    { "data": "IdPieza", "name": "IdPieza", visible: false },
+                    { "data": "Pieza", "name": "Pieza" },
+                    { "data": "DescripcionHechuraOnlyCombinaciones", "name": "DescripcionHechuraOnlyCombinaciones" },
+                    { "data": "CantidadRequerida", "name": "CantidadRequerida" },
+                    { "data": "Pendiente", "name": "Pendiente" }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No ha seleccionado ningún pedido",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table2 = $('#table2').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../ListadoProduccion/searchTickets",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+
+                      { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura", visible: false },
+                        { "data": "IdListadoProduccion", "name": "IdListadoProduccion" },
+                        { "data": "IdTalla", "name": "IdTalla", visible: false },
+                          { "data": "Talla", "name": "Talla" },
+                            { "data": "Nombre", "name": "Nombre" },
+                              { "data": "Cantidad", "name": "Cantidad" },
+                                  { "data": "Estado", "name": "Estado" },
+                                   { "data": "Tipo", "name": "Tipo" },
+                                    { "data": "Observaciones", "name": "Observaciones" }
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No se han encontrado tikets",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+
+        table.search("").draw();
+        table2.search("0").draw();
+
+        $scope.selec_coti = function () {
+            table.search($scope.idcotizacion).draw();
+        };
+
+        $('#table1 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+                table2.search(table.cell(idt, 1).data()).draw();
+                $scope.idpieza = table.cell(idt, 2).data();
+                toastr['success']('Actualmente esta seleccionando la pieza ' + table.cell(idt, 3).data());
+                $scope.iddescripcionhechura = table.cell(idt, 1).data();
+                //$scope.urlmodal = $sce.trustAsResourceUrl('/ListadoProduccion/Create?id=' + $scope.idpieza);
+                $http({
+                    url: "../ListadoProduccion/Tallas",
+                    method: "POST",
+                    data: { "id": $scope.idpieza },
+                }).then(function (response) {
+                    $scope.tallas = response.data;
+                    console.log($scope.tallas);
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+
+            }, 100);
+        });
+
+
+        $('#table2 tbody').on('click', 'td', function () {
+
+            setTimeout(function () {
+                var idt = table2.row('.selected').index();
+                $scope.idticket = table2.cell(idt, 1).data();
+                toastr['success']('Actualmente esta seleccionando el ticket No-' + $scope.idticket);
+
+
+            }, 100);
+
+
+        });
+
+
+        $scope.nuevo = function () {
+            if ($scope.idpieza > 0 && $scope.iddescripcionhechura > 0) {
+                $window.location = "../ListadoProduccion/create?hechura=" + $scope.iddescripcionhechura + "&pieza=" + $scope.idpieza + "&ticket=0";
+            }
+        };
+
+        $scope.editar = function () {
+            if ($scope.idpieza > 0 && $scope.iddescripcionhechura > 0 && $scope.idticket > 0) {
+                $window.location = "../ListadoProduccion/create?hechura=" + $scope.iddescripcionhechura + "&pieza=" + $scope.idpieza + "&ticket=" + $scope.idticket;
+            }
+        };
+
+        $scope.reporteticketcotizacion = function () {
+            if ($scope.idcotizacion > 0) {
+                $window.open("../ListadoProduccion/ReporteTicketsCotizacion?cotizacion=" + $scope.idcotizacion, '_blank');
+            }
+        };
+        $scope.reporteticket = function () {
+            if ($scope.idcotizacion > 0 && $scope.idticket) {
+                $window.open("../ListadoProduccion/ReporteTickets?cotizacion=" + $scope.idcotizacion + "&ticket=" + $scope.idticket, '_blank');
+            }
+        };
+
+        $scope.reporteticketcotizacionf = function () {
+            if ($scope.idcotizacion > 0) {
+                $window.open("../ListadoProduccion/ReporteTicketsCotizacionf?cotizacion=" + $scope.idcotizacion + "&ticket=" + $scope.idticket, '_blank');
+
+            }
+        };
+        $scope.reporteticketf = function () {
+            if ($scope.idcotizacion > 0 && $scope.idticket > 0) {
+                $window.open("../ListadoProduccion/ReporteTicketsCotizacionf?cotizacion=" + $scope.idcotizacion + "&ticket=" + $scope.idticket, '_blank');
+            }
+        };
+
+
+        $scope.toexcel1 = function () {
+            if ($scope.idcotizacion > 0) {
+                $window.open("../ListadoProduccion/ExportExcelcorte?cotizacion=" + $scope.idcotizacion , '_blank');
+
+            }
+        };
+
+        $scope.toexcel2 = function () {
+            if ($scope.idcotizacion > 0 && $scope.idticket > 0) {
+                $window.open("../ListadoProduccion/ExportExcelcorte?cotizacion=" + $scope.idcotizacion + "&ticket=" + $scope.idticket, '_blank');
+
+            }
+        };
+
+
+        $scope.eliminar = function () {
+
+            if ($scope.idticket > 0) {
+                $scope.message = "";
+                $('#Modaldelete').modal({
+                    show: true
+                });
+            }
+        }
+
+        $scope.anular = function () {
+            $http({
+                url: "../ListadoProduccion/Delete",
+                method: "POST",
+                data: $.param({ "IdListadoProduccion": $scope.idticket }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldelete').modal('hide');
+                    $('#table1').DataTable().ajax.reload();
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            })
+        };
+
+        $('#Modaldelete').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+
+        $scope.clean = function () {
+            $scope.iddescripcionhechura = 0;
+            $scope.idticket = 0;
+            $scope.message = "";
+        }
+    });
+</script>

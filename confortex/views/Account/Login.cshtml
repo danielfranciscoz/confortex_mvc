@@ -1,0 +1,66 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+@using Confortex.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Iniciar sesión al sistema de produccion de Confortex";
+}
+
+<div class="container flex-center">
+    <section id="loginForm" class="card col-sm-12 col-md-6 " style="margin-top:20px;">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+
+
+
+    <!--Content-->
+
+        <!--Header-->
+            <div class="modal-header  black-text text-darken-4 text-center">
+
+                <h3 class="h3-responsive text-center"> <strong>Control de Acceso</strong> </h3>
+            </div>
+        <!--Body-->
+            <div class="modal-body container">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="md-form">
+                    <i class="fa fa-user prefix"></i>
+                   <label class="control-label">Usuario</label>
+                    @Html.TextBoxFor(m => m.User, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.User, "", new { @class = "text-danger" })
+
+                </div>
+                <div class="md-form">
+                    <i class="fa fa-lock prefix"></i>
+                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+                    <div class="text-center">
+                        <button class="btn green darken-4 btn-sm" id="btnlogin"> <strong>Iniciar sesión</strong></button>
+
+                    </div>
+                    <div class="margin-20">
+                        @*<a id="hlkOlvidoPassword" class="pull-left black-text " data-toggle="modal" data-target="#modal-resetpass" href="#modal-resetpass">¿Olvidó su contraseña?</a>
+
+
+                        <a id="hlnAcceso" class="pull-right black-text" data-toggle="modal" data-target="#modal-login" href="#modal-login">¿Cómo obtener acceso?</a>*@
+                    </div>
+
+        <!--Footer-->
+
+
+
+        }
+    </section>
+
+    <!--/.Content-->
+</div>
+

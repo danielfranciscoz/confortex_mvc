@@ -1,0 +1,64 @@
+﻿@model Confortex.Models.MaquinariaEquipoElectrico
+
+<div class="modal fade right" id="modalmaquinariacreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-plug " aria-hidden="true"></i> {{gestion}} Maquinária y Equipo</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NombreEquipo,"Nombre", htmlAttributes: new { @class = "control-label " })
+
+                        @Html.EditorFor(model => model.NombreEquipo, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el nombre del equipo o maquinaria", data_animation = "false", ng_model = "nombre" } })
+
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NombreFuncion, "Actividad a la que pertenece", htmlAttributes: new { @class = "control-label " })
+
+                        @Html.DropDownList("NombreFuncion", null,"Ninguno", htmlAttributes: new { @class="col-12",style = "display:initial", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione la función que realiza la maquinaria o la función en la que se usa el equipo", data_animation = "false", ng_model = "funcion", ng_keyup ="EsFuncion()" })
+
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConsumoPromedioKWh, "Consumo Promedio KWH", htmlAttributes: new { @class = "control-label " })
+
+                        @Html.EditorFor(model => model.ConsumoPromedioKWh, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el consumo promedio KWH del equipo o maquinaria", data_animation = "false", ng_model = "consumo" ,mask="9?9?9?9?9?.99"} })
+
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CantidadExistencia, "Cantidad en Existencia", htmlAttributes: new { @class = "control-label " })
+
+                        @Html.EditorFor(model => model.CantidadExistencia, new { htmlAttributes = new { type= "text",data_tooltip = "tooltip", data_placement = "right", title = "Escriba la descripción del equipo o maquinaria", data_animation = "false", ng_model = "cantidad", mask = "9?9?9?9?9?" } })
+
+                    </div>
+                    <div class="form-group">
+                        <input type="checkbox" id="checkbox1" ng-model="ismaquina">
+                        <label for="checkbox1">¿Es una máquina?</label>
+                    </div>
+
+
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

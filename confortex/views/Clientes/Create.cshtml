@@ -1,0 +1,80 @@
+﻿ 
+    <div class="modal fade right" id="modalclientecreate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-frame modal-lg" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header light-green  white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-building-o"></i> {{gestion}} Cliente</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+
+
+
+                    @model Confortex.Models.Cliente
+
+
+
+
+                    <div class="form-horizontal row container">
+
+                        @Html.Action("Create", "Personas")
+
+                        <b class="h5-responsive form-group font-weight-bold">Datos de la Organización </b>
+                        <hr />
+                        <div class="form-group font-weight-bold">
+                            @Html.LabelFor(model => model.RazonSocial,"Razón Social", htmlAttributes: new { @class = "control-label " })
+
+                            @Html.EditorFor(model => model.RazonSocial, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba la razon social de la empresa", data_animation = "false", ng_model = "razon" } })
+
+                        </div>
+
+                        <div class="form-group font-weight-bold">
+                            @Html.LabelFor(model => model.RUC,"RUC", htmlAttributes: new { @class = "control-label" })
+
+                            @Html.EditorFor(model => model.RUC, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el RUC de la Empresa", data_animation = "false", ng_model = "ruc" } })
+
+                        </div>
+
+                        <div class="form-group font-weight-bold">
+                            @Html.LabelFor(model => model.Telefono,"Teléfono", htmlAttributes: new { @class = "control-label" })
+
+                            @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba el telefono de la empresa", data_animation = "false", ng_model = "telempresa", mask="99999999" } })
+
+                        </div>
+
+                        <div class="form-group font-weight-bold">
+                            @Html.LabelFor(model => model.Direccion,"Dirección", htmlAttributes: new { @class = "control-label" })
+
+                            @Html.EditorFor(model => model.Direccion, new { htmlAttributes = new { data_tooltip = "tooltip", data_placement = "right", title = "Escriba la Direccion de la empresa", data_animation = "false", ng_model = "dirempresa" } })
+
+
+                        </div>
+                        <div class="form-group font-weight-bold">
+                            @Html.LabelFor(model => model.CantidadEmpleados, "Cantidad de Empleados de la empresa", htmlAttributes: new { @class = "control-label" })
+
+                            @Html.EditorFor(model => model.CantidadEmpleados, new { htmlAttributes = new { type="text",data_tooltip = "tooltip", data_placement = "right", title = "Escriba la cantidad de empleados de la empresa", data_animation = "false", ng_model = "cantempleados" , mask = "99999999" } })
+
+
+                        </div>
+                    </div>
+
+                        <div class="form-group font-weight-bold text-center">
+                            <div class="text-center">                               
+                                    <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                                </div>
+                            <p class="red-text">{{message}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+

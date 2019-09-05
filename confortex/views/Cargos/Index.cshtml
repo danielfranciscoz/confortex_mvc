@@ -1,0 +1,300 @@
+﻿@{
+    ViewBag.Title = "Puestos";
+}
+
+<ng-controller ng-controller="ConCargo">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold"> Puestos de Trabajo </h4>
+        
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                       
+                        <th>
+                            Cargo
+                        </th>
+                        <th>
+                            Salario Básico
+                        </th>
+                        <th>
+                           Tipo de Salario
+                        </th>
+                        <th>
+                            Tipo de Salario
+                        </th>
+
+
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar cargo "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita el cargo seleccionado."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina el cargo seleccionado."><i class="fa fa-trash-o"></i></a></li>
+
+            </ul>
+        </div>
+        @Html.Action("Create", "Cargos")
+        @Html.Action("DeleteGeneral", "Home");
+    </div>
+</ng-controller>
+
+
+<script>
+        var table = "";
+        $(document).ready(function () {
+            $('[data-tooltip=tooltip]').tooltip();
+            $('[data-toggle=tab]').tooltip();
+
+            table = $('#table1').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": "../Cargos/searchCargos",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [                    
+                    { "data": "NombreCargo", "name": "NombreCargo" },
+                    { "data": "SalarioBase", "name": "SalarioBase" },
+                    {
+                        "data": "TipoSalario", "name": "TipoSalario", render: function (data) {
+                            if (data == true) {
+                                return 'Fijo';
+                            } else {
+                                return 'variable';
+                            }
+
+
+                        }
+                    },
+                    { "data": "TipoSalario", "name": "TipoSalario", visible: false },
+                ],
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+        });
+
+
+
+
+        app.controller('ConCargo', function ($scope, $http) {
+
+            $scope.gestion = 0;
+            $scope.nombre = "";
+            $scope.salario = "";
+            $scope.iscargo = "true";
+
+            $scope.abrirmodal = function () {
+                $('#modalcargocreate').modal({
+                    show: true
+                });
+            }
+
+            $scope.nuevo = function () {
+
+                if ($scope.nombre.length == 0) {
+                    $scope.abrirmodal();
+                } else {
+                    $scope.clean();
+                    $scope.abrirmodal();
+                }
+
+               
+
+            };
+
+            $scope.editar = function () {
+                $scope.gestion = 1;
+                if ($scope.nombre.length > 0) {
+                    $scope.abrirmodal();
+                }
+            };
+
+
+
+            $scope.gestionar = function () {
+                if ($scope.gestion == 1) {
+                    $scope.modificar();
+                } else {
+                    $scope.guardar();
+                }
+
+            }
+
+            $scope.eliminar = function () {
+                if ($scope.nombre.length > 0) {
+                    $('#Modaldelete').modal({
+                        show: true
+                    });
+                }
+            }
+
+                $scope.anular = function(){
+                    $http({
+                        url: "../Cargos/Delete",
+                        method: "POST",
+                        data: $.param({ "id": $scope.nombre }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#Modaldelete').modal('hide');
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }
+
+            )};
+
+            $scope.guardar = function () {
+
+                console.log($scope.iscargo);
+                if ($scope.nombre.length > 0 &&
+                    $scope.salario.length > 0
+                    ) {
+                    $http({
+                        url: "../Cargos/create",
+                        method: "POST",
+                        data: $.param({ "NombreCargo": $scope.nombre, "SalarioBase":   $scope.salario ,"TipoSalario" : $scope.iscargo}),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modalcargocreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise el nombre y el salario del cargo.');
+                }
+            }
+
+            $scope.modificar = function () {
+                $scope.nombre = $scope.nombre + "";
+                $scope.salario = $scope.salario + "";
+
+
+                if ($scope.nombre.length > 0 &&
+                    $scope.salario.length > 0
+                    ) {
+                    $http({
+                        url: "../Cargos/Edit",
+                        method: "POST",
+                        data: $.param({"NombreCargo": $scope.nombre, "SalarioBase": $scope.salario, "TipoSalario": $scope.iscargo }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modalcargocreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise el nombre y el salario del cargo.');
+                }
+            }
+
+
+            $scope.get = function () {
+                setTimeout(function () {
+                    var idt = table.row('.selected').index();
+                  
+                $scope.nombre = table.cell(idt, 0).data();
+                $scope.salario = table.cell(idt, 1).data();
+                $scope.iscargo = table.cell(idt, 3).data();
+
+                toastr['success']('Actualmente esta seleccionando el cargo '+$scope.nombre);
+
+
+
+                }, 100);
+            };
+
+            $scope.clean = function () {
+                $scope.message = "";
+                $scope.nombre = "";
+                $scope.salario = "";
+                $scope.gestion = 0;
+                $scope.iscargo = true;
+                setTimeout(function () {
+
+
+                    $('#table1').DataTable().ajax.reload();
+
+                }, 100);
+
+
+            }
+
+            $('#modalcargocreate').on('hidden.bs.modal', function (e) {
+
+                $scope.clean();
+
+            });
+            $('#Modaldelete').on('hidden.bs.modal', function (e) {
+                $scope.clean();
+            });
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

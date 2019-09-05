@@ -1,0 +1,26 @@
+﻿@model Confortex.Models.ReportViewerViewModel
+
+@{
+    ViewBag.Title = "Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="flex-center row" ng-controller="Reporte" ng-cloak>
+    <div class="card col-md-10">
+
+        <div class="card-block">
+
+            <div class="form-horizontal row">
+
+                <h4 class="h4-responsive font-weight-bold col-8">Informe de Tickets para entrega por Pedido</h4>
+                <a class="btn btn-sm text-right green darken-4" href="~/ListadoProduccion/index">Regresar a Listado de Tickets</a>
+                <iframe src="@Model.ReportPath" class="col-md-12" style="width:100%; height:1200px; border:none;"></iframe>
+                <p style="color:#424242">Si no puedes ver el Código de barra por favor dá click en el siguiente enlace... <a href="~/Font/3OF9_NEW.TTF">Descargar Fuente de Código de Barra</a>
+                <br />A continuación, instala la fuente descargada y posteriormente vuelve a cargar esta ventana presionando F5.</p>
+
+            </div>
+        </div>
+    </div>
+</div>
+

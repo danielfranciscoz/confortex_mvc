@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="84ea3abc8b8c4bb69e0f7328157079ea" Name="Diagram1">
+        <EntityTypeShape EntityType="ConfortexModel.logErrores" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.RegistroAcciones" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.C__MigrationHistory" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Accesorio" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.AccesorioDescripcionHechura" Width="1.5" PointX="8.25" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.AspNetUsers" Width="1.5" PointX="18.75" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Cargo" Width="1.5" PointX="12" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Cliente" Width="1.5" PointX="1.5" PointY="33" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Cliente_Persona" Width="1.5" PointX="17.25" PointY="28.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Color" Width="1.5" PointX="9" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Combinacion" Width="1.5" PointX="6" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.CombinacionDescripcionHechura" Width="1.5" PointX="8.25" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Cotizacion" Width="1.5" PointX="0.75" PointY="28.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.CotizacionFuncion" Width="1.5" PointX="19.5" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.DescripcionHechura" Width="1.5" PointX="3" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.DescripcionHechuraColor" Width="1.5" PointX="8.25" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.DetalleListadoProduccion" Width="1.5" PointX="13.5" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.DetalleNomina" Width="1.5" PointX="19.5" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Empleado" Width="1.5" PointX="14.25" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.EntregaTicket" Width="1.5" PointX="16.5" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Estados" Width="1.5" PointX="1.5" PointY="36.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Funcion" Width="1.5" PointX="11.25" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.GastoEnergia" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.ListadoProduccion" Width="1.5" PointX="11.25" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.MaquinariaEquipoElectrico" Width="1.5" PointX="13.5" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Medida" Width="1.5" PointX="0.75" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Nomina" Width="1.5" PointX="14.25" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.NominaDiaLibre" Width="1.5" PointX="16.5" PointY="35.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.OperadoraTelefonica" Width="1.5" PointX="9.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.OtroIngresoEgreso" Width="1.5" PointX="21.75" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Persona" Width="1.5" PointX="12" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Pieza" Width="1.5" PointX="0.75" PointY="21.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PiezaAccesorio" Width="1.5" PointX="6" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PiezaMedida" Width="1.5" PointX="6" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PiezaTalla" Width="1.5" PointX="6" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PiezaTallaMedida_Standar" Width="1.5" PointX="3" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioAccesorio" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioCombinacion" Width="1.5" PointX="16.5" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioCombinacionEntregaTicket" Width="1.5" PointX="18.75" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioEnergia" Width="1.5" PointX="1.5" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioMIDescripcionHechura" Width="1.5" PointX="5.25" PointY="15.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioPieza" Width="1.5" PointX="3" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioPiezaEntregaTicket" Width="1.5" PointX="18.75" PointY="25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioTela" Width="1.5" PointX="3" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PrecioTelaDescripcionHechura" Width="1.5" PointX="5.25" PointY="27.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.ProduccionEquipoElectrico" Width="1.5" PointX="15.75" PointY="31.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Talla" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Tela" Width="1.5" PointX="0.75" PointY="25.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.TickectPrecioReparacion" Width="1.5" PointX="13.5" PointY="18.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Pantalla" Width="1.5" PointX="17.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Permiso" Width="1.5" PointX="21.75" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.PermisoName" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Rol" Width="1.5" PointX="19.5" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.Usuario" Width="1.5" PointX="16.5" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.UsuarioClaim" Width="1.5" PointX="18.75" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.UsuarioLogin" Width="1.5" PointX="18.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.UsuarioRol" Width="1.5" PointX="21.75" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw__ObtenerDetalleTickets" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ListadoMaterialesCotizacion" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ListadoTelasCotizacion" Width="1.5" PointX="5.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerAccesorios" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerClientes" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerCombinaciones" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerCotizaciones" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerDetalleCotizacion" Width="1.5" PointX="21.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerDetallesNomina" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerEmpleados" Width="1.5" PointX="23.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerEncabezadoPieCotizacion" Width="1.5" PointX="21.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerEntregas" Width="1.5" PointX="23.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerGastoMensual" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerInfoEmpresa" Width="1.5" PointX="13.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerTelas" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="ConfortexModel.FK_AccesorioDescripcionHechura_Accesorio" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaAccesorio_Accesorio" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioAccesorio_Accesorio" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_AccesorioDescripcionHechura_DescripcionHechura" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_dbo_AspNetUsers_seg_Usuario_IdUsuario" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Empleado_Cargo" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Cliente_Persona_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Cotizacion_Cliente" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Cliente_Persona_Persona" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DescripcionHechuraColor_Color" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_ListadoProduccion_Color" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_CombinacionDescripcionHechura_Combinacion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioCombinacion_Combinacion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_CombinacionDescripcionHechura_DescripcionHechura" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Cotizacion_Estados" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Cotizacion_PrecioEnergia" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_CotizacionFuncion_Cotizacion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DescripcionHechura_Cotizacion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_CotizacionFuncion_Funcion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_CotizacionPrecioTela_Cotizacion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DescripcionHechura_Pieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DescripcionHechura_Tela" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DescripcionHechuraColor_DescripcionHechura" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_ListadoProduccion_DescripcionHechura" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioMIDescripcionHechura_DescripcionHechura" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DetalleListadoProduccion_ListadoProduccion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DetalleListadoProduccion_Medida" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DetalleNomina_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_DetalleNomina_Nomina" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_OtroIngresoEgreso_DetalleNomina" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Empleado_Persona" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_EntregaTicket_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Usuario_Empleado" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_EntregaTicket_Estados" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_EntregaTicket_Funcion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_EntregaTicket_ListadoProduccion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_EntregaTicket_Nomina" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioCombinacionEntregaTicket_EntregaTicket" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioEntregaTicket_EntregaTicket" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_ListadoProduccion_Estados" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Nomina_Estados" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_InventarioMaquinaria_Funcion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioCombinacion_Funcion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioPieza_Funcion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_TickectPrecioReparacion_Funcion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaEstiloPiezaTallaMedida1_Talla" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_TickectPrecioReparacion_ListadoProduccion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_ProduccionEquipoElectrico_MaquinariaEquipoElectrico" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaEstiloPiezaTallaMedida_Medida" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaMedida_Medida" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_NominaDiaLibre_Nomina" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Persona_OperadoraTelefonica" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaAccesorio_Pieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaEstiloPiezaTallaMedida_Pieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaMedida_Pieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaTalla_Pieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioPieza_Pieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaTalla_Talla" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PiezaEstiloPiezaTallaMedida_Talla" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioMIDescripcionHechura_PrecioAccesorio" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioCombinacionEntregaTicket_PrecioCombinacion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioEntregaTicket_PrecioPieza" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_CotizacionPrecioTela_PrecioTela" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_PrecioTela_Tela" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Pantalla_Pantalla" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Permiso_Pantalla" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Rol_Pantalla" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Permiso_PermisoName" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_Permiso_Rol" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_seg_UsuarioRol_seg_Rol_RoleId" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_seg_UsuarioClaim_seg_Usuario_IdentityUser_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_seg_UsuarioLogin_seg_Usuario_IdentityUser_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.FK_seg_UsuarioRol_seg_Usuario_IdentityUser_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfortexModel.EstadoFuncion" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ConfortexModel.vw_ObtenerNomina" Width="1.5" PointX="24.375" PointY="16.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

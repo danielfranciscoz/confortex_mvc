@@ -1,0 +1,90 @@
+﻿@model Confortex.Models.Pantalla
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>Pantalla</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Nombre)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Recurso)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Recurso)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.isMenu)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.isMenu)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Controlador)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Controlador)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Vista)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Vista)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.MenuOrden)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.MenuOrden)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.cod_RA)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.cod_RA)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Pantalla2.Nombre)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Pantalla2.Nombre)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.IdPantalla }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

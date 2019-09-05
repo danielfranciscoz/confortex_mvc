@@ -1,0 +1,13 @@
+﻿
+@model IEnumerable<Confortex.Models.Funcion>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-4">
+            <input type="checkbox" id="Funcion_@item.Nombre" ng-model='Funcion[@item.Orden]' />
+
+            <label for="Funcion_@item.Nombre">@item.Nombre</label>
+        </div>
+        <input type="hidden" ng-init='NombreFuncion[@item.Orden]="@item.Nombre"'/>
+    }
+</div>

@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Confortex.Models.Pantalla>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recurso)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.isMenu)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Controlador)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vista)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MenuOrden)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cod_RA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Pantalla2.Nombre)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recurso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.isMenu)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Controlador)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vista)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MenuOrden)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cod_RA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pantalla2.Nombre)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.IdPantalla }) |
+                @Html.ActionLink("Details", "Details", new { id=item.IdPantalla }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.IdPantalla })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

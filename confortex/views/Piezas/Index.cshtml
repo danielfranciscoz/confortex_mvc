@@ -1,0 +1,942 @@
+﻿@{
+    ViewBag.Title = "Piezas";
+}
+<style>
+    #table2_filter {
+        display: none;
+    }
+
+  
+    #table2_paginate {
+        display: none;
+    }
+      #table3_filter {
+        display: none;
+    }
+
+    #table3_paginate {
+        display: none;
+    }
+      #table3_filter {
+        display: none;
+    }
+
+    #table3_paginate {
+        display: none;
+    }
+      #table4_filter {
+        display: none;
+    }
+
+    #table4_paginate {
+        display: none;
+    }
+      #table5_filter {
+        display: none;
+    }
+
+    #table5_paginate {
+        display: none;
+    }
+         #table6_filter {
+        display: none;
+    }
+
+    #table6_paginate {
+        display: none;
+    }
+           #table7_filter {
+        display: none;
+    }
+
+    #table7_paginate {
+        display: none;
+    }
+
+</style>
+
+<ng-controller ng-controller="ConPieza">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Piezas</h4>
+
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Pieza
+                        </th>
+                        <th>
+                            Sexo
+                        </th>
+                        <th>
+                            Cantidad de Tela (Yardas)
+                        </th>
+                        
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <hr />
+        <div class="">
+            <h6 class="h6-responsive  font-weight-bold">Actividades de la pieza</h6>
+            <table class="table table-hover  table-bordered table-striped" id="table2">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Pieza
+                        </th>
+                        <th>
+                            Actividad
+                        </th>
+                        <th>
+                            Duración (Minutos)
+                        </th>
+                        <th>
+                            Precio de M.O (C$)
+                        </th>
+
+                    </tr>
+                </thead>
+
+               
+
+            </table>
+
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-4">
+                <h6 class="h6-responsive  font-weight-bold">Tallas asociadas</h6>
+                <table class="table table-hover  table-bordered table-striped" id="table3">
+                    <thead class="light-green  white-text">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Talla
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+            <div class="col-4">
+                <h6 class="h6-responsive  font-weight-bold">Medidas asociadas</h6>
+                <table class="table table-hover  table-bordered table-striped" id="table4">
+                    <thead class="light-green  white-text">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Medida
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+            <div class="col-4">
+                <h6 class="h6-responsive  font-weight-bold">Insumos asociados</h6>
+                <table class="table table-hover  table-bordered table-striped" id="table6">
+                    <thead class="light-green  white-text">
+                        <tr>
+                            <th>
+                                Id
+                            </th>
+                            <th>
+                                Insumo
+                            </th>
+                            <th>
+                                Insumo
+                            </th>
+                            <th>
+                                Cantidad
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+
+            </div>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agrega pieza "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita la pieza seleccionada."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina la pieza seleccionada."><i class="fa fa-trash-o"></i></a></li>
+                <li><a class="btn-floating blue" data-animation="false" ng-click="medidasestandar()" data-tooltip=tooltip data-placement="left" title="Agregar Medidas estándares a la pieza seleccionada."><i class="fa fa-table "></i></a></li>
+             
+            </ul>
+        </div>
+    </div>
+    @Html.Action("Create", "Piezas")
+    @Html.Action("DeleteGeneral", "Home")
+</ng-controller>
+
+<script>
+
+    app.controller('ConPieza', function ($scope, $http,$window) {
+        $scope.idpieza = 0;
+        $scope.rowpn = 0;
+        $scope.rowtn = 0;
+        $scope.rowmn = 0;
+        $scope.tallas = [];
+        $scope.medidas = [];
+        $scope.idtallas = [];
+        $scope.idmedidas = [];
+        $scope.nombre = "";
+        $scope.sexo = "F";
+
+
+        var table = "";
+        var tablep = "";
+        var tablet = "";
+        var tablem = "";
+        var tablepn = "";
+
+
+        $(document).ready(function () {
+            $('[data-tooltip=tooltip]').tooltip();
+            $('[data-toggle=tab]').tooltip();
+
+            table = $('#table1').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": "../Piezas/searchPiezas",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                    { "data": "IdPieza", "name": "IdPieza", visible: false },
+                    { "data": "Nombre", "name": "Nombre" },
+                      { "data": "SexoPieza", "name": "SexoPieza" },
+                          { "data": "CantidadTela", "name": "CantidadTela" }
+
+
+                ],
+
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+
+
+            tablep = $('#table2').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "searching": true,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "ajax": {
+                    "url": "../Piezas/searchPrecioPieza",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+
+                    { "data": "IdPrecioPieza", "name": "IdPrecioPieza", visible: false },
+                      { "data": "IdPieza", "name": "IdPieza", visible: false },
+                    { "data": "NombreFuncion", "name": "NombreFuncion" },
+                    { "data": "Duracion", "name": "Duracion" },
+                     { "data": "PrecioMO", "name": "PrecioMO" }
+
+                ],
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+            tablet = $('#table3').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "searching": true,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "ajax": {
+                    "url": "../Piezas/searchPiezaTalla",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                      { "data": "IdPieza", "name": "IdPieza", visible: false },
+                       { "data": "IdTalla", "name": "IdTalla", visible: false },
+                         { "data": "Nombre", "name": "Nombre" }
+
+                ],  "pageLength": 50,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+            tablem = $('#table4').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "searching": true,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "ajax": {
+                    "url": "../Piezas/searchPiezaMedida",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                      { "data": "IdPieza", "name": "IdPieza", visible: false },
+                        { "data": "IdMedida", "name": "IdMedida", visible: false },
+                    { "data": "Nombre", "name": "Nombre" }
+
+                ], "pageLength": 50,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+            tablepn = $('#table5').DataTable({
+                select: true,
+                "orderMulti": false,
+                "searching": true,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    },
+                    {
+                        "targets": [1],
+                        "visible": false
+                    }
+                ],
+                "language": {
+
+                    "zeroRecords": "No ha agregado actividades"
+                }
+
+            });
+            tablei = $('#table6').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "searching": true,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "ajax": {
+                    "url": "../Piezas/searchPiezaInsumo",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                      { "data": "IdPieza", "name": "IdPieza", visible: false },
+                        { "data": "IdAccesorio", "name": "IdAccesorio", visible: false },
+                    { "data": "Nombre", "name": "Nombre" },
+                    { "data": "Cantidad", "name": "Cantidad" }
+
+                ], "pageLength": 50,
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+            tablein = $('#table7').DataTable({
+                select: true,
+                "orderMulti": false,
+                "searching": true,
+                "bFilter": false,
+                bInfo: false,
+                "bLengthChange": false,
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    },
+                     {
+                         "targets": [1],
+                         "visible": false,
+                         "searchable": false
+                     }
+                ],
+                "language": {
+
+                    "zeroRecords": "No ha agregado Inzumos"
+                }
+
+            });
+
+
+
+            tablep.search("dd21").draw();
+            tablet.search("dd21").draw();
+            tablem.search("dd21").draw();
+            tablei.search("dd21").draw();
+
+        });
+
+
+
+
+
+
+
+
+        $scope.get = function () {
+            tablepn.clear().draw();
+            tablein.clear().draw();
+            $scope.tallas = [];
+            $scope.medidas = [];
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.idpieza = table.cell(idt, 0).data();
+                $scope.nombre = table.cell(idt, 1).data();
+                $scope.sexo = table.cell(idt, 2).data();
+                $scope.cantidadtela = table.cell(idt, 3).data();
+                toastr['success']('Actualmente esta seleccionando la pieza ' + $scope.nombre);
+
+
+                    tablep.search($scope.idpieza).draw();
+                    tablet.search($scope.idpieza).draw();
+                    tablem.search($scope.idpieza).draw();
+                    tablei.search($scope.idpieza).draw();
+                  
+                   
+
+
+                setTimeout(function () {
+                    var TamTabp = tablep.column(0).data().length;
+                    for (var i = 0; i < TamTabp; i++) {
+                        tablepn.row.add([tablep.cell(i, 0).data(), tablep.cell(i, 1).data(), tablep.cell(i, 2).data(), tablep.cell(i, 3).data(), tablep.cell(i, 4).data()]).draw();
+                    }
+
+                }, 300);
+                setTimeout(function () {
+                    var TamTabt = tablet.column(0).data().length;
+                    for (var i = 0; i < TamTabt; i++) {
+                        $scope.tallas[tablet.cell(i, 1).data()] = true;
+                        console.log(tablet.cell(i, 1).data());
+                    }
+                }, 300);
+                setTimeout(function () {
+                    var TamTabm = tablem.column(0).data().length;
+                    for (var i = 0; i < TamTabm; i++) {
+                        $scope.medidas[tablem.cell(i, 1).data()] = true;
+                        console.log(tablem.cell(i, 1).data());
+                    }
+                }, 300);
+              
+                setTimeout(function () {
+                    var TamTabi = tablei.column(0).data().length;
+                    for (var i = 0; i < TamTabi; i++) {
+                        tablein.row.add([tablei.cell(i, 0).data(), tablei.cell(i, 1).data(), tablei.cell(i, 2).data(), tablei.cell(i, 3).data()]).draw();
+                    }
+
+                }, 300);
+
+            }, 100);
+
+        };
+        $scope.get2 = function () {
+
+            setTimeout(function () {
+                $scope.rowpn = tablepn.row('.selected').index();
+                toastr['success']('Actualmente esta seleccionando la actividad ' + tablepn.cell($scope.rowpn, 2).data());
+
+
+            }, 100);
+        };
+        $scope.get3 = function () {
+
+            setTimeout(function () {
+                $scope.rowin = tablein.row('.selected').index();
+                toastr['success']('Actualmente esta seleccionando el inzumo ' + tablein.cell($scope.rowin, 2).data());
+
+
+            }, 100);
+        };
+
+       
+
+
+
+        $scope.EsPrecio = function () {
+            $scope.precio = NoLetras($scope.precio);
+        }
+        $scope.EsCantidadinsumo = function () {
+            $scope.cantidadinsumo = Telefono($scope.cantidadinsumo);
+        }
+        $scope.EsCantidad = function () {
+
+            $scope.cantidad = NoLetras($scope.cantidad);
+        }
+        $scope.EsCantidadTela = function () {
+
+            $scope.cantidadtela = NoLetras($scope.cantidadtela);
+        }
+
+        $scope.agregartab1 = function () {
+            if ($scope.cantidad > 0 && $scope.precio > 0) {
+                var tempc = $scope.cantidad;
+                
+                var TamTab = tablepn.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tablepn.cell(i, 2).data() == $scope.funcion) {
+                        tablepn.row(i).remove().draw();
+                    }
+
+                }
+                tablepn.row.add([0, $scope.idpieza, $scope.funcion, $scope.cantidad,$scope.precio]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar una actividad, la duración y el precio deben ser mayor que 0 (Cero) ";
+            }
+
+
+        }
+
+        $scope.agregartab2 = function () {
+            if ($scope.cantidadinsumo >0) {
+                var tempc = $scope.cantidadinsumo;
+                var tempnombre =$("#IdAccesorio option:selected").text();
+
+
+            
+                var TamTab = tablein.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tablein.cell(i, 1).data() == tempnombre) {
+                        tablein.row(i).remove().draw();
+                    }
+
+                }
+                tablein.row.add([0,$scope.insumo, tempnombre, $scope.cantidadinsumo]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar un insumo y la cantidad debe ser mayor que 0 (Cero) ";
+            }
+
+
+        }
+
+        $scope.abrirmodal = function () {
+          
+            $('#modalpiezacreate').modal({
+                show: true
+            });
+        }
+
+        $scope.nuevo = function () {
+
+            if ($scope.idpieza == 0) {
+                $scope.funcion = "Armado";
+                $scope.abrirmodal();
+            } else {
+                $scope.clean();
+                $scope.abrirmodal();
+            }
+
+        };
+
+        $scope.gestionar = function () {
+            if ($scope.idpieza > 0) {
+                $scope.modificar();
+            } else {
+                $scope.guardar();
+            }
+
+        }
+
+        $scope.editar = function () {
+
+            if ($scope.idpieza > 0) {
+                $scope.abrirmodal();
+            }
+        };
+
+        $scope.guardar = function () {
+            $scope.jTallas = "";
+            $scope.tempttallas = $scope.tallas.length;
+            for ($scope.i = 0; $scope.i < $scope.tempttallas; $scope.i++) {
+                if ($scope.tallas[$scope.i] == true) {
+                    $scope.jTallas = $scope.jTallas + '{"IdTalla": ' + $scope.i + ' ,"IdPieza": ' + $scope.idpieza + ' }';
+
+
+                    if ($scope.i < $scope.tempttallas - 1) {
+                        $scope.jTallas = $scope.jTallas + ",";
+                    }
+                }
+            }
+            var tamjt = $scope.jTallas.length;
+            if ($scope.jTallas.substring(tamjt - 1, tamjt) == ',') {
+                $scope.jTallas = $scope.jTallas.substring(0, tamjt - 1);
+            }
+
+
+            $scope.jMedidas = "";
+            $scope.temptmedidas = $scope.medidas.length;
+            for ($scope.i = 0; $scope.i < $scope.temptmedidas; $scope.i++) {
+                if ($scope.medidas[$scope.i] == true) {
+                    $scope.jMedidas = $scope.jMedidas + '{"IdMedida": ' + $scope.i + ' ,"IdPieza": ' + $scope.idpieza + ' }';
+
+
+                    if ($scope.i < $scope.temptmedidas - 1) {
+                        $scope.jMedidas = $scope.jMedidas + ",";
+                    }
+                }
+
+            }
+
+            var tamjm = $scope.jMedidas.length;
+            if ($scope.jMedidas.substring(tamjm - 1, tamjm) == ',') {
+                $scope.jMedidas = $scope.jMedidas.substring(0, tamjm - 1);
+            }
+
+            $scope.PiezaFuncion = "[";
+            $scope.tempt = tablepn.column(0).data().length
+            for (var i = 0; i < $scope.tempt; i++) {
+                $scope.PiezaFuncion = $scope.PiezaFuncion + '{ "IdPrecioPieza": ' + tablepn.cell(i, 0).data() + ', "IdPieza":' + tablepn.cell(i, 1).data() + ', "NombreFuncion": "' + tablepn.cell(i, 2).data() + '", "Duracion" :' + tablepn.cell(i, 3).data() + ',"PrecioMO":' + tablepn.cell(i, 4).data() + ' }';
+                if (i < $scope.tempt - 1) {
+                    $scope.PiezaFuncion = $scope.PiezaFuncion + ",";
+                }
+            }
+            $scope.PiezaFuncion = $scope.PiezaFuncion + "]";
+
+
+            $scope.PiezaInsumo = "[";
+            $scope.tempi = tablein.column(0).data().length
+            for (var i = 0; i < $scope.tempi; i++) {
+                $scope.PiezaInsumo = $scope.PiezaInsumo + '{ "IdAccesorio": ' + tablein.cell(i, 1).data() + ', "IdPieza":' + $scope.idpieza + ', "Cantidad": ' + tablein.cell(i, 3).data() + ' }';
+                if (i < $scope.tempi - 1) {
+                    $scope.PiezaInsumo = $scope.PiezaInsumo + ",";
+                }
+            }
+            $scope.PiezaInsumo = $scope.PiezaInsumo + "]";
+
+            var j = JSON.parse($scope.PiezaFuncion);
+            var jt = JSON.parse("[" + $scope.jTallas + "]");
+            var jm = JSON.parse("[" + $scope.jMedidas + "]");
+            var ji = JSON.parse( $scope.PiezaInsumo);
+            var parameter = JSON.stringify({ Nombre: $scope.nombre, SexoPieza: $scope.sexo, CantidadTela: $scope.cantidadtela, "PrecioPieza": j, "Talla": jt, "Medida": jm,"piezaAccesorio":ji });
+
+        
+
+
+            if ($scope.nombre.length > 0 &&
+                $scope.cantidadtela.length > 0 &&
+                $scope.tallas.length > 0 &&
+                 $scope.medidas.length > 0 &&
+                     $scope.tempt > 0
+                ) {
+            $http({
+                url: "../Piezas/Create",
+                method: "POST",
+                data: parameter,
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#modalpiezacreate').modal('hide');
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }, function (response) {
+                $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+            });
+        } else {
+            toastr['warning']('Revise el nombre,sexo, cantidad,precio y las actividades de la pieza');
+        }
+        };
+
+        $scope.modificar = function () {
+
+            $scope.nombre = $scope.nombre + "";
+            $scope.sexo = $scope.sexo + "";
+            $scope.cantidadtela = $scope.cantidadtela + "";
+
+            $scope.jTallas = "";
+            $scope.tempttallas = $scope.tallas.length;
+            for ($scope.i = 0; $scope.i < $scope.tempttallas; $scope.i++) {
+                if ($scope.tallas[$scope.i] == true) {
+                    $scope.jTallas = $scope.jTallas + '{"IdTalla": ' + $scope.i + ' ,"IdPieza": ' + $scope.idpieza + ' }';
+
+
+                    if ($scope.i < $scope.tempttallas - 1) {
+                        $scope.jTallas = $scope.jTallas + ",";
+                    }
+                }
+            }
+            var tamjt = $scope.jTallas.length;
+            if ($scope.jTallas.substring(tamjt - 1, tamjt) == ',') {
+                $scope.jTallas = $scope.jTallas.substring(0, tamjt - 1);
+            }
+
+
+            $scope.jMedidas = "";
+            $scope.temptmedidas = $scope.medidas.length;
+            for ($scope.i = 0; $scope.i < $scope.temptmedidas; $scope.i++) {
+                if ($scope.medidas[$scope.i] == true) {
+                    $scope.jMedidas = $scope.jMedidas + '{"IdMedida": ' + $scope.i + ' ,"IdPieza": ' + $scope.idpieza + ' }';
+
+
+                    if ($scope.i < $scope.temptmedidas - 1) {
+                        $scope.jMedidas = $scope.jMedidas + ",";
+                    }
+                }
+
+            }
+
+            var tamjm = $scope.jMedidas.length;
+            if ($scope.jMedidas.substring(tamjm - 1, tamjm) == ',') {
+                $scope.jMedidas = $scope.jMedidas.substring(0, tamjm - 1);
+            }
+
+            $scope.PiezaFuncion = "[";
+            $scope.tempt = tablepn.column(0).data().length
+            for (var i = 0; i < $scope.tempt; i++) {
+                $scope.PiezaFuncion = $scope.PiezaFuncion + '{ "IdPrecioPieza": ' + tablepn.cell(i, 0).data() + ', "IdPieza":' + tablepn.cell(i, 1).data() + ', "NombreFuncion": "' + tablepn.cell(i, 2).data() + '", "Duracion" :' + tablepn.cell(i, 3).data() + ',"PrecioMO":' + tablepn.cell(i, 4).data() + ' }';
+                if (i < $scope.tempt - 1) {
+                    $scope.PiezaFuncion = $scope.PiezaFuncion + ",";
+                }
+            }
+            $scope.PiezaFuncion = $scope.PiezaFuncion + "]";
+
+
+            $scope.PiezaInsumo = "[";
+            $scope.tempi = tablein.column(0).data().length
+            for (var i = 0; i < $scope.tempi; i++) {
+                $scope.PiezaInsumo = $scope.PiezaInsumo + '{ "IdAccesorio": ' + tablein.cell(i, 1).data() + ', "IdPieza":' + $scope.idpieza + ', "Cantidad": ' + tablein.cell(i, 3).data() + ' }';
+                if (i < $scope.tempi - 1) {
+                    $scope.PiezaInsumo = $scope.PiezaInsumo + ",";
+                }
+            }
+            $scope.PiezaInsumo = $scope.PiezaInsumo + "]";
+
+            var j = JSON.parse($scope.PiezaFuncion);
+            var jt = JSON.parse("[" + $scope.jTallas + "]");
+            var jm = JSON.parse("[" + $scope.jMedidas + "]");
+            var ji = JSON.parse($scope.PiezaInsumo);
+            var parameter = JSON.stringify({"IdPieza":$scope.idpieza, Nombre: $scope.nombre, SexoPieza: $scope.sexo, CantidadTela: $scope.cantidadtela, "PrecioPieza": j, "Talla": jt, "Medida": jm, "piezaAccesorio": ji });
+            
+           
+
+            if ($scope.nombre.length > 0 &&
+                $scope.cantidadtela.length > 0 &&
+                $scope.tallas.length > 0 &&
+                 $scope.medidas.length > 0 &&
+                     $scope.tempt > 0
+                ) {
+                $http({
+                    url: "../Piezas/Edit",
+                    method: "POST",
+                    data: parameter,
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalpiezacreate').modal('hide');
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el nombre,sexo, cantidad,precio y las actividades de la pieza');
+            }
+        };
+
+
+
+
+        $scope.clean = function () {
+            $scope.message = "";
+            $scope.rowpn = 0;
+            $scope.rowtn = 0;
+            $scope.rowmn = 0;
+            $scope.cantidad = "";
+            $scope.cantidadinsumo = "";
+            $scope.messageCant = "";
+            $scope.cantidadtela = 0;
+            $scope.idpieza = 0;
+            $scope.nombre = "";
+            $scope.sexo = "F";
+            $scope.tallas = [];
+            $scope.medidas = [];
+            setTimeout(function () {
+
+                tablepn.clear().draw();
+                tablein.clear().draw();
+                 
+                tablep.search("dd21").draw();
+                tablet.search("dd21").draw();
+                tablem.search("dd21").draw();
+                tablei.search("dd21").draw();
+
+            }, 100);
+
+
+        }
+
+        $scope.eliminar = function () {
+            if ($scope.idpieza > 0) {
+                $('#Modaldelete').modal({
+                    show: true
+                });
+            }
+        }
+
+        $scope.eliminartab1 = function () {
+            if ($scope.rowpn >= 0) {
+                tablepn.row($scope.rowpn).remove().draw();
+
+            }
+        }
+        $scope.eliminartab2 = function () {
+            if ($scope.rowin >= 0) {
+                tablein.row($scope.rowin).remove().draw();
+
+            }
+        }
+
+        $scope.anular = function () {
+            $http({
+                url: "../Piezas/Delete",
+                method: "POST",
+                data: $.param({ "id": $scope.idpieza }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldelete').modal('hide');
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+
+        $scope.medidasestandar = function () {
+            if($scope.idpieza>0){
+                $window.location = "../piezas/MedidasStandar?idpieza="+$scope.idpieza;
+            }   
+        }
+
+        $('#modalpiezacreate').on('hidden.bs.modal', function (e) {
+
+            $scope.clean();
+
+        });
+        $('#Modaldelete').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+
+    });
+
+
+</script>

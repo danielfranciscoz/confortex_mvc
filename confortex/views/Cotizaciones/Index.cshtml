@@ -1,0 +1,823 @@
+﻿@{
+    ViewBag.Title = "Cotizaciones";
+}
+
+<ng-controller ng-controller="ConCotizacion">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Cotizaciones y Pedidos</h4>
+        <ul class="nav nav-tabs nav-justified green darken-4">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Cotizaciones en borrador y generadas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Cotizaciones aprobadas (pedidos)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel3" role="tab">Pedidos finalizados</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel4" role="tab">Cotizaciones anuladas</a>
+            </li>
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content card">
+            <!--Panel 1-->
+            <div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+
+
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table1">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    No.Cotización
+                                </th>
+                                <th>
+                                    Monto (C$)
+                                </th>
+                                <th>
+                                    Progreso
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+
+
+                                <th>
+                                    Cliente
+                                </th>
+                                <th>
+                                    Ruc
+                                </th>
+                                <th>
+                                    Teléfono
+                                </th>
+                                <th>
+                                    Contacto
+                                </th>
+                                <th>
+                                    Celular Contacto
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+
+                                </th>
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get()"></tbody>
+
+                    </table>
+
+                </div>
+             
+            </div>
+            <!--/.Panel 1-->
+            <!--Panel 2-->
+            <div class="tab-pane fade" id="panel2" role="tabpanel">
+                <div class="row">
+                     <a class="btn btn-sm green darken-4 font-weight-bold col-3" data-animation="false" ng-click="toexcel1()" data-tooltip=tooltip data-placement="left" title="Generar Listado de entrega"><i class="fa fa-file-o "></i> Generar Listado de entrega</a>
+                </div>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table3">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    No.Pedido
+                                </th>
+                                <th>
+                                    Monto (C$)
+                                </th>
+                                <th>
+                                    Progreso
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+
+
+                                <th>
+                                    Cliente
+                                </th>
+                                <th>
+                                    Ruc
+                                </th>
+                                <th>
+                                    Teléfono
+                                </th>
+                                <th>
+                                    Contacto
+                                </th>
+                                <th>
+                                    Celular Contacto
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+
+                                </th>
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get2()"></tbody>
+
+                    </table>
+
+                </div>
+            </div>
+            <!--/.Panel 2-->
+            <!--Panel 3-->
+            <div class="tab-pane fade" id="panel3" role="tabpanel">
+                <div class="row">
+                    <a class="btn btn-sm green darken-4 font-weight-bold col-3" data-animation="false" ng-click="toexcel1()" data-tooltip=tooltip data-placement="left" title="Generar Listado de entrega"><i class="fa fa-file-o "></i> Generar Listado de entrega</a>
+                </div>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table4">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    No.Pedido
+                                </th>
+                                <th>
+                                    Monto (C$)
+                                </th>
+                                <th>
+                                    Progreso
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+
+
+                                <th>
+                                    Cliente
+                                </th>
+                                <th>
+                                    Ruc
+                                </th>
+                                <th>
+                                    Teléfono
+                                </th>
+                                <th>
+                                    Contacto
+                                </th>
+                                <th>
+                                    Celular Contacto
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+
+                                </th>
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get3()"></tbody>
+
+                    </table>
+
+                </div>
+            </div>
+            <!--/.Panel 3-->
+            <div class="tab-pane fade" id="panel4" role="tabpanel">
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table5">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    No
+                                </th>
+                                <th>
+                                    Monto (C$)
+                                </th>
+                                <th>
+                                    Progreso
+                                </th>
+                                <th>
+                                    Estado
+                                </th>
+
+
+                                <th>
+                                    Cliente
+                                </th>
+                                <th>
+                                    Ruc
+                                </th>
+                                <th>
+                                    Teléfono
+                                </th>
+                                <th>
+                                    Contacto
+                                </th>
+                                <th>
+                                    Celular Contacto
+                                </th>
+                                <th>
+                                    Email
+                                </th>
+                                <th>
+
+                                </th>
+
+
+
+
+
+                            </tr>
+                        </thead>
+
+                        <tbody ng-click="get4()"></tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+       
+        
+         <hr />
+        <h6 class="h6-responsive  font-weight-bold">Registro de Acciones en la Cotización</h6>
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table2">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Codigo
+                        </th>
+                        <th>
+                            Acción
+                        </th>
+                        <th>
+                            Usuario
+                        </th>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Datos
+                        </th>
+                    </tr>
+                </thead>
+
+           
+
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating purple" data-animation="false" ng-click="aprobar()" data-tooltip=tooltip data-placement="left" title="Aprobar una cotizacion"><i class="fa fa-check-square-o "></i></a></li>
+
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar cotización"><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita la cotización seleccionada."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina la cotización  seleccionada."><i class="fa fa-trash-o"></i></a></li>
+                <li><a class="btn-floating blue" data-animation="false" ng-click="informe()" data-tooltip=tooltip data-placement="left" title="Ver informe de la cotización"><i class="fa fa-sticky-note-o"></i></a></li>
+
+            </ul>
+        </div>
+
+
+        <div class="modal fade" id="Modaldelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <!--Content-->
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header light-green darken-4">
+                        <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title h4-responsive white-text font-weight-bold" id="myModalLabel">Anulando... </h4>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        Esta a punto de anular una cotizacion, realmente desea hacer esto?
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal">Cancelar</button>
+                        <button ng-click="anular()" class="btn btn-sm red darken-4"> Anular</button>
+                        <p>{{message}}</p>
+
+
+                    </div>
+                </div>
+                <!--/.Content-->
+            </div>
+        </div>
+
+        <div class="modal fade" id="Modalaprobado" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <!--Content-->
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header light-green darken-4">
+                        <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title h4-responsive white-text font-weight-bold" id="myModalLabel">Aprobando... </h4>
+                    </div>
+                    <!--Body-->
+                    <div class="modal-body">
+                        Esta a punto de aprobar una cotizacion, realmente desea hacer esto?
+                    </div>
+                    <!--Footer-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal">Cancelar</button>
+                        <button ng-click="aprobar2()" class="btn btn-sm blue darken-4"> Aprobar</button>
+                        <p>{{message}}</p>
+
+
+                    </div>
+                </div>
+                <!--/.Content-->
+            </div>
+        </div>
+    </div>
+</ng-controller>
+
+
+<script>
+    var table = "";
+    var table2 = "";
+    var table3 = "";
+    var table4 = "";
+    var tablep = "";
+    $(document).ready(function () {
+        $('[data-tooltip=tooltip]').tooltip();
+        $('[data-toggle=tab]').tooltip();
+
+
+        table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Cotizaciones/searchCotizaciones1",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdCotizacion", "name": "IdCotizacion" },
+{
+    "data": "Monto", "name": "Monto", render: function (data) {
+        return "C$ " + data.toFixed(2)
+    }
+}, { "data": "PorcentajeAvance", "name": "PorcentajeAvance" },
+                                  { "data": "Estado", "name": "Estado" },
+                { "data": "RazonSocial", "name": "RazonSocial" },
+                    { "data": "RUC", "name": "RUC" },
+                      { "data": "Telefono", "name": "Telefono" },
+                        { "data": "NombreContacto", "name": "NombreContacto" },
+                          { "data": "CelularContacto", "name": "CelularContacto" },
+                            { "data": "CorreoContacto", "name": "CorreoContacto" },
+                                { "data": "Cod_RA", "name": "Cod_RA", visible: false }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        table2 = $('#table3').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Cotizaciones/searchCotizaciones2",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdCotizacion", "name": "IdCotizacion" },
+{
+    "data": "Monto", "name": "Monto", render: function (data) {
+        return "C$ " + data.toFixed(2)
+    }
+}, { "data": "PorcentajeAvance", "name": "PorcentajeAvance" },
+                                  { "data": "Estado", "name": "Estado" },
+                { "data": "RazonSocial", "name": "RazonSocial" },
+                    { "data": "RUC", "name": "RUC" },
+                      { "data": "Telefono", "name": "Telefono" },
+                        { "data": "NombreContacto", "name": "NombreContacto" },
+                          { "data": "CelularContacto", "name": "CelularContacto" },
+                            { "data": "CorreoContacto", "name": "CorreoContacto" },
+                                { "data": "Cod_RA", "name": "Cod_RA", visible: false }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        table3 = $('#table4').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Cotizaciones/searchCotizaciones3",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdCotizacion", "name": "IdCotizacion" },
+{
+    "data": "Monto", "name": "Monto", render: function (data) {
+        return "C$ " + data.toFixed(2)
+    }
+}, { "data": "PorcentajeAvance", "name": "PorcentajeAvance" },
+                                  { "data": "Estado", "name": "Estado" },
+                { "data": "RazonSocial", "name": "RazonSocial" },
+                    { "data": "RUC", "name": "RUC" },
+                      { "data": "Telefono", "name": "Telefono" },
+                        { "data": "NombreContacto", "name": "NombreContacto" },
+                          { "data": "CelularContacto", "name": "CelularContacto" },
+                            { "data": "CorreoContacto", "name": "CorreoContacto" },
+                                { "data": "Cod_RA", "name": "Cod_RA", visible: false }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        table4 = $('#table5').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Cotizaciones/searchCotizaciones4",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdCotizacion", "name": "IdCotizacion" },
+{
+    "data": "Monto", "name": "Monto", render: function (data) {
+        return "C$ " + data.toFixed(2)
+    }
+}, { "data": "PorcentajeAvance", "name": "PorcentajeAvance" },
+                                  { "data": "Estado", "name": "Estado" },
+                { "data": "RazonSocial", "name": "RazonSocial" },
+                    { "data": "RUC", "name": "RUC" },
+                      { "data": "Telefono", "name": "Telefono" },
+                        { "data": "NombreContacto", "name": "NombreContacto" },
+                          { "data": "CelularContacto", "name": "CelularContacto" },
+                            { "data": "CorreoContacto", "name": "CorreoContacto" },
+                                { "data": "Cod_RA", "name": "Cod_RA", visible: false }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+    });
+
+
+    app.controller('ConCotizacion', function ($scope, $http, $window) {
+
+        $scope.idcotizacion = 0;
+   
+        tablep = $('#table2').DataTable({
+            "select": true,
+            "bInfo": false,
+            "bSort": false,
+            "bDestroy": true,
+            "bFilter": false,
+            "bPagination": false,
+            "bLengthChange": false,
+            select: true, "columnDefs": [{
+                "targets": [4],
+                "visible": false
+            },
+                {
+                    "targets": [0],
+                    "visible": false
+                }],
+            "language": {
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+        });
+
+
+
+        $scope.buscarAud = function () {
+            $http({
+                url: "../Cotizaciones/ObtenerAuditoria",
+                method: "POST",
+                data: $.param({ "CodRA": $scope.codra }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                tablep = $('#table2').DataTable({
+                    "select": true,
+                    "bInfo": false,
+                    "bSort": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bPagination": false,
+                    "aaData": response.data.data,
+                    "aoColumns": response.data.columns,
+                    "bLengthChange": false,
+                    select: true, "columnDefs": [{
+                        "targets": [4],
+                        "visible": false
+                    }, {
+                    "targets": [0],
+                    "visible": false
+                    }], "language": {
+                        "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                        "paginate": {
+                            "previous": "Anterior",
+                            "next": "Siguiente"
+                        }, "select": {
+                            rows: " "
+                        }
+                    }
+                });
+
+
+                //$.each(response.data.data, function (i, val) {
+                //    console.log(response.data.data)
+
+
+                //});
+            })
+        }
+
+
+        $scope.nuevo = function () {
+            $window.location.href = "../Cotizaciones/Paso1?cotizacion=" + $scope.maxcotizacion;
+
+
+        };
+
+        $scope.eliminar = function () {
+            if ($scope.idcotizacion > 0 && $scope.delete == true) {
+                $('#Modaldelete').modal('show')
+
+            }
+
+        };
+
+        $scope.aprobar= function () {
+            if ($scope.idcotizacion > 0 && $scope.delete == true) {
+                $('#Modalaprobado').modal('show')
+
+            }
+
+        };
+
+        $scope.aprobar2 = function () {
+            $http({
+                url: "../Cotizaciones/AprobarCotizacion",
+                method: "POST",
+                data: $.param({ "IdCotizacion": $scope.idcotizacion }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modalaprobado').modal('hide');
+                    $scope.clean();
+
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            })
+        };
+        $scope.informe = function () {
+           
+            if ($scope.idcotizacion > 0) {
+           
+            $window.location.href = "../Cotizaciones/ReporteCotizacion?cotizacion=" + $scope.idcotizacion;
+            }
+
+        };
+
+
+    $scope.toexcel1 = function () {
+        if ($scope.idcotizacion > 0) {
+            $window.location.href = "../Cotizaciones/ExportExcelentrega?cotizacion=" + $scope.idcotizacion;
+        }
+
+        };
+        $scope.editar = function () {
+            if ($scope.idcotizacion > 0 &&  $scope.edit == true) {
+                $window.location.href = "../Cotizaciones/Paso1?cotizacion=" + $scope.idcotizacion;
+            }
+
+
+        };
+
+
+
+        $scope.anular = function () {
+          
+                $http({
+                    url: "../Cotizaciones/Delete",
+                    method: "POST",
+                    data: $.param({ "id": $scope.idcotizacion }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#Modaldelete').modal('hide');
+                        
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                })
+            
+        };
+
+
+
+
+        $scope.get = function () {
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.idcotizacion = table.cell(idt, 0).data();
+                $scope.codra = table.cell(idt, 10).data();
+                $scope.estado = table.cell(idt, 5).data();
+                $scope.edit = true;
+                $scope.delete = true;
+
+                console.log($scope.estado);
+                toastr['success']('Actualmente esta seleccionando la cotización número ' + $scope.idcotizacion);
+
+                $scope.buscarAud()
+
+            }, 100);
+        };
+        $scope.get2 = function () {
+            setTimeout(function () {
+                var idt = table2.row('.selected').index();
+                $scope.idcotizacion = table2.cell(idt, 0).data();
+                $scope.codra = table2.cell(idt, 10).data();
+                $scope.edit = true;
+                $scope.delete = false;
+
+                toastr['success']('Actualmente esta seleccionando la cotización número ' + $scope.idcotizacion);
+
+                $scope.buscarAud()
+
+            }, 100);
+        };
+        $scope.get3 = function () {
+            setTimeout(function () {
+                var idt = table3.row('.selected').index();
+                $scope.idcotizacion = table3.cell(idt, 0).data();
+                $scope.codra = table3.cell(idt, 10).data();
+                $scope.edit = false;
+                $scope.delete = false;
+
+                toastr['success']('Actualmente esta seleccionando la cotización número ' + $scope.idcotizacion);
+
+                $scope.buscarAud()
+
+            }, 100);
+        };
+        $scope.get4 = function () {
+            setTimeout(function () {
+                var idt = table4.row('.selected').index();
+                $scope.idcotizacion = table4.cell(idt, 0).data();
+                $scope.codra = table4.cell(idt, 10).data();
+                $scope.edit = false;
+                $scope.delete = false;
+
+                toastr['success']('Actualmente esta seleccionando la cotización número ' + $scope.idcotizacion);
+
+                $scope.buscarAud()
+
+            }, 100);
+        };
+        $scope.clean = function () {
+            $scope.message = "";
+            $scope.idcotizacion = 0;
+            $('#table1').DataTable().ajax.reload();
+            $('#table3').DataTable().ajax.reload();
+            $('#table4').DataTable().ajax.reload();
+            $('#table5').DataTable().ajax.reload();
+
+
+
+        }
+
+
+        $('#Modaldelete').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+
+        $http({
+            url: "../Cotizaciones/IdCotizacion",
+            method: "POST",
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (response) {
+            $scope.maxcotizacion = response.data.IdCotizacion
+
+        });
+
+
+
+    });
+</script>

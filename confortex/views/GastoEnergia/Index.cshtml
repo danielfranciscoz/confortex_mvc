@@ -1,0 +1,354 @@
+﻿
+@{
+    ViewBag.Tittle = "Gasto Energético";
+}
+
+
+<style>
+    .picker__frame{
+        zoom: 0.9;
+    }
+
+    .picker__date-display{
+        display:none;
+    }
+</style>
+<ng-controller ng-controller="GastoController">
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Consumo Energético </h4>
+
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            IdGastoEnergetico
+                        </th>
+                        <th>
+                            No. Factura
+                        </th>
+                        <th>
+                            Monto (C$)
+                        </th>
+                        <th>
+                            Mes de Consumo
+                        </th>
+                        <th>
+                            Fecha de Registro
+                        </th>
+                    </tr>
+                </thead>
+                <tbody ng-click="get()"></tbody>
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="Nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar Factura"><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita la Factura"><i class="fa fa-pencil"></i></a></li>
+    
+            </ul>
+        </div>
+        @Html.Action("Create", "GastoEnergia");
+
+    </div>
+</ng-controller>
+
+<script>
+
+    $('.datepicker').pickadate({
+
+        // Strings and translations
+        monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+        weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+        showMonthsShort: false,
+        showWeekdaysFull: false,
+
+        // Buttons
+        today: 'Hoy',
+        clear: 'Limpiar',
+        close: 'Cerrar',
+
+        // Accessibility labels
+        labelMonthNext: 'Siguiente Mes',
+        labelMonthPrev: 'Mes Anterior',
+        labelMonthSelect: 'Seleccionar un mes',
+        labelYearSelect: 'Seleccionar un año',
+
+        // Formats
+        format: 'mm/yyyy',
+        formatSubmit: 'dd/mm/yyyy',
+        hiddenPrefix: undefined,
+        hiddenSuffix: '_submit',
+        hiddenName: undefined,
+
+        // Editable input
+        editable: undefined,
+
+        // Dropdown selectors
+        selectYears: undefined,
+        selectMonths: undefined,
+
+        // First day of the week
+        firstDay: undefined,
+
+        // Date limits
+        min: undefined,
+        max: undefined,
+
+        // Disable dates
+        disable: undefined,
+
+        // Root picker container
+        container: undefined,
+
+        // Hidden input container
+        containerHidden: undefined,
+
+        // Close on a user action
+        closeOnSelect: true,
+        closeOnClear: true,
+
+        // Events
+        onStart: undefined,
+        onRender: undefined,
+        onOpen: undefined,
+        onClose: undefined,
+        onSet: undefined,
+        onStop: undefined,
+
+        // Classes
+        klass: {
+
+            // The element states
+            input: 'picker__input',
+            active: 'picker__input--active',
+
+            // The root picker and states *
+            picker: 'picker',
+            opened: 'picker--opened',
+            focused: 'picker--focused',
+
+            // The picker holder
+            holder: 'picker__holder',
+
+            // The picker frame, wrapper, and box
+            frame: 'picker__frame',
+            wrap: 'picker__wrap',
+            box: 'picker__box',
+
+            // The picker header
+            header: 'picker__header',
+
+            // Month navigation
+            navPrev: 'picker__nav--prev',
+            navNext: 'picker__nav--next',
+            navDisabled: 'picker__nav--disabled',
+
+            // Month & year labels
+            month: 'picker__month',
+            year: 'picker__year',
+
+            // Month & year dropdowns
+            selectMonth: 'picker__select--month',
+            selectYear: 'picker__select--year',
+
+            // Table of dates
+            table: 'picker__table',
+
+            // Weekday labels
+            weekdays: 'picker__weekday',
+
+            // Day states
+            day: 'picker__day',
+            disabled: 'picker__day--disabled',
+            selected: 'picker__day--selected',
+            highlighted: 'picker__day--highlighted',
+            now: 'picker__day--today',
+            infocus: 'picker__day--infocus',
+            outfocus: 'picker__day--outfocus',
+
+            // The picker footer
+            footer: 'picker__footer',
+
+            // Today, clear, & close buttons
+            buttonClear: 'picker__button--clear',
+            buttonClose: 'picker__button--close',
+            buttonToday: 'picker__button--today'
+        }
+    }
+    );
+    var table = "";
+    $(document).ready(function () {
+        $('[data-tooltip=tooltip]').tooltip();
+        $('[data-toggle=tab]').tooltip();
+
+        table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../GastoEnergia/searchGastosEnergia",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdGastoEnergia", "name": "IdGastoEnergia", visible: false },
+                { "data": "FacturaNo", "name": "FacturaNo" },
+                { "data": "Monto", "name": "Monto" },
+                { "data": "MesAplica", "name": "MesAplica" },
+                { "data": "FechaRegistro", "name": "FechaRegistro"}
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+    });
+
+    app.controller('GastoController', function ($scope, $http) {
+        $scope.idgastoenergia = 0;
+        $scope.facturano = "";
+        $scope.monto = 0;
+        $scope.mesaplica = "";
+
+        $scope.EsMonto = function () {
+
+            $scope.monto= NoLetras($scope.monto);
+        }
+
+        $scope.Nuevo = function () {
+            if ($scope.idgastoenergia == 0) {
+                $scope.AbrirModal();
+            } else {
+                $scope.clean();
+                $scope.AbrirModal();
+            }
+        }
+
+        $scope.editar = function () {
+
+            if ($scope.idgastoenergia > 0) {
+                $scope.message = "";
+                $scope.AbrirModal();
+            }
+        }
+
+        $scope.AbrirModal = function () {
+            $('#modalGastoEnergia').modal({
+                show: true
+            })
+        }
+
+        $scope.clean = function () {
+            $scope.message = "";
+            $scope.idgastoenergia = 0;
+            $scope.facturano = "";
+            $scope.monto = 0;
+            $scope.mesaplica = "";
+            setTimeout(function () {
+                $('#table1').DataTable().ajax.reload();
+            }, 100);
+        }
+
+        $scope.gestionar = function () {
+            if ($scope.idgastoenergia == 0) {
+                $scope.guardar();
+            } else {
+                $scope.modificar();
+            }
+        }
+
+        $scope.guardar = function () {
+
+            if ($scope.facturano.length > 0 &&
+                $scope.monto.length > 0
+                ) {
+                $http({
+                    url: "../GastoEnergia/create",
+                    method: "POST",
+                    data: $.param({ "FacturaNo": $scope.facturano, "Monto": parseFloat($scope.monto), "MesAplica": $scope.mesaplica}),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalGastoEnergia').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el Número de la factura, y que el monto sea mayor que cero');
+            }
+        }
+
+        $scope.get = function () {
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.idgastoenergia = table.cell(idt, 0).data();
+                $scope.facturano = table.cell(idt, 1).data();
+                $scope.monto = table.cell(idt, 2).data();
+                $scope.mesaplica = table.cell(idt, 3).data();
+                toastr['success']('Actualmente esta seleccionando la factura No-' + $scope.facturano);
+
+
+
+
+            }, 100);
+        }
+
+        $scope.modificar = function () {
+            $scope.facturano = $scope.facturano + "";
+            $scope.monto = $scope.monto + "";
+            $scope.mesaplica = $scope.mesaplica + "";
+
+            if ($scope.facturano.length > 0 &&
+                $scope.monto.length > 0
+                ) {
+                $http({
+                    url: "../GastoEnergia/edit",
+                    method: "POST",
+                    data: $.param({"IdGastoEnergia" : $scope.idgastoenergia ,"FacturaNo": $scope.facturano, "Monto": parseFloat($scope.monto), "MesAplica": $scope.mesaplica }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalGastoEnergia').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el Número de la factura, y que el monto sea mayor que cero');
+            }
+        }
+
+        $('#modalGastoEnergia').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+    });
+</script>

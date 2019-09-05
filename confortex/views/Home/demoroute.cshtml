@@ -1,0 +1,42 @@
+﻿@{
+    Layout = null;
+}
+
+<body ng-app="app">
+    <nav>
+        <ul>
+            <li><a href="#/">index</a></li>
+            <li><a href="#/about">about</a></li>
+            <li><a href="#/contact">contact</a></li>
+        </ul>
+    </nav>
+    <hr />
+
+    <div ng-view></div>
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+  
+    <script >
+        angular.module("app", ["ngRoute"]).config(function ($routeProvider) {
+                $routeProvider
+                    .when("/", {
+                        controller: "appCtrl",
+                        controllerAs: "vm",
+                        templateUrl: "index"
+                    })
+                    .when("/descargas", {
+                        controller: "appCtrl",
+                        controllerAs: "vm",
+                        templateUrl: "about"
+                    })
+                    .when("/opciones", {
+                        controller: "appCtrl",
+                        controllerAs: "vm",
+                        templateUrl: "contact"
+                    });
+            })
+            .controller("appCtrl", function () {
+                //código del controlador (lo estoy usando en todas las rutas, en este sencillo ejemplo)
+            });
+    </script>
+</body>

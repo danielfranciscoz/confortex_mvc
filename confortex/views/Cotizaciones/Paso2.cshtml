@@ -1,0 +1,901 @@
+﻿@{
+    ViewBag.Title = "Cotización Paso 2";
+}
+<style>
+    #table1_filter {
+        display: none;
+    }
+
+
+    #table1_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+
+
+    #table2_paginate {
+        display: none;
+    }
+
+    #table3_filter {
+        display: none;
+    }
+
+
+    #table3_paginate {
+        display: none;
+    }
+        #table4_filter {
+        display: none;
+    }
+
+
+    #table4_paginate {
+        display: none;
+    }
+        #table5_filter {
+        display: none;
+    }
+
+
+    #table5_paginate {
+        display: none;
+    }
+      #table6_filter {
+        display: none;
+    }
+
+
+    #table6_paginate {
+        display: none;
+    }
+        #table7_filter {
+        display: none;
+    }
+
+
+    #table7_paginate {
+        display: none;
+    }
+</style>
+
+<ng-controller ng-controller="ConPaso2" ng-cloak>
+
+    <div class="card card-block rounded smooth-scroll">
+        <br />
+        <div class="row col-12">
+            <div class="col-8">
+
+            </div>
+            <h2 class="h2-responsive  font-weight-bold blue-grey-text"> Cotización No. {{idcotizacion}}</h2>
+        </div>
+        <br />
+        <h4 class="h4-responsive font-weight-bold">Listado de piezas a producir</h4>
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            id
+                        </th>
+                        <th>
+                            idcotiza
+                        </th>
+                        <th>
+                            idpieza
+                        </th>
+                        @*<th>
+                            idcolor
+                        </th>*@
+                        <th>
+                            idtela
+                        </th>
+                        <th>
+                            Cantidad
+                        </th>
+                        <th>
+                            Pieza
+                        </th>
+                        <th>
+                            Tela
+                        </th>
+                        @*<th>
+                            Color
+                        </th>*@
+                        <th>
+                            Descripción de hechura
+                        </th>
+
+                        <th>
+                            Duración (Días)
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+        <hr />
+        <h6 class="h6-responsive font-weight-bold">Adiciones a la descripción de la hechura</h6>
+        <div class="row">
+            <div class="col-lg-4 col-sm-12">
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table2">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    iddes
+                                </th>
+                                <th>
+                                    idcombinacion
+                                </th>
+                                <th>
+                                    Listado de Combinaciones
+                                </th>
+
+                            </tr>
+                        </thead>
+
+
+                    </table>
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table3">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    iddes
+                                </th>
+                                <th>
+                                    idacce
+                                </th>
+                                <th>
+                                    Accesorios
+                                </th>
+                                <th>
+                                    Cantidad
+                                </th>
+
+                            </tr>
+                        </thead>
+
+
+                    </table>
+
+                </div>
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table6">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    iddes
+                                </th>
+                                <th>
+                                    iddes
+                                </th>
+                                <th>
+                                    idcolor
+                                </th>
+                                <th>
+                                   Color
+                                </th>
+
+                            </tr>
+                        </thead>
+
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+            <hr />
+        <div class="row">
+            <div class="progress col-12">
+                <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <a class="col-7">Paso 2 de 3 {{message}}</a>
+        </div>
+             
+        <div class="row">
+            <a class="btn btn-sm green darken-4 col-2" ng-click="anterior()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Anterior</a>
+            <div class="col-7"></div> 
+            <a class="btn btn-sm green darken-4 col-2" ng-click="siguiente()">Siguiente <i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agrega una nueva pieza"><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita la pieza seleccionada."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina la pieza seleccionada."><i class="fa fa-trash-o"></i></a></li>
+           
+            </ul>
+        </div>
+    </div>
+    @Html.Action("CreateHechura", "Cotizaciones")
+    @Html.Action("DeleteGeneral", "Home")
+</ng-controller>
+
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+
+
+    app.controller('ConPaso2', function ($scope, $http,$window) {
+        $scope.Funcion =[];
+        $scope.NombreFuncion =[];
+        $scope.idcotizacion = @ViewBag.cotizacion;
+
+        var table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../Cotizaciones/searchDescripcionHechura",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                  { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura" ,visible : false},
+                { "data": "IdCotizacion", "name": "IdCotizacion",visible : false },
+                   { "data": "IdPieza", "name": "IdPieza" ,visible : false},
+                      { "data": "IdTela", "name": "IdTela",visible : false },
+                         //{ "data": "IdColor", "name": "IdColor",visible : false },
+                           { "data": "CantidadRequerida", "name": "CantidadRequerida" },
+                            { "data": "Pieza", "name": "Pieza" },
+                               { "data": "Tela", "name": "Tela" },
+                                  //{ "data": "Color", "name": "Color" },
+                                   { "data": "Descripcion", "name": "Descripcion" },
+                                      { "data": "Duracion", "name": "Duracion" },
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no hay piezas agregadas a esta cotización",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+        var tablec = $('#table2').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../Cotizaciones/searchCombinacionesPieza",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                  { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura" ,visible : false},
+                    { "data": "IdCombinacion", "name": "IdCombinacion" ,visible : false},
+                    { "data": "Nombre", "name": "Nombre" }
+
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No hemos encontrado combinaciones",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+        var tablea = $('#table3').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../Cotizaciones/searchMaterialIndirectoPieza",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                   { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura" ,visible : false},
+                    { "data": "IdAccesorio", "name": "IdAccesorio" ,visible : false},
+                    { "data": "Nombre", "name": "Nombre" },
+                     { "data": "Cantidad", "name": "Cantidad" }
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No hemos encontrado accesorios",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var tablecc = $('#table4').DataTable({
+            select: true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "columnDefs": [{
+                "targets": [1],
+                "visible": false
+            },
+               {
+                   "targets": [0],
+                   "visible": false
+               }],
+           
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No sean agregado combinaciones",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var tableaa = $('#table5').DataTable({
+            select: true,           
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "columnDefs": [{
+                "targets": [1],
+                "visible": false
+            },
+              {
+                  "targets": [0],
+                  "visible": false
+              }],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No se han agregado accesorios",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var tableco = $('#table6').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../Cotizaciones/searchColoresDescripcionHechura",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                 { "data": "IdDescripcionHechuraColor", "name": "IdDescripcionHechuraColor" ,visible : false},
+                  { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura" ,visible : false},
+                    { "data": "IdColor", "name": "IdColor" ,visible : false},
+                    { "data": "Color", "name": "Color" }
+
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No hemos encontrado colores",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var tablecc2 = $('#table7').DataTable({
+            select: true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "columnDefs": [{
+                "targets": [1],
+                "visible": false
+            },
+               {
+                   "targets": [0],
+                   "visible": false
+               }],
+           
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No sean agregado combinaciones",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+
+
+        table.search($scope.idcotizacion).draw();
+        tablec.search("asd12").draw();
+        tableco.search("0").draw();
+        tablea.search("asd12").draw();
+
+        $scope.gestionar = function () {
+          
+            //    $scope.modificar();
+            //} else {
+                $scope.guardar();
+           
+
+        }
+        $scope.editar = function () {
+
+            if ($scope.descripcionhechura> 0) {
+                $scope.abrirmodal();
+            }
+        };
+
+
+        $scope.anular = function () {
+            $http({
+                url: "../Cotizaciones/DeleteDescripcionHechura",
+                method: "POST",
+                data: $.param({ "IdDescripcionHechura": $scope.descripcionhechura }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldelete').modal('hide');
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+
+        $scope.EsDuracion = function () {
+
+            $scope.duracion = NoLetras($scope.duracion);
+        }
+        $scope.EsCantidadPieza = function () {
+
+            $scope.cantidadpieza = Telefono($scope.cantidadpieza.tostring());
+        }
+        $scope.EsCantidadAccesorio= function () {
+
+            $scope.cantidadaccesorio = Telefono($scope.cantidadaccesorio);
+        }
+
+        $scope.agregartab1 = function () {
+            if ($scope.combinacion > 0) {                             
+
+                var el = document.getElementById('IdCombinacion');
+                var text = el.options[el.selectedIndex].innerHTML;
+
+
+
+                var TamTab = tablecc.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tablecc.cell(i, 1).data() == $scope.combinacion) {
+                        tablecc.row(i).remove().draw();
+                    }
+
+                }
+                tablecc.row.add([$scope.descripcionhechura,$scope.combinacion,text]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar una combinación ";
+            }
+
+
+        }
+
+        $scope.eliminartab1 = function () {
+            if ($scope.rowc >= 0) {
+                tablecc.row($scope.rowc).remove().draw();
+
+            }
+        }
+
+
+        $scope.agregartab2 = function () {
+            if ($scope.material > 0 && $scope.cantidadaccesorio >0) {                             
+
+                var el = document.getElementById('IdMaterial');
+                var text = el.options[el.selectedIndex].innerHTML;
+
+
+
+                var TamTab = tableaa.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tableaa.cell(i, 1).data() == $scope.material) {
+                        tableaa.row(i).remove().draw();
+                    }
+
+                }
+                tableaa.row.add([$scope.descripcionhechura,$scope.material,text,$scope.cantidadaccesorio]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar un accesorio y la cantidad debe ser mayor que 0 (Cero) ";
+            }
+
+
+        }
+        
+        $scope.agregartab3 = function () {
+            if ($scope.color > 0 ) {                             
+
+                var el = document.getElementById('IdColor');
+                var text = el.options[el.selectedIndex].innerHTML;
+                $scope.descripcionhechuracolor = 0;
+
+
+                var TamTab = tablecc2.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tablecc2.cell(i, 1).data() == $scope.color) {
+                        $scope.descripcionhechuracolor =tablecc2.cell(i, 0).data();
+                        tablecc2.row(i).remove().draw();
+                    }
+
+                }
+                tablecc2.row.add([$scope.descripcionhechuracolor,$scope.color,text]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar un color";
+            }
+
+
+        }
+
+        $scope.eliminartab3 = function () {
+            if ($scope.rowco >= 0) {
+                tablecc2.row($scope.rowco).remove().draw();
+
+            }
+        }
+
+        $scope.eliminartab2 = function () {
+            if ($scope.rowa >= 0) {
+                tableaa.row($scope.rowa).remove().draw();
+
+            }
+        }
+
+
+        $scope.siguiente = function(){
+           
+            if( table.column(0).data().length >0){
+
+             
+                        $window.location.href = "../Cotizaciones/Paso3?cotizacion=" + $scope.idcotizacion;
+                  
+            }else{
+                toastr['warning']('Debe tener al menos una pieza asociada a la cotización');
+            }
+
+
+
+        }
+
+        $scope.anterior = function(){
+            $window.location.href = "../Cotizaciones/Paso1?cotizacion=" + $scope.idcotizacion;
+        }
+
+        $scope.abrirmodal = function () {
+          
+            $('#modalhechuracreate').modal({
+                show: true
+            });
+        }
+        
+        $scope.nuevo = function () {
+
+            if ($scope.descripcionhechura == 0) {
+                $scope.abrirmodal();
+            } else {
+                $scope.clean();
+                $scope.abrirmodal();
+            }
+
+        };
+        $scope.eliminar = function () {
+            if ($scope.descripcionhechura > 0) {
+                $('#Modaldelete').modal({
+                    show: true
+                });
+            }
+        }
+
+        $scope.guardar = function () {
+
+            $scope.jcombinaciones = "";
+            $scope.temptcombinaciones =  tablecc.column( 0 ).data().length;
+            for ($scope.i = 0; $scope.i < $scope.temptcombinaciones; $scope.i++) {
+                
+                $scope.jcombinaciones = $scope.jcombinaciones + '{"IdCombinacion": ' + tablecc.cell($scope.i,1).data() + ' ,"IdDescripcionHechura": ' + tablecc.cell($scope.i,0).data() + ' }';
+
+
+                if ($scope.i < $scope.temptcombinaciones - 1) {
+                    $scope.jcombinaciones = $scope.jcombinaciones + ",";
+                }
+               
+            }
+        //    console.log($scope.jcombinaciones);
+            $scope.jmateriales = "";
+            $scope.temptmateriales =  tableaa.column(0).data().length;
+            for ($scope.i = 0; $scope.i < $scope.temptmateriales; $scope.i++) {
+                
+                $scope.jmateriales =   $scope.jmateriales + '{"IdAccesorio": ' + tableaa.cell($scope.i,1).data() + ' ,"IdDescripcionHechura": ' + tableaa.cell($scope.i,0).data() + ',"Cantidad" : '+tableaa.cell($scope.i,3).data() +' }';
+
+
+                if ($scope.i <$scope.temptmateriales -1) {
+                    $scope.jmateriales =   $scope.jmateriales + ",";
+                }
+               
+            }
+
+            $scope.jcolores = "";
+            $scope.temptcolores =  tablecc2.column(0).data().length;
+            for ($scope.i = 0; $scope.i < $scope.temptcolores; $scope.i++) {
+                
+                $scope.jcolores =   $scope.jcolores + '{"IdColor": ' + tablecc2.cell($scope.i,1).data() + ' ,"IdDescripcionHechura": ' + $scope.descripcionhechura + ',"IdDescripcionHechuraColor" : '+tablecc2.cell($scope.i,0).data() +' }';
+
+
+                if ($scope.i <$scope.temptcolores -1) {
+                    $scope.jcolores =   $scope.jcolores + ",";
+                }
+               
+            }
+      
+            var jc = JSON.parse("[" + $scope.jcombinaciones + "]");
+            var jm = JSON.parse("[" + $scope.jmateriales+ "]");
+            var jco = JSON.parse("[" + $scope.jcolores + "]");
+
+            var parameter = JSON.stringify({IdCotizacion:$scope.idcotizacion,IdDescripcionHechura:$scope.descripcionhechura,IdPieza:$scope.pieza,IdTela:$scope.tela,IdColor:$scope.color,CantidadRequerida:$scope.cantidadpieza,Duracion:$scope.duracion,Descripcion:$scope.descripcion,"cdh":jc,"adh":jm,"c":jco});
+            var paso = 0;
+
+         
+            if ($scope.pieza > 0 &&
+              $scope.tela > 0 &&
+              tablecc2.column(0).data().length> 0 &&
+               $scope.cantidadpieza > 0 &&
+                $scope.duracion > 0 
+               
+
+              ) {
+                $http({
+                    url: "../Cotizaciones/CreateUpdateDescripcionHechura",
+                    method: "POST",
+                    data: parameter,
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalhechuracreate').modal('hide');
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise la pieza,tela,color,cantidad de piezas y duración en días ');
+            }        
+        }
+
+        $('#modalhechuracreate').on('hidden.bs.modal', function (e) {
+
+            $scope.clean();
+
+        });
+
+        $('#Modaldelete').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+
+        $scope.clean = function() {
+            $scope.descripcionhechura = 0;
+            $scope.pieza = "";
+            $scope.tela = "";
+            $scope.color = 0;
+            $scope.cantidadpieza = "";
+            $scope.descripcion = "";
+            $scope.duracion = "";
+            $scope.combinacion = 0;
+            $scope.accesorio = 0;
+            $scope.cantidadaccesorio = "";
+            setTimeout(function () {
+                tablecc.clear().draw();
+                tableaa.clear().draw();
+                tablecc2.clear().draw();
+                $('#table1').DataTable().ajax.reload();
+                tablea.search("dd21").draw();
+                tablec.search("dd21").draw();
+                tableco.search("0").draw();
+
+            }, 100);
+
+        }
+
+        $('#table4 tbody').on( 'click', 'td', function () {
+            setTimeout(function () {
+                $scope.rowc = tablecc.row('.selected').index()
+            },100);
+        });
+
+        $('#table5 tbody').on( 'click', 'td', function () {
+            setTimeout(function () {
+                $scope.rowa = tableaa.row('.selected').index()
+            },100);
+        });
+
+        $('#table7 tbody').on( 'click', 'td', function () {
+            setTimeout(function () {
+                $scope.rowco = tablecc2.row('.selected').index()
+            },100);
+        });
+        $('#table1 tbody').on( 'click', 'td', function () {
+
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+
+                $scope.descripcionhechura = table.cell(idt, 0).data();
+                $scope.pieza = table.cell(idt, 2).data()+"";
+                $scope.tela = table.cell(idt, 3).data()+"";
+                //$scope.color = table.cell(idt, 4).data()+"";
+                $scope.cantidadpieza = table.cell(idt, 4).data();
+                $scope.descripcion = table.cell(idt, 7).data();
+                $scope.duracion = table.cell(idt,8).data();
+                toastr['success']('Actualmente esta seleccionando la pieza ' + table.cell(idt, 6).data());
+
+
+                tablec.search($scope.descripcionhechura).draw();
+                tableco.search($scope.descripcionhechura).draw();
+                tablea.search($scope.descripcionhechura).draw();
+
+
+                
+
+                setTimeout(function () {
+                    tablecc.clear().draw();
+                    var TamTabp = tablec.column(0).data().length;
+                    for (var i = 0; i < TamTabp; i++) {
+                        tablecc.row.add([tablec.cell(i, 0).data(), tablec.cell(i, 1).data(), tablec.cell(i, 2).data()]).draw();
+                    }
+
+                }, 300);
+                setTimeout(function () {
+                    tableaa.clear().draw();
+                    var TamTaba = tablea.column(0).data().length;
+                    for (var i = 0; i < TamTaba; i++) {
+                        tableaa.row.add([tablea.cell(i, 0).data(), tablea.cell(i, 1).data(), tablea.cell(i, 2).data(),tablea.cell(i,3).data()]).draw();
+                    }
+
+                }, 300);
+
+                setTimeout(function () {
+                    tablecc2.clear().draw();
+                    var TamTabco = tableco.column(0).data().length;
+                    for (var i = 0; i < TamTabco; i++) {
+                        tablecc2.row.add([tableco.cell(i, 0).data(), tableco.cell(i, 2).data(), tableco.cell(i, 3).data()]).draw();
+                    }
+
+                }, 300);
+
+
+            }, 100);
+
+
+        } );
+
+
+
+    });
+
+
+</script>

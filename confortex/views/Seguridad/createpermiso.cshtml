@@ -1,0 +1,42 @@
+﻿
+<div class="modal fade right" id="modalpermiso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title">Permisos a pantalla</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+                <div class="form-horizontal">                        
+
+                        <div class="form-group">
+                            <label>Rol:</label>
+                            @Html.DropDownList("Rol", null, htmlAttributes: new { @class = "mdb-select col-6", data_tooltip = "tooltip", data_placement = "top", title = "seleccione la pantalla de inicio", data_animation = "false", style = "display:initial", ng_model = "idrolpermiso", ng_change = "" })
+
+
+                        </div>
+                        <div class="form-group">
+                            <label>Pantalla:</label>
+                            @Html.DropDownList("IdPanta", null, htmlAttributes: new { @class = "mdb-select col-6", data_tooltip = "tooltip", data_placement = "top", title = "seleccione la pantalla de inicio", data_animation = "false", style = "display:initial", ng_model = "idpantalla", ng_change = "" })
+     
+                        </div>
+
+                    
+                  
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionarp()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

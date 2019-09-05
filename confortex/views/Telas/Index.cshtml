@@ -1,0 +1,279 @@
+﻿@{
+    ViewBag.Title = "Telas";
+}
+
+<ng-controller ng-controller="ConTelas">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Telas</h4>
+     
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                           Tela
+                        </th>
+                        <th>
+                           Precio por yarda (C$)
+                        </th>                    
+
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar un nueva tela "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Editar una tela seleccionada."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Eliminar una tela seleccionada."><i class="fa fa-trash-o"></i></a></li>
+
+            </ul>
+        </div>
+        @Html.Action("Create", "Telas")
+        @Html.Action("DeleteGeneral", "Home")
+    </div>
+</ng-controller>
+
+
+<script>
+        var table = "";
+        $(document).ready(function () {
+            $('[data-tooltip=tooltip]').tooltip();
+            $('[data-toggle=tab]').tooltip();
+
+            table = $('#table1').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": "../Telas/searchTelas",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                    { "data": "IdTela", "name": "IdTela", visible: false },
+                    { "data": "Nombre", "name": "Nombre" },
+                    { "data": "PrecioUnitario", "name": "PrecioUnitario" }
+                   
+                ],
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+        });
+
+
+
+
+        app.controller('ConTelas', function ($scope, $http) {
+        
+            $scope.idtela = 0;
+            $scope.nombre = "";
+            $scope.precio = "";
+
+            $scope.abrirmodal = function () {
+                $('#modaltelacreate').modal({
+                    show: true
+                });
+            }
+
+            $scope.nuevo = function () {
+            
+                if ($scope.idtela == 0) {                 
+                    $scope.abrirmodal();
+                } else {
+                    $scope.clean();
+                    $scope.abrirmodal();
+                }
+          
+            };
+
+            $scope.editar = function () {
+
+                if ($scope.idtela > 0) {
+                    $scope.abrirmodal();
+                }
+            };
+
+            $scope.EsPrecio = function () {
+                $scope.precio = NoLetras($scope.precio);
+            }
+            
+            $scope.gestionar = function () {
+                if ($scope.idtela > 0) {
+                    $scope.modificar();
+                } else {
+                    $scope.guardar();
+                }
+
+            }
+
+            $scope.eliminar = function () {
+                if ($scope.idtela > 0) {
+                    $('#Modaldelete').modal({
+                        show: true
+                    });
+                }
+            }
+
+                $scope.anular = function(){
+                    $http({
+                        url: "../Telas/Delete",
+                        method: "POST",
+                        data: $.param({ "id" : $scope.idtela }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#Modaldelete').modal('hide');
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }
+
+            )};
+
+            $scope.guardar = function () {
+
+                if ($scope.nombre.length > 0 &&
+                    $scope.precio.length > 0
+                    ) {
+                    $http({
+                        url: "../Telas/create",
+                        method: "POST",
+                        data: $.param({  "Nombre": $scope.nombre, "Precio": $scope.precio }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modaltelacreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise el nombre y el precio de la tela');
+                }
+            }
+
+            $scope.modificar = function () {
+                $scope.nombre = $scope.nombre + "";
+                $scope.precio = $scope.precio + "";
+
+                if ($scope.nombre.length > 0 &&
+                    $scope.precio.length > 0
+                    ) {
+                    $http({
+                        url: "../Telas/Edit",
+                        method: "POST",
+                        data: $.param({ "Id":$scope.idtela,"Nombre": $scope.nombre, "Precio": $scope.precio }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modaltelacreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise el nombre y el precio de la tela');
+                }
+            }
+
+
+            $scope.get = function () {
+                setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.idtela = table.cell(idt, 0).data();
+                $scope.nombre = table.cell(idt, 1).data();
+                $scope.precio = table.cell(idt, 2).data();
+                toastr['success']('Actualmente esta seleccionando la tela '+$scope.nombre);
+              
+
+
+                }, 100);
+            };
+
+            $scope.clean = function () {
+                $scope.message = "";
+                $scope.idtela = 0;
+                $scope.nombre = "";
+                $scope.precio = "";
+                setTimeout(function () {
+                  
+                   
+                    $('#table1').DataTable().ajax.reload();
+                    
+                }, 100);
+
+               
+            }
+
+            $('#modaltelacreate').on('hidden.bs.modal', function (e) {
+
+                $scope.clean();
+
+            });
+            $('#Modaldelete').on('hidden.bs.modal', function (e) {
+                $scope.clean();
+            });
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,386 @@
+﻿
+@{
+    ViewBag.Title = "Clientes";
+}
+
+<ng-controller ng-controller ="ConClientes">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Clientes </h4>
+
+
+
+        <p class="blue-text" ng-if="Seleccion">Actualmente esta seleccionando el cliente {{Seleccion}}</p>
+        <div class="table-responsive ">
+            <table  class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Razón Social
+                        </th>
+                        <th>
+                            RUC
+                        </th>
+                        <th>
+                            Teléfono Empresa
+                        </th>
+                        <th>
+                            Dirección Empresa
+                        </th>
+                        <th>
+                            Nombre del Contacto
+                        </th>
+                        <th>
+                            Teléfono del Contacto
+                        </th>
+                        <th>
+                            Celular del Contacto
+                        </th>
+                        <th>
+                            Operadora Telefónica
+                        </th>
+                        <th>
+                            Correo del Contacto
+                        </th>
+                        <th>
+                            Correo del Contacto
+                        </th>
+
+
+
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+            
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar cliente "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita el cliente seleccionado."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina el cliente seleccionado."><i class="fa fa-trash-o"></i></a></li>
+
+            </ul>
+        </div>
+        @Html.Action("Create", "Clientes")
+        @Html.Action("DeleteGeneral","Home");
+    </div>
+    </ng-controller>
+
+
+    <script>
+        var table = "";
+        $(document).ready(function () {
+            $('[data-tooltip=tooltip]').tooltip();
+            $('[data-toggle=tab]').tooltip();
+
+            table = $('#table1').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": "../Clientes/searchCliente",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                    { "data": "IdCliente", "name": "IdCliente", visible: false },
+                    { "data": "RazonSocial", "name": "RazonSocial" },
+                    { "data": "RUC", "name": "RUC" },
+                    { "data": "TelefonoEmpresa", "name": "TelefonoEmpresa" },
+                    { "data": "DireccionEmpresa", "name": "DireccionEmpresa" },
+                    { "data": "NombreContacto", "name": "NombreContacto" },
+                    { "data": "TelefonoContacto", "name": "TelefonoContacto" },
+                     { "data": "CelularContacto", "name": "CelularContacto" },
+                    { "data": "OperadoraTelefonica", "name": "OperadoraTelefonica" },
+                    { "data": "CorreoContacto", "name": "CorreoContacto" },
+                    { "data": "IdPersona", "name": "IdPersona", visible: false },
+                    { "data": "PrimerNombre", "name": "PrimerNombre", visible: false },
+                    { "data": "SegundoNombre", "name": "SegundoNombre", visible: false },
+                    { "data": "PrimerApellido", "name": "PrimerApellido", visible: false },
+                    { "data": "SegundoApellido", "name": "SegundoApellido", visible: false },
+                    { "data": "Cedula", "name": "Cedula", visible: false },
+                    { "data": "EstadoCivil", "name": "EstadoCivil", visible: false },
+                    { "data": "DireccionContacto", "name": "DireccionContacto", visible: false },
+                    { "data": "IdOperadora", "name": "IdOperadora", visible: false },
+                      { "data": "CantidadEmpleados", "name": "CantidadEmpleados", visible: false }
+                ],
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+        });
+
+  
+
+
+        app.controller('ConClientes', function ($scope, $http) {
+            $scope.primernombre = "";
+            $scope.primerapellido = "";
+            $scope.cedula = "";
+            $scope.estadocivil = "true";
+            $scope.operadora = "1";
+            $scope.idempresa = 0;
+            $scope.idcontacto = 0;
+            $scope.cantempleados = 0;
+           
+            $scope.abrirmodal = function () {
+                $('#modalclientecreate').modal({
+                    show: true
+                });
+            }
+            $scope.nuevo = function () {
+              
+                if ($scope.idcontacto == 0) {
+                  
+                    $scope.abrirmodal();
+                } else {
+                    $scope.clean();
+                    $scope.abrirmodal();
+                }
+            };
+
+            $scope.editar = function () {
+
+                if ($scope.idcontacto > 0) {
+                    $scope.abrirmodal();
+                }
+            };
+
+            $scope.EsCedula = function () {
+                $scope.cedula = Cedula($scope.cedula);
+            }
+            $scope.EsTeleContact = function () {
+                $scope.telcontacto = Telefono($scope.telcontacto);
+            }
+            $scope.EsRuc = function () {
+                $scope.ruc = EsRuc($scope.ruc);
+            }
+            $scope.EsCelular = function () {
+                $scope.celular = Telefono($scope.celular);
+            }
+            $scope.EsCantEmpleado = function () {
+                $scope.cantempleados = Telefono($scope.cantempleados);
+            }
+            $scope.EsTelEmpresa = function () {
+                $scope.telempresa = Telefono($scope.telempresa);
+            }
+            $scope.gestionar = function () {
+                if ($scope.idempresa > 0) {
+                    $scope.modificar();
+                } else {
+                    $scope.guardar();
+                }
+
+            }
+
+            $scope.eliminar = function () {
+                if ($scope.idempresa > 0) {
+                    $('#Modaldelete').modal({
+                        show: true
+                    });
+                }
+            }
+        
+              $scope.anular = function() {
+                    $http({
+                        url: "../Clientes/Delete",
+                        method: "POST",
+                        data: $.param({ "id" : $scope.idempresa }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#Modaldelete').modal('hide');
+                           
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }
+                    
+            )};  
+
+            $scope.guardar = function () {
+              
+                if ($scope.primerapellido.length > 0 &&
+                    $scope.primernombre.length > 0 &&
+                    $scope.cedula.length == 14
+                    ) {
+                    $http({
+                        url: "../Clientes/create",
+                        method: "POST",
+                        data: $.param({ "PrimerNombre": $scope.primernombre, "SegundoNombre": $scope.segundonombre, "PrimerApellido": $scope.primerapellido, "SegundoApellido": $scope.segundoapellido, "Cedula": $scope.cedula, "Direccion": $scope.dirempresa, "Correo": $scope.correo, "Telefono": $scope.telempresa, "Celular": $scope.celular, "IdOperadoraTelefonica": $scope.operadora, "EstadoCivil": $scope.estadocivil, "RazonSocial": $scope.razon, "RUC": $scope.ruc, "TelefonoCliente": $scope.telcontacto, "DireccionCliente": $scope.dircontacto,"CantidadPersonal": $scope.cantempleados }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modalclientecreate').modal('hide');
+
+                           
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise los nombres, apellidos y cedula de identidad del cliente');
+                }
+            }
+
+            $scope.modificar = function () {                
+                $scope.primernombre =  $scope.primernombre+"";
+                $scope.primerapellido = $scope.primerapellido+"";
+                $scope.segundonombre = $scope.segundonombre+"";
+                $scope.segundoapellido = $scope.segundoapellido+"";
+                $scope.cedula = $scope.cedula+"";
+                $scope.dirempresa = $scope.dirempresa+"";
+                $scope.correo = $scope.correo+"";
+                $scope.telempresa = $scope.telempresa+"";
+                $scope.celular = $scope.celular+"";
+                $scope.estadocivil = $scope.estadocivil + "";
+                $scope.operadora = $scope.operadora + "";
+                $scope.razon = $scope.razon+ "";
+                $scope.ruc = $scope.ruc+"";
+                $scope.telcontacto = $scope.telcontacto+"";
+                $scope.dircontacto = $scope.dircontacto+"";
+                $scope.cantempleados = $scope.cantempleados+"";
+
+                if ($scope.primerapellido.length > 0 &&
+                    $scope.primernombre.length > 0 &&
+                    $scope.cedula.length == 14
+                    ) {
+                    $http({
+                        url: "../Clientes/Edit",
+                        method: "POST",
+                        data: $.param({ "IdCliente": $scope.idempresa, "PrimerNombre": $scope.primernombre, "SegundoNombre": $scope.segundonombre, "PrimerApellido": $scope.primerapellido, "SegundoApellido": $scope.segundoapellido, "Cedula": $scope.cedula, "Direccion": $scope.dirempresa, "Correo": $scope.correo, "Telefono": $scope.telempresa, "Celular": $scope.celular, "IdOperadoraTelefonica": $scope.operadora, "EstadoCivil": $scope.estadocivil, "RazonSocial": $scope.razon, "RUC": $scope.ruc, "TelefonoCliente": $scope.telcontacto, "DireccionCliente": $scope.dircontacto, "CantidadPersonal": $scope.cantempleados }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modalclientecreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise los nombres, apellidos y cedula de identidad del cliente');
+                }
+            }
+
+            $('table1 tbody').on('click', 'tr', function () {
+                console.log("dasdsa");
+
+
+
+            });
+
+            $scope.get = function () {
+                setTimeout(function () {
+                    var idt = table.row('.selected').index();
+                    $scope.idempresa = table.cell(idt, 0).data();
+                    $scope.razon = table.cell(idt, 1).data();
+                    $scope.ruc = table.cell(idt, 2).data();
+                    $scope.telempresa = table.cell(idt, 3).data();
+                    $scope.dirempresa = table.cell(idt, 4).data();
+                    $scope.telcontacto = table.cell(idt, 6).data();
+                    $scope.celular = table.cell(idt, 7).data();
+                    $scope.operadora = table.cell(idt, 18).data() + "";
+                    $scope.correo = table.cell(idt, 9).data();
+                    $scope.idcontacto = table.cell(idt, 10).data();
+                    $scope.primernombre = table.cell(idt, 11).data();
+                    $scope.segundonombre = table.cell(idt, 12).data();
+                    $scope.primerapellido = table.cell(idt, 13).data();
+                    $scope.segundoapellido = table.cell(idt, 14).data();
+                    $scope.cedula = table.cell(idt, 15).data();
+                    $scope.estadocivil = table.cell(idt, 16).data() + "";
+                    $scope.dircontacto = table.cell(idt, 17).data();
+                    $scope.cantempleados = table.cell(idt, 19).data();
+                    toastr['success']('Actualmente esta seleccionando el cliente ' + $scope.razon);
+
+                }, 100);
+            };
+
+            $scope.clean = function () {
+               
+                    $scope.message = "";
+                    $scope.primernombre = "";
+                    $scope.primerapellido = "";
+                    $scope.segundonombre = "";
+                    $scope.segundoapellido = "";
+                    $scope.cedula = "";
+                    $scope.dirempresa = "";
+                    $scope.correo = "";
+                    $scope.telempresa = "";
+                    $scope.celular = "";
+                    $scope.estadocivil = "true";
+                    $scope.operadora = "1";
+                    $scope.razon = "";
+                    $scope.ruc = "";
+                    $scope.telcontacto = "";
+                    $scope.dircontacto = "";
+                    $scope.cantempleados = 0;
+                    $scope.idempresa = 0;
+                    $scope.idcontacto = 0;
+                    setTimeout(function () {
+                        $('#table1').DataTable().ajax.reload();
+                    }, 100);
+
+
+            }
+
+            $('#modalclientecreate').on('hidden.bs.modal', function (e) {
+                $scope.clean();
+            });
+            $('#Modaldelete').on('hidden.bs.modal', function (e) {
+                $scope.clean();
+            });
+
+        
+            });
+
+          
+
+
+                  
+
+
+
+  
+
+     
+
+       
+    </script>

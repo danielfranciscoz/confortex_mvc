@@ -1,0 +1,405 @@
+﻿
+@{
+    ViewBag.Title = "Empleados";
+}
+
+<ng-controller ng-controller="ConEmpleados">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Empleados </h4>
+
+
+
+        <p class="blue-text" ng-if="Seleccion">Actualmente está seleccionando el empleado {{Seleccion}}</p>
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Código
+                        </th>
+                        <th>
+                            Trabajador
+                        </th>
+                        <th>
+                            pn
+                        </th>
+                        <th>
+                            sn
+                        </th>
+                        <th>
+                            pa
+                        </th>
+                        <th>
+                            sa
+                        </th>
+                        <th>
+                            Cédula
+                        </th>
+                        <th>
+                            Dirección
+                        </th>
+                        <th>
+                            Email
+                        </th>
+                        <th>
+                            Teléfono
+                        </th>
+                        <th>
+                            Celular
+                        </th>
+                        <th>
+                            Operadora Telefónica
+                        </th>
+                        <th>
+                            Estado Civil
+                        </th>
+                       
+                        <th>
+                            Cargo
+                        </th>
+                        <th>
+                            Salario
+                        </th>
+                        <th>
+                            Tipo de Salario
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agregar empleado "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita el empleado seleccionado."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina el empleado seleccionado."><i class="fa fa-trash-o"></i></a></li>
+
+            </ul>
+        </div>
+        @Html.Action("Create", "Empleados")
+        @Html.Action("DeleteGeneral", "Home");
+    </div>
+</ng-controller>
+
+
+<script>
+    var table = "";
+    $(document).ready(function () {
+        $('[data-tooltip=tooltip]').tooltip();
+        $('[data-toggle=tab]').tooltip();
+
+        table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Empleados/searchEmpleados",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdEmpleado", "name": "IdEmpleado", visible: false },
+                 { "data": "codEmpleado", "name": "codEmpleado" },
+                { "data": "NombreContacto", "name": "NombreContacto" },
+                  { "data": "PrimerNombre", "name": "PrimerNombre", visible: false },
+                { "data": "SegundoNombre", "name": "SegundoNombre", visible: false },
+                { "data": "PrimerApellido", "name": "PrimerApellido", visible: false },
+                { "data": "SegundoApellido", "name": "SegundoApellido", visible: false },
+                  { "data": "Cedula", "name": "Cedula" },
+                  { "data": "Direccion", "name": "Direccion" },
+                   { "data": "Correo", "name": "Correo" },
+                    { "data": "Telefono", "name": "Telefono" },
+                    { "data": "Celular", "name": "Celular" },
+                     { "data": "IdOperadoraTelefonica", "name": "IdOperadoraTelefonica", visible: false },
+                     { "data": "EstadoCivil", "name": "EstadoCivil", visible: false },
+                    
+                    { "data": "Cargo", "name": "Cargo" },
+                    { "data": "SalarioBase", "name": "SalarioBase" },
+                    { "data": "DescSalario", "name": "DescSalario" },
+                    { "data": "PersonasDependientes", "name": "PersonasDependientes", visible: false },
+                    { "data": "CelularFamiliar", "name": "CelularFamiliar", visible: false },
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+    });
+
+
+
+
+    app.controller('ConEmpleados', function ($scope, $http) {
+        $scope.primernombre = "";
+        $scope.primerapellido = "";
+        $scope.cedula = "";
+        $scope.estadocivil = "true";
+        $scope.operadora = "1";
+        $scope.idempleado = 0;
+        $scope.idcontacto = 0;
+        $scope.cantempleados = 0;
+        $scope.cargo = "Administrador";
+
+        $scope.abrirmodal = function () {
+            $('#modalempleadocreate').modal({
+                show: true
+            });
+        }
+        $scope.nuevo = function () {
+
+            if ($scope.idempleado == 0) {
+
+                $scope.abrirmodal();
+            } else {
+                $scope.clean();
+                $scope.abrirmodal();
+            }
+        };
+
+        $scope.editar = function () {
+
+            if ($scope.idempleado > 0) {
+                $scope.abrirmodal();
+            }
+        };
+
+        $scope.EsCedula = function () {
+            $scope.cedula = Cedula($scope.cedula);
+        }
+        $scope.EsTeleContact = function () {
+            $scope.telcontacto = Telefono($scope.telcontacto);
+        }
+        $scope.EsCelular = function () {
+            $scope.celular = Telefono($scope.celular);
+        }
+        $scope.EsCantdependiente = function () {
+            $scope.personasdependientes = Telefono($scope.personasdependientes);
+        }
+        $scope.EsCelFamiliar = function () {
+            $scope.celularfamiliar = Telefono($scope.celularfamiliar);
+        }
+        $scope.EsCodigo = function () {
+            $scope.codempleado = Telefono($scope.codempleado);
+        }
+        $scope.gestionar = function () {
+            if ($scope.idempleado > 0) {
+                $scope.modificar();
+            } else {
+                $scope.guardar();
+            }
+
+        }
+
+        $scope.eliminar = function () {
+            if ($scope.idempleado > 0) {
+                $('#Modaldelete').modal({
+                    show: true
+                });
+            }
+        }
+
+        $scope.anular = function () {
+            $http({
+                url: "../Empleados/Delete",
+                method: "POST",
+                data: $.param({ "id": $scope.idempleado }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldelete').modal('hide');
+
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+
+        $scope.guardar = function () {
+
+            if ($scope.primerapellido.length > 0 &&
+                $scope.primernombre.length > 0 &&
+                $scope.cedula.length == 14
+                ) {
+                $http({
+                    url: "../Empleados/create",
+                    method: "POST",
+                    data: $.param({ "PrimerNombre": $scope.primernombre, "SegundoNombre": $scope.segundonombre, "PrimerApellido": $scope.primerapellido, "SegundoApellido": $scope.segundoapellido, "Cedula": $scope.cedula, "Direccion": $scope.dircontacto, "Correo": $scope.correo, "Telefono": $scope.telcontacto, "Celular": $scope.celular, "IdOperadoraTelefonica": $scope.operadora, "EstadoCivil": $scope.estadocivil, "CodEmpleado": $scope.codempleado, "PersonasDependientes": $scope.personasdependientes, "CelularFamiliar": $scope.celularfamiliar, "Cargo": $scope.cargo }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalempleadocreate').modal('hide');
+
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise los nombres, apellidos y cedula de identidad del empleado');
+            }
+        }
+
+        $scope.modificar = function () {
+            $scope.primernombre = $scope.primernombre + "";
+            $scope.primerapellido = $scope.primerapellido + "";
+            $scope.segundonombre = $scope.segundonombre + "";
+            $scope.segundoapellido = $scope.segundoapellido + "";
+            $scope.cedula = $scope.cedula + "";
+            $scope.dirempresa = $scope.dirempresa + "";
+            $scope.correo = $scope.correo + "";
+            $scope.telempresa = $scope.telempresa + "";
+            $scope.celular = $scope.celular + "";
+            $scope.estadocivil = $scope.estadocivil + "";
+            $scope.operadora = $scope.operadora + "";
+            $scope.codempleado = $scope.codempleado + "";
+            $scope.celularfamiliar = $scope.celularfamiliar + "";
+            $scope.cargo = $scope.cargo + "";
+            $scope.personasdependientes = $scope.personasdependientes + "";
+
+
+            if ($scope.primerapellido.length > 0 &&
+                $scope.primernombre.length > 0 &&
+                $scope.cedula.length == 14
+                ) {
+                $http({
+                    url: "../Empleados/Edit",
+                    method: "POST",
+                    data: $.param({ "IdEmpleado": $scope.idempleado, "PrimerNombre": $scope.primernombre, "SegundoNombre": $scope.segundonombre, "PrimerApellido": $scope.primerapellido, "SegundoApellido": $scope.segundoapellido, "Cedula": $scope.cedula, "Direccion": $scope.dircontacto, "Correo": $scope.correo, "Telefono": $scope.telcontacto, "Celular": $scope.celular, "IdOperadoraTelefonica": $scope.operadora, "EstadoCivil": $scope.estadocivil, "CodEmpleado": $scope.codempleado, "PersonasDependientes": $scope.personasdependientes, "CelularFamiliar": $scope.celularfamiliar, "Cargo": $scope.cargo }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalempleadocreate').modal('hide');
+
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise los nombres, apellidos y cedula de identidad del empleado');
+            }
+        }
+
+        $('table1 tbody').on('click', 'tr', function () {
+            console.log("dasdsa");
+
+
+
+        });
+
+        $scope.get = function () {
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.idempleado = table.cell(idt, 0).data();
+                $scope.codempleado = table.cell(idt, 1).data();
+                $scope.nombrecompleto = table.cell(idt, 2).data();
+                $scope.primernombre = table.cell(idt, 3).data();
+                $scope.segundonombre = table.cell(idt, 4).data();
+                $scope.primerapellido = table.cell(idt, 5).data();
+                $scope.segundoapellido = table.cell(idt, 6).data();
+                $scope.cedula = table.cell(idt, 7).data();
+                $scope.dircontacto = table.cell(idt, 8).data();
+                $scope.correo = table.cell(idt, 9).data();
+                $scope.telcontacto = table.cell(idt, 10).data();
+                $scope.celular = table.cell(idt, 11).data();
+                $scope.operadora = table.cell(idt, 12).data() + "";
+                $scope.estadocivil = table.cell(idt, 13).data() + "";
+                
+                $scope.cargo = table.cell(idt, 14).data();
+                $scope.personasdependientes = table.cell(idt, 17).data();
+                $scope.celularfamiliar = table.cell(idt, 18).data();
+
+                toastr['success']('Actualmente esta seleccionando el empleado ' + $scope.nombrecompleto);
+
+            }, 100);
+        };
+
+        $scope.clean = function () {
+
+            $scope.message = "";
+            $scope.primernombre = "";
+            $scope.primerapellido = "";
+            $scope.segundonombre = "";
+            $scope.segundoapellido = "";
+            $scope.cedula = "";
+            $scope.dircontacto = "";
+            $scope.correo = "";
+            $scope.telcontacto = "";
+            $scope.celular = "";
+            $scope.estadocivil = "true";
+            $scope.operadora = "1";
+            $scope.codempleado = "";
+            $scope.celularfamiliar = "";
+            $scope.personasdependientes = "";
+            $scope.cargo = "Administrador";
+            setTimeout(function () {
+                $('#table1').DataTable().ajax.reload();
+            }, 100);
+
+
+        }
+
+        $('#modalempleadocreate').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+        $('#Modaldelete').on('hidden.bs.modal', function (e) {
+            $scope.clean();
+        });
+
+
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

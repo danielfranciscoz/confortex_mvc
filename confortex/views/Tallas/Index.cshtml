@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "Tallas";
+}
+
+<ng-controller ng-controller="ConTalla">
+
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold">Tallas </h4>
+
+        <div class="table-responsive ">
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            Id
+                        </th>
+                        <th>
+                            Talla
+                        </th>
+                        <th>
+                            Descripción
+                        </th>
+                       
+
+
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large green darken-4 ">
+                <i class="fa fa-cogs"></i>
+            </a>
+
+            <ul>
+                <li><a class="btn-floating green" data-animation="false" ng-click="nuevo()" data-tooltip=tooltip data-placement="left" title="Agrega talla "><i class="fa fa-plus"></i></a></li>
+                <li><a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita la talla seleccionada."><i class="fa fa-pencil"></i></a></li>
+                <li><a class="btn-floating red" data-animation="false" ng-click="eliminar()" data-tooltip=tooltip data-placement="left" title="Elimina la talla seleccionada."><i class="fa fa-trash-o"></i></a></li>
+
+            </ul>
+        </div>
+        @Html.Action("Create", "Tallas")
+        @Html.Action("DeleteGeneral", "Home");
+    </div>
+</ng-controller>
+
+
+<script>
+        var table = "";
+        $(document).ready(function () {
+            $('[data-tooltip=tooltip]').tooltip();
+            $('[data-toggle=tab]').tooltip();
+
+            table = $('#table1').DataTable({
+                select: true,
+                "processing": true,
+                "serverSide": true,
+                "orderMulti": false,
+                "ajax": {
+                    "url": "../Tallas/searchTallas",
+                    "type": "POST",
+                    "dataType": "JSON"
+
+                },
+                "columns": [
+                    { "data": "IdTalla", "name": "IdTalla", visible: false },
+                    { "data": "Nombre", "name": "Nombre" },
+                    { "data": "Descripcion", "name": "Descripcion" }
+                ],
+                "language": {
+                    "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                    "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                    "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                    "infoEmpty": "No hay entradas Disponibles",
+                    "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                    "search": "Buscar",
+                    "paginate": {
+                        "previous": "Anterior",
+                        "next": "Siguiente"
+                    }, "select": {
+                        rows: " "
+                    }
+                }
+
+            });
+        });
+
+
+
+
+        app.controller('ConTalla', function ($scope, $http) {
+
+            $scope.idtalla = 0;
+            $scope.nombre = "";
+            $scope.descripcion = "";
+
+            $scope.abrirmodal = function () {
+                $('#modaltallacreate').modal({
+                    show: true
+                });
+            }
+
+            $scope.nuevo = function () {
+
+                if ($scope.idtalla == 0) {
+                    $scope.abrirmodal();
+                } else {
+                    $scope.clean();
+                    $scope.abrirmodal();
+                }
+
+            };
+
+            $scope.editar = function () {
+
+                if ($scope.idtalla > 0) {
+                    $scope.abrirmodal();
+                }
+            };
+
+         
+
+            $scope.gestionar = function () {
+                if ($scope.idtalla > 0) {
+                    $scope.modificar();
+                } else {
+                    $scope.guardar();
+                }
+
+            }
+
+            $scope.eliminar = function () {
+                if ($scope.idtalla > 0) {
+                    $('#Modaldelete').modal({
+                        show: true
+                    });
+                }
+            }
+
+                $scope.anular = function(){
+                    $http({
+                        url: "../Tallas/Delete",
+                        method: "POST",
+                        data: $.param({ "id": $scope.idtalla }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#Modaldelete').modal('hide');
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }
+
+            )};
+
+            $scope.guardar = function () {
+
+                console.log($scope.istalla);
+                if ($scope.nombre.length > 0 &&
+                    $scope.nombre.length < 6 
+                    ) {
+                    $http({
+                        url: "../Tallas/create",
+                        method: "POST",
+                        data: $.param({ "Nombre": $scope.nombre, "Descripcion":   $scope.descripcion }),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modaltallacreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('Revise el nombre de la talla debe contener entre 1 y 5 caracteres');
+                }
+            }
+
+            $scope.modificar = function () {
+                $scope.nombre = $scope.nombre + "";
+                $scope.descripcion = $scope.descripcion + "";
+
+
+                if ($scope.nombre.length > 0 &&
+                    $scope.nombre.length < 6
+                    ) {
+                    $http({
+                        url: "../Tallas/Edit",
+                        method: "POST",
+                        data: $.param({ "IdTalla": $scope.idtalla, "Nombre": $scope.nombre, "Descripcion": $scope.descripcion}),
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            $('#modaltallacreate').modal('hide');
+
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                } else {
+                    toastr['warning']('El nombre de la talla debe contener entre 1 y 5 caracteres');
+                }
+            }
+
+
+            $scope.get = function () {
+                setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.idtalla = table.cell(idt, 0).data();
+                $scope.nombre = table.cell(idt, 1).data();
+                $scope.descripcion = table.cell(idt, 2).data();
+               
+                toastr['success']('Actualmente está seleccionando la talla '+$scope.nombre);
+
+
+
+                }, 100);
+            };
+
+            $scope.clean = function () {
+                $scope.message = "";
+                $scope.idtalla = 0;
+                $scope.nombre = "";
+                $scope.descripcion = "";
+                $scope.istalla = false;
+                setTimeout(function () {
+
+
+                    $('#table1').DataTable().ajax.reload();
+
+                }, 100);
+
+
+            }
+
+            $('#modaltallacreate').on('hidden.bs.modal', function (e) {
+
+                $scope.clean();
+
+            });
+            $('#Modaldelete').on('hidden.bs.modal', function (e) {
+                $scope.clean();
+            });
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

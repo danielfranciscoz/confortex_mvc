@@ -1,0 +1,25 @@
+﻿@model Confortex.Models.ReportViewerViewModel
+
+@{
+    ViewBag.Title = "Reporte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="flex-center row" ng-controller="Reporte" ng-cloak>
+    <div class="card col-md-12">
+
+        <div class="card-block">
+
+            <div class="form-horizontal row">
+
+                <h4 class="h4-responsive font-weight-bold col-6">Informe de Cotización</h4>               
+                <a class="btn btn-sm text-right green darken-4" href="~/Cotizaciones/index">Regresar a Cotizaciones</a>
+                <iframe src="@Model.ReportPath" style="width:100%; height:1000px; border:none;"></iframe>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

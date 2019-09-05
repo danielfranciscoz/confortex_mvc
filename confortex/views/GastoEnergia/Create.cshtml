@@ -1,0 +1,44 @@
+﻿@model Confortex.Models.GastoEnergia
+
+<div class="modal fade right" id="modalGastoEnergia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title"><i class="fa fa-buysellads  "></i>Gasto Energético</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+                <div class="form-horizontal">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FacturaNo,"No. de Factura", htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.EditorFor(model => model.FacturaNo, new { htmlAttributes = new { @class = "form-control", ng_model = "facturano" } })
+
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Monto, htmlAttributes: new { @class = "control-label col-md-12" })
+                            @Html.EditorFor(model => model.Monto, new { htmlAttributes = new { @class = "form-control", ng_model = "monto", ng_keyup="EsMonto()" } })
+                        </div>
+
+                    <div class="md-form">
+                        <input placeholder="Seleccione una fecha" type="text" id="date-picker" class="form-control datepicker" ng-model="mesaplica">
+                        <label for="date-picker">Periodo de consumo</label>
+                    </div>
+                  
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="gestionar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

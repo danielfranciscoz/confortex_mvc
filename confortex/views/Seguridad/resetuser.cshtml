@@ -1,0 +1,43 @@
+﻿
+<div class="modal fade right" id="modaluserr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+    <div class="modal-dialog modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-green  white-text">
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="title">Cambio de contraseña</h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body mb-0">
+                <div class="form-horizontal">
+                        <div class="form-group">
+                           <label>Usuario:</label>
+                            <input type="text" ng-model="user"  readonly/>
+                        </div>                       
+
+                        <div class="form-group">
+                            <label>Contraseña:</label>
+                            <input type="password" ng-model="ps1" />
+                        </div>
+                        <div class="form-group">
+                            <label>Repetir Contraseña:</label>
+                            <input type="password" ng-model="ps2" />
+                        </div>
+
+                    
+                  
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="modificar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

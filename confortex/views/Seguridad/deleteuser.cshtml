@@ -1,0 +1,28 @@
+﻿
+<div class="modal fade" id="Modaldeleteuser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header light-green darken-4">
+                <button type="button" class="close white-text" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title h4-responsive white-text font-weight-bold" id="myModalLabel">Eliminar  </h4>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                Esta a punto de eliminar un objeto permanentemente de la base de datos, esta seguro que desea Eliminar este objeto?
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-elegant btn-sm" data-dismiss="modal">Cancelar</button>
+                <button ng-click="anular()" class="btn btn-sm red darken-4"> Eliminar</button>
+                <p>{{message}}</p>
+              
+
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

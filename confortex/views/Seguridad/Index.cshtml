@@ -1,0 +1,775 @@
+﻿
+@{
+    ViewBag.Tittle = "Seguridad";
+}
+
+
+
+<ng-controller ng-controller="SeguController">
+    <div class="card card-block rounded smooth-scroll">
+        <h4 class="h4-responsive  font-weight-bold"> Seguridad del sistema</h4>
+
+        <ul class="nav nav-tabs nav-justified green darken-4">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#panel1" role="tab">Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel2" role="tab">Roles</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel3" role="tab">Roles por usuario</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#panel4" role="tab">Permisos por Roles</a>
+            </li>
+        </ul>
+        <!-- Tab panels -->
+        <div class="tab-content card">
+            <!--Panel 1-->
+            <div class="tab-pane fade in show active" id="panel1" role="tabpanel">
+                <a class="btn btn-sm green" ng-click="nuevo()">Agregar</a><a class="btn btn-sm yellow darken-4" ng-click="editar()">Cambiar Password</a><a class="btn btn-sm red" ng-click="eliminar()">Eliminar</a>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table1">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                   usuario
+                                </th>                                
+                            </tr>
+                        </thead>
+                       
+                    </table>
+
+                </div>
+            </div>
+            <!--/.Panel 1-->
+            <!--Panel 2-->
+            <div class="tab-pane fade" id="panel2" role="tabpanel">
+                <a class="btn btn-sm green" ng-click="nuevor()">Agregar</a><a class="btn btn-sm yellow darken-4" ng-click="editarr()">Editar</a><a class="btn btn-sm red" ng-click="eliminarr()">Eliminar</a>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table2">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    id
+                                </th>
+                                <th>
+                                    Rol
+                                </th>
+                                <th>
+                                    Pantalla Inicial
+                                </th>
+                                <th>
+                                Pantalla Inicial
+                                </th>
+                            </tr>
+                        </thead>
+
+                    </table>
+
+                </div>
+            </div>
+            <!--/.Panel 2-->
+            <!--Panel 3-->
+            <div class="tab-pane fade" id="panel3" role="tabpanel">
+                <a class="btn btn-sm green" ng-click="nuevoru()">Agregar</a><a class="btn btn-sm red" ng-click="eliminarru()">Eliminar</a>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table3">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    Usuario
+                                </th>
+                                <th>
+                                    Rol
+                                </th>
+                                <th>
+                                   idus
+                                </th>
+
+                               
+                            </tr>
+                        </thead>
+
+                    </table>
+
+                </div>
+            </div>
+            <!--/.Panel 3-->
+            <div class="tab-pane fade" id="panel4" role="tabpanel">
+                <a class="btn btn-sm green" ng-click="nuevop()">Agregar</a><a class="btn btn-sm red" ng-click="eliminarp()">Eliminar</a>
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table4">
+                        <thead class="light-green  white-text">
+                            <tr>
+                               
+                                <th>
+                                    Rol
+                                </th>
+                                <th>
+                                    Pantalla
+                                </th>
+                                <th>
+                                    Rol
+                                </th>
+                                <th>
+                                    Pantalla
+                                </th>
+
+
+                            </tr>
+                        </thead>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+       
+             
+        @Html.Action("createroluser", "Seguridad")
+        @Html.Action("createuser", "Seguridad")
+        @Html.Action("resetuser", "Seguridad")
+        @Html.Action("createrol", "Seguridad")
+        @Html.Action("createpermiso", "Seguridad")
+
+        @Html.Action("deleteuser", "Seguridad")
+        @Html.Action("deleterol","Seguridad")
+        @Html.Action("deleteroluser", "Seguridad")
+        @Html.Action("deletepermiso", "Seguridad")
+
+    </div>
+</ng-controller>
+
+<script>
+
+  
+    
+    $(document).ready(function () {
+        $('[data-tooltip=tooltip]').tooltip();
+        $('[data-toggle=tab]').tooltip();
+
+     
+
+    });
+
+    app.controller('SeguController', function ($scope, $http) {
+        $scope.user = "";
+        $scope.idrol = "";
+        $scope.ps1 = "";
+        $scope.ps2 = "";
+        $scope.idrolrol = "";
+        $scope.iduserrol = "";
+        $scope.idrolpermiso = "";
+        $scope.idpantalla = "";
+
+        var table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Seguridad/searchUsuarios",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "IdUsuario", "name": "IdUsuario", visible: false },
+                { "data": "UserName", "name": "UserName" }
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table2 = $('#table2').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Seguridad/searchRoles",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                { "data": "Id", "name": "Id", visible: false },
+                { "data": "Name", "name": "Name" },
+                   { "data": "Nombre", "name": "Nombre" },
+                   { "data": "IdStarPage", "name": "IdStarPage", visible: false }
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table3 = $('#table3').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Seguridad/searchRolesUser",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+              
+                { "data": "UserId", "name": "UserId" },
+                   { "data": "Name", "name": "Name" },
+                   { "data": "RoleId", "name": "RoleId", visible: false }
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+        var table4 = $('#table4').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "ajax": {
+                "url": "../Seguridad/searchPermisos",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+
+               
+                   { "data": "Name", "name": "Name" },
+                    { "data": "Nombre", "name": "Nombre" },
+                   { "data": "IdRol", "name": "IdRol", visible: false },
+                   { "data": "IdPantalla", "name": "IdPantalla", visible: false }
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+        $scope.EsMonto = function () {
+
+            $scope.monto= NoLetras($scope.monto);
+        }
+
+        $scope.nuevo = function () {                   
+                $scope.abrimodal();
+            
+        }
+
+     
+
+        $scope.nuevor = function () {
+            if ($scope.idrol.length > 0) {
+                $scope.idrol = "";
+                $scope.rol = "";
+                $scope.idstarpage = "";
+            }
+            $scope.abrimodalrol();
+
+        }
+        $scope.nuevoru = function () {
+            if ($scope.idrolrol.length > 0) {
+                $scope.idrolrol = "";
+                $scope.iduserrol = "";
+            }
+            $scope.abrimodalroluser();
+
+        }
+        $scope.nuevop = function () {
+            if ($scope.idrolpermiso.length > 0) {
+                $scope.idrolpermiso = "";
+                $scope.idpantalla = "";
+            }
+            $scope.abrimodalpermiso();
+
+        }
+        $scope.editar = function () {
+
+            if ($scope.iduser.length > 0) {
+
+                $scope.abrimodalr();
+            }
+        }
+        $scope.editarr = function () {
+            if ($scope.idrol.length > 0) {
+                $scope.abrimodalrol();
+            }
+          
+
+        }
+
+       
+
+        $scope.gestionarr = function () {
+            if ($scope.idrol.length > 0) {
+                $scope.modificarr();
+            } else {
+                $scope.guardarr();
+            }
+
+        }
+        $scope.gestionarru = function () {
+           
+                $scope.guardarru();
+            
+
+        }
+
+        $scope.gestionarp = function () {
+
+            $scope.guardarp();
+
+
+        }
+
+        $scope.abrimodal = function () {
+            $('#modaluser').modal({
+                show: true
+            })
+        }
+        $scope.abrimodalr = function () {
+            $('#modaluserr').modal({
+                show: true
+            })
+        }
+        $scope.abrimodalrol = function () {
+            $('#modalrol').modal({
+                show: true
+            })
+        }
+        $scope.abrimodalroluser = function () {
+            $('#modalroluser').modal({
+                show: true
+            })
+        }
+        $scope.abrimodalpermiso = function () {
+            $('#modalpermiso').modal({
+                show: true
+            })
+        }
+
+          
+
+        $('#table1 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+                $scope.iduser = table.cell(idt, 0).data();
+                $scope.user = table.cell(idt, 1).data();
+                toastr['success']('Actualmente esta seleccionando el usuario ' + $scope.user);
+
+
+
+
+            }, 100);
+        });
+        $('#table2 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table2.row('.selected').index();
+                $scope.idrol = table2.cell(idt, 0).data();
+                $scope.rol = table2.cell(idt, 1).data();
+                $scope.idstarpage = table2.cell(idt, 3).data()+"";
+                toastr['success']('Actualmente esta seleccionando el rol ' + $scope.rol);
+
+
+
+
+            }, 100);
+        });
+
+        $('#table3 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table3.row('.selected').index();
+                $scope.iduserrol = table3.cell(idt, 0).data()+"";
+                $scope.idrolrol = table3.cell(idt, 2).data()+"";
+           
+                toastr['success']('Actualmente esta seleccionando el usuario ' + $scope.iduserrol+' y el rol '+table3.cell(idt, 1).data());
+
+
+
+
+            }, 100);
+        });
+
+        $('#table4 tbody').on('click', 'td', function () {
+            setTimeout(function () {
+                var idt = table4.row('.selected').index();
+                $scope.idrolpermiso = table4.cell(idt,2).data() + "";
+                $scope.idpantalla = table4.cell(idt, 3).data() + "";
+
+                toastr['success']('Actualmente esta seleccionando el rol' + table4.cell(idt, 0).data() + ' y la pantalla ' + table4.cell(idt, 1).data());
+
+
+
+
+            }, 100);
+        });
+
+        $scope.guardar = function () {
+
+            if ($scope.ps1.length > 5 &&
+                $scope.ps2.length > 5 &&
+                $scope.ps2 == $scope.ps1 &&
+                 $scope.user.length > 0
+                ) {
+                $http({
+                    url: "../Seguridad/Register",
+                    method: "POST",
+                    data: $.param({ "Usuario": $scope.user, "pass": $scope.ps1}),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modaluser').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el usuario y contraseñas');
+            }
+        }
+
+        $scope.guardarr = function () {
+
+            if ($scope.rol.length > 0 &&
+                $scope.idstarpage > 0
+                ) {
+                $http({
+                    url: "../Seguridad/saveRol",
+                    method: "POST",
+                    data: $.param({ "Id": $scope.rol, "Name": $scope.rol,"IdStarPage": $scope.idstarpage }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalrol').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise nombre del rol y pantalla');
+            }
+        }
+        $scope.guardarru = function () {
+
+            if ($scope.iduserrol.length > 0 &&
+                $scope.idrolrol.length > 0
+                ) {
+                $http({
+                    url: "../Seguridad/saveRolUser",
+                    method: "POST",
+                    data: $.param({ "UserId": $scope.iduserrol, "RoleId": $scope.idrolrol }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalroluser').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise nombre del rol y el usuario');
+            }
+        }
+
+        $scope.guardarp = function () {
+
+            if ($scope.idrolpermiso.length > 0 &&
+                $scope.idpantalla.length > 0
+                ) {
+                $http({
+                    url: "../Seguridad/savePermiso",
+                    method: "POST",
+                    data: $.param({ "IdRol": $scope.idrolpermiso, "IdPantalla": $scope.idpantalla,"IdPermisoName" : 5 }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalpermiso').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el rol y el permiso');
+            }
+        }
+
+        $scope.modificarr = function () {
+
+            if ($scope.rol.length > 0 &&
+                $scope.idstarpage > 0
+                ) {
+                $http({
+                    url: "../Seguridad/editRol",
+                    method: "POST",
+                    data: $.param({ "Id": $scope.idrol, "Name": $scope.rol, "IdStarPage": $scope.idstarpage }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modalrol').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise nombre del rol y pantalla');
+            }
+        }
+
+
+        $scope.modificar = function () {
+            $scope.user = $scope.user + "";
+
+            if ($scope.user.length > 0 &&
+                $scope.ps1.length > 5 &&
+                $scope.ps2.length > 5 &&
+                $scope.ps1 == $scope.ps2
+                ) {
+                $http({
+                    url: "../Seguridad/ResetPassword",
+                    method: "POST",
+                    data: $.param({ "User": $scope.user, "Password": $scope.ps1,"ConfirmPassword": $scope.ps2 }),
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modaluserr').modal('hide');
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el usuario y contraseñas');
+            }
+        }
+
+        $('#modaluser').on('hidden.bs.modal', function (e) {
+            $scope.message = "";
+            $scope.user = "";
+            $scope.ps1 = "";
+            $scope.ps2 = "";
+            setTimeout(function () {
+                $('#table1').DataTable().ajax.reload();
+            }, 100);
+        });
+        $('#modalrol').on('hidden.bs.modal', function (e) {
+            $scope.message = "";
+            $scope.rol = "";
+            $scope.idstarpage = 0+"";
+            setTimeout(function () {
+                $('#table2').DataTable().ajax.reload();
+            }, 100);
+        });
+        $('#modaluserr').on('hidden.bs.modal', function (e) {
+            $scope.user = "";
+            $scope.ps1 = "";
+            $scope.ps2 = "";
+            $scope.message = "";
+        });
+        $('#modalroluser').on('hidden.bs.modal', function (e) {
+            $scope.iduserrol = "";
+            $scope.idrolrol = "";
+            $scope.message = "";
+            setTimeout(function () {
+                $('#table3').DataTable().ajax.reload();
+            }, 100);
+        });
+        $('#modalpermiso').on('hidden.bs.modal', function (e) {
+            $scope.idpantalla = "";
+            $scope.idrolpermiso = "";
+            $scope.message = "";
+            setTimeout(function () {
+                $('#table4').DataTable().ajax.reload();
+            }, 100);
+        });
+
+        $scope.eliminar = function () {
+           
+            if ($scope.user.length > 0) {
+               
+                $('#Modaldeleteuser').modal({
+                    show: true
+                });
+            }
+        }
+        $scope.eliminarr = function () {
+            if ($scope.idrol.length> 0) {
+                $('#Modaldeleterol').modal({
+                    show: true
+                });
+            }
+        }
+        $scope.eliminarru = function () {
+            if ($scope.idrolrol.length > 0) {
+                $('#Modaldeleteroluser').modal({
+                    show: true
+                });
+            }
+        }
+        $scope.eliminarp = function () {
+            if ($scope.idrolpermiso.length > 0) {
+                $('#Modaldeletepermiso').modal({
+                    show: true
+                });
+            }
+        }
+
+        $scope.anular = function () {
+            $http({
+                url: "../Seguridad/deleteeuser",
+                method: "POST",
+                data: $.param({ "id": $scope.iduser }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldeleteuser').modal('hide');
+                    setTimeout(function () {
+                        $('#table1').DataTable().ajax.reload();
+                    }, 100);
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+        $scope.anularr = function () {
+            $http({
+                url: "../Seguridad/deleteeRol",
+                method: "POST",
+                data: $.param({ "id": $scope.idrol }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldeleterol').modal('hide');
+                    setTimeout(function () {
+                        $('#table2').DataTable().ajax.reload();
+                    }, 100);
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+        $scope.anularru = function () {
+            $http({
+                url: "../Seguridad/deleteeUserRol",
+                method: "POST",
+                data: $.param({ "UserId": $scope.iduserrol,"RoleId":$scope.idrolrol }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldeleteroluser').modal('hide');
+                    setTimeout(function () {
+                        $('#table3').DataTable().ajax.reload();
+                    }, 100);
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+        $scope.anularp = function () {
+            $http({
+                url: "../Seguridad/deleteePermiso",
+                method: "POST",
+                data: $.param({ "IdRol": $scope.idrolpermiso, "IdPantalla": $scope.idpantalla, "IdPermisoName": 5 }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+                if (response.data.Message == "Exito") {
+                    $('#Modaldeletepermiso').modal('hide');
+                    setTimeout(function () {
+                        $('#table4').DataTable().ajax.reload();
+                    }, 100);
+                } else {
+                    $scope.message = "Error: " + response.data.Message;
+
+                }
+
+            }
+
+    )
+        };
+
+
+    });
+
+</script>

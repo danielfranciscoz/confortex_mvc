@@ -1,0 +1,15 @@
+﻿
+@model IEnumerable<Confortex.Models.Medida>
+    @{ 
+        
+    }
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-2">
+            <input type="checkbox" id="Medida_@item.IdMedida" ng-model="medidas[@item.IdMedida]"/>
+            
+            <label for="Medida_@item.IdMedida">@item.Nombre</label>
+        </div>
+    }
+</div>

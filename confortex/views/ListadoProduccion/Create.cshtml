@@ -1,0 +1,757 @@
+﻿<style>
+    #table1_filter {
+        display: none;
+    }
+
+    #table1_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+
+    #table2_paginate {
+        display: none;
+    }
+
+    #table3_filter {
+        display: none;
+    }
+
+    #table3_paginate {
+        display: none;
+    }
+</style>
+
+
+<ng-controller ng-controller="ConT" ng-cloak>
+    <div class="card card-block rounded smooth-scroll">
+
+        <div class="row">
+
+            <div class="col-12">
+                <br />
+                <h3 class="h3-responsive font-weight-bold"><strong>Generacion de Ticket :</strong></h3>
+                <h5 class="h5-responsive font-weight-bold"><strong>Piezas requeridas: @ViewBag.CantidadRequerida</strong></h5>
+                <h5 class="h5-responsive font-weight-bold"><strong>Piezas Pendientes de asignar: @ViewBag.Pendiente</strong></h5> <br />
+
+                <label>Descripcion de la pieza: </label>
+                <input ng-model="dpieza" class="col-10" type="text" readonly />
+                <label>Nombre: </label>
+                <input ng-model="nombre" class="col-4" type="text" />
+                <label>Cantidad: </label>
+                <input ng-model="cantidad" class="col-2" type="text" ng-keyup="EsCantidad()" />
+                <label>Talla: </label>
+                @Html.DropDownList("IdTalla", null, htmlAttributes: new { style = "display:initial", @class = "col-3", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el cargo del empleado", data_animation = "false", ng_model = "talla", ng_change = "tallat()" })
+                <br />
+                <label>Color: </label>                
+                @Html.DropDownList("IdColor", null, htmlAttributes: new { style = "display:initial", @class = "col-3", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el color de la pieza", data_animation = "false", ng_model = "color" })
+
+
+                <label>Observaciones: </label>
+                <input ng-model="observaciones" class="col-6" type="text" />
+
+                <h5 class="h5-responsive font-weight-bold"><br /> <strong>Medidas Estandares:</strong></h5><br />
+                <div class="table-responsive col-12 ">
+                    <table class="table " id="table1">
+                        <thead class="light-green  white-text" id="thdina">
+
+                        </thead>
+
+                        <tbody ng-click="get()"></tbody>
+
+                    </table>
+
+                </div>
+            </div>
+            <div class="col-12">
+                <br />
+
+                <br />
+                <h5 class="h5-responsive font-weight-bold"><strong>Medidas del Cliente:</strong></h5>
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label>Medida: </label>
+                            @Html.DropDownList("IdMedida", null, htmlAttributes: new { style = "display:initial", @class = "col-3", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el cargo del empleado", data_animation = "false", ng_model = "medida" })
+                            <label>Valor Medida: </label>
+                            <input type="text" ng-model="vmedida" class="col-1" ng-keyup="EsVmedida()" />
+                            <a class="btn btn-floating blue" ng-click="agregar1()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                            <a class="btn btn-floating red" ng-click="eliminar1()"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table " id="table2">
+                                <thead class="light-green  white-text" id="tht">
+                                    <tr>
+                                        <th>
+                                            Iddes
+                                        </th>
+                                        <th>
+                                            Idtalla
+                                        </th>
+                                        <th>
+                                            Idmedida
+                                        </th>
+                                        <th>
+                                            Talla
+                                        </th>
+                                        <th>
+                                            Medida
+                                        </th>
+                                        <th>
+                                            Valor medida
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody ng-click="get1()"></tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <input type="checkbox" id="checkbox100" checked="checked" ng-model="reparacion">
+                            <label for="checkbox100">Es Reparacion?</label> <br />
+                            <label ng-show="reparacion">Funcion: </label>
+                            @Html.DropDownList("IdFuncion", null, htmlAttributes: new { style = "display:initial", ng_show = "reparacion", @class = "col-3", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el cargo del empleado", data_animation = "false", ng_model = "funcion" })
+                            <label ng-show="reparacion">Precio M.O.: </label>
+                            <input type="text" ng-model="precio" class="col-1" ng-show="reparacion" ng-keyup="EsPrecio()">
+                            <a class="btn btn-floating blue" ng-click="agregar2()" ng-show="reparacion"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                            <a class="btn btn-floating red" ng-click="eliminar2()" ng-show="reparacion"><i class="fa fa-minus" aria-hidden="true"></i></a>
+
+                        </div>
+                        <div class="table-responsive" ng-show="reparacion">
+                            <table class="table " id="table3">
+                                <thead class="light-green  white-text" id="tht2">
+                                    <tr>
+                                        <th>
+                                            Función
+                                        </th>
+                                        <th>
+                                            Precio M.O
+                                        </th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody ng-click="get2()"></tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="col-6" ng-show="asdd">
+                        <div class="form-group">
+                            <label>Medida: </label>
+                            @Html.DropDownList("IdMedida", null, htmlAttributes: new { style = "display:initial", @class = "col-3", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el cargo del empleado", data_animation = "false", ng_model = "medida" })
+                            <label>Valor Medida: </label>
+                            <input type="text" ng-model="vmedida" class="col-1" ng-keyup="EsVmedida()" />
+                            <a class="btn btn-floating blue" ng-click="agregar1()"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                            <a class="btn btn-floating red" ng-click="eliminar1()"><i class="fa fa-minus" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table " id="table4">
+                                <thead class="light-green  white-text" id="tht">
+                                    <tr>
+                                        <th>
+                                            Iddes
+                                        </th>
+                                        <th>
+                                            Idtalla
+                                        </th>
+                                        <th>
+                                            Idmedida
+                                        </th>
+                                        <th>
+                                            Talla
+                                        </th>
+                                        <th>
+                                            Medida
+                                        </th>
+                                        <th>
+                                            Valor medida
+                                        </th>
+                                    </tr>
+                                </thead>
+
+                                <tbody ng-click="get1()"></tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="col-6" ng-show="asdd">
+                        <div class="form-group">
+                            <input type="checkbox" id="checkbox100" checked="checked" ng-model="reparacion">
+                            <label for="checkbox100">Es Reparacion?</label> <br />
+                            <label ng-show="reparacion">Funcion: </label>
+                            @Html.DropDownList("IdFuncion", null, htmlAttributes: new { style = "display:initial", ng_show = "reparacion", @class = "col-3", data_tooltip = "tooltip", data_placement = "right", title = "Seleccione el cargo del empleado", data_animation = "false", ng_model = "funcion" })
+                            <label ng-show="reparacion">Precio M.O.: </label>
+                            <input type="text" ng-model="precio" class="col-1" ng-show="reparacion" ng-keyup="EsPrecio()">
+                            <a class="btn btn-floating blue" ng-click="agregar2()" ng-show="reparacion"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                            <a class="btn btn-floating red" ng-click="eliminar2()" ng-show="reparacion"><i class="fa fa-minus" aria-hidden="true"></i></a>
+
+                        </div>
+                        <div class="table-responsive" ng-show="reparacion">
+                            <table class="table " id="table5">
+                                <thead class="light-green  white-text" id="tht2">
+                                    <tr>
+                                        <th>
+                                            Función
+                                        </th>
+                                        <th>
+                                            Precio M.O
+                                        </th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody ng-click="get2()"></tbody>
+
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+
+
+            </div>
+        </div>
+
+
+        <div class="text-center">
+            <a class="btn btn-sm green darken-4" ng-click="gestionar()">Guardar Ticket</a>
+            <a class="btn btn-sm red darken-4" ng-click="regresar()">Regresar </a>
+            <br />
+            <p class="red-text">{{message}}</p>
+        </div>
+
+
+    </div>
+
+</ng-controller>
+<script>
+
+    app.controller('ConT', function ($scope, $http, $window) {
+
+        $scope.AidMedida = [];
+        $scope.tempvalor =[];
+        $scope.reparacion = false;
+        $scope.idpieza =  @ViewBag.Pieza;
+        $scope.idticket =  @ViewBag.Ticket;
+        $scope.iddescripcionhechura = @ViewBag.Hechura;
+        $scope.dpieza =  "@ViewBag.NombrePieza"+" "+"@ViewBag.DescripcionCompleta";
+        
+        var tablet = "";
+        var tablef = "";
+
+
+
+
+
+
+        $http({
+            url: "../PiezaTallaMedidaS/ObtenerCatalogo",
+            method: "POST",
+            data: $.param({ "IdPieza": $scope.idpieza }),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(function (response) {
+            var tableHeaders;
+            var inputs
+            $.each(response.data.columns, function(i, val){
+                tableHeaders += "<th></th>";
+            });
+            $("#thdina").append('<tr>' + tableHeaders + '</tr>');
+
+
+            setTimeout(function () {
+                $scope.columns = response.data.columns;
+
+              var  tablep = $('#table1').DataTable({
+                    "select": true,
+                    "bInfo": false,
+                    "bSort": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bPagination": false,
+                    "aaData": response.data.data,
+                    "aoColumns": response.data.columns,
+                    "bLengthChange": false,
+                    "columnDefs": [{
+                        "targets": [0],
+                        "visible": false
+                    }],
+                    select: true
+                });
+                 tablet = $('#table2').DataTable({
+                    "select": true,
+                    "bInfo": false,
+                    "bSort": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bPagination": false,
+                    "bLengthChange": false,
+                    "columnDefs": [{
+                        "targets": [0],
+                        "visible": false
+                    },{
+                        "targets": [1],
+                        "visible": false
+                    },{
+                        "targets": [2],
+                        "visible": false
+                    }
+                    ],
+                    select: true
+                });
+                tablef = $('#table3').DataTable({
+                    "select": true,
+                    "bInfo": false,
+                    "bSort": false,
+                    "bDestroy": true,
+                    "bFilter": false,
+                    "bPagination": false,
+                    "bLengthChange": false,
+                    select: true
+                });
+
+
+
+
+                for(var i=2; i<$scope.tamcolumns+2;i++){
+                    $scope.AidMedida[i-2]= tablep.cell(0,i ).data();
+                }
+
+
+                tablep.row(0).remove().draw(false);
+                var tabletemp = tablep;
+
+
+
+
+            },200);
+
+            setTimeout(function () {
+                 tablet1 = $('#table4').DataTable({
+                    select: true,
+                    "processing": true,
+                    "serverSide": true,
+                    "orderMulti": false,
+                    "searching": true,
+                    "bFilter": false,
+                    bInfo: false,
+                    "bLengthChange": false,
+                    "ajax": {
+                        "url": "../ListadoProduccion/searchMedidas",
+                        "type": "POST",
+                        "dataType": "JSON"
+
+                    },
+                    "columns": [
+
+                        { "data": "IdDetalleListadoProduccion", "name": "IdDetalleListadoProduccion", visible: false },
+                          { "data": "IdTalla", "name": "IdTalla", visible: false },
+                        { "data": "IdMedida", "name": "IdMedida", visible: false },
+                        { "data": "Talla", "name": "Talla" },
+                         { "data": "Medida", "name": "Medida" },
+                         { "data": "vMedida", "name": "vMedida" }
+
+                    ],
+                    "language": {
+                        "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                        "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                        "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                        "infoEmpty": "No hay entradas Disponibles",
+                        "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                        "search": "Buscar",
+                        "paginate": {
+                            "previous": "Anterior",
+                            "next": "Siguiente"
+                        }, "select": {
+                            rows: " "
+                        }
+                    }
+
+                });
+
+                 tablet1.search($scope.idticket).draw();
+                 setTimeout(function () {
+
+                     var TamTabt = tablet1.column(0).data().length;
+                     console.log(TamTabt);
+                     for (var i = 0; i < TamTabt; i++) {
+                         tablet.row.add([tablet1.cell(i, 0).data(),tablet1.cell(i, 1).data(),tablet1.cell(i, 2).data(),tablet1.cell(i, 3).data(),tablet1.cell(i, 4).data(),tablet1.cell(i, 5).data()]).draw();
+
+                     }
+                 },1000);
+
+
+            }, 200);
+
+
+            setTimeout(function () {
+                tablef1 = $('#table5').DataTable({
+                    select: true,
+                    "processing": true,
+                    "serverSide": true,
+                    "orderMulti": false,
+                    "searching": true,
+                    "bFilter": false,
+                    bInfo: false,
+                    "bLengthChange": false,
+                    "ajax": {
+                        "url": "../ListadoProduccion/searchReparacion",
+                        "type": "POST",
+                        "dataType": "JSON"
+
+                    },
+                    "columns": [
+
+                         { "data": "NombreFuncion", "name": "NombreFuncion" },
+                         { "data": "PrecioMO", "name": "PrecioMO" }
+
+                    ],
+                    "language": {
+                        "lengthMenu": "Mostrando _MENU_ Entradas por pagina",
+                        "zeroRecords": "Lo sentimos, no se encuentran concidencias",
+                        "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                        "infoEmpty": "No hay entradas Disponibles",
+                        "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                        "search": "Buscar",
+                        "paginate": {
+                            "previous": "Anterior",
+                            "next": "Siguiente"
+                        }, "select": {
+                            rows: " "
+                        }
+                    }
+
+                });
+
+                tablef1.search($scope.idticket).draw();
+                setTimeout(function () {
+
+                    var TamTabi = tablef1.column(0).data().length;
+                    for (var i = 0; i < TamTabi; i++) {
+                        tablef.row.add([tablef1.cell(i, 0).data(), tablef1.cell(i, 1).data()]).draw();
+                    }
+                }, 1000);
+
+
+
+            },200);
+
+
+
+
+        });
+
+
+        $scope.tallat = function(){
+            $http({
+                url: "../ListadoProduccion/ObtenerMedidaStandar",
+                method: "POST",
+                data: $.param({ "IdPieza": $scope.idpieza, "IdTalla" : $scope.talla }),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            }).then(function (response) {
+
+
+
+                setTimeout(function () {
+                    $scope.columns = response.data.columns;
+
+                    tablep = $('#table1').DataTable({
+                        "select": true,
+                        "bInfo": false,
+                        "bSort": false,
+                        "bDestroy": true,
+                        "bFilter": false,
+                        "bPagination": false,
+                        "aaData": response.data.data,
+                        "aoColumns": response.data.columns,
+                        "bLengthChange": false,
+                        "columnDefs": [{
+                            "targets": [0],
+                            "visible": false
+                        }],
+                        select: true
+                    });
+
+
+
+                    for(var i=2; i<$scope.tamcolumns+2;i++){
+                        $scope.AidMedida[i-2]= tablep.cell(0,i ).data();
+                    }
+
+
+                    tablep.row(0).remove().draw(false);
+                    var tabletemp = tablep;
+
+
+                },200);
+
+            });
+        }
+
+
+        if($scope.idticket >0){
+            $http({
+                url: "../ListadoProduccion/ticketedit",
+                method: "POST",
+                data: {"id": $scope.idticket},
+            }).then(function (response) {
+                $scope.nombre = response.data.nombre;
+                $scope.observaciones = response.data.observaciones;
+                $scope.cantidad = response.data.cantidad;
+                $scope.reparacion = response.data.reparacion;
+                $scope.talla = response.data.talla+"";
+                $scope.tallat();
+
+            }, function (response) {
+                $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+            });
+
+        }
+        $scope.EsCantidad = function () {
+
+            $scope.cantidad = Telefono($scope.cantidad);
+        }
+
+        $scope.EsVmedida = function () {
+
+            $scope.vmedida= NoLetras($scope.vmedida);
+        }
+
+        $scope.EsPrecio = function () {
+
+            $scope.precio = NoLetras($scope.precio);
+        }
+
+        $scope.agregar1 = function (){
+            if ($scope.vmedida > 0 && $scope.medida > 0 && $scope.talla > 0) {
+                var temptalla =$("#IdTalla option:selected").text();
+                var tempmedida =$("#IdMedida option:selected").text();
+                var tempc = $scope.cantidad;
+                var TamTab = tablet.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tablet.cell(i, 2).data() == $scope.medida) {
+                        tablet.row(i).remove().draw();
+                    }
+
+                }
+                tablet.row.add([0, $scope.talla,$scope.medida,temptalla,tempmedida,$scope.vmedida]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar una actividad, la duración y el precio deben ser mayor que 0 (Cero) ";
+            }
+        }
+
+        $scope.agregar2 = function (){
+            if ($scope.funcion.length > 0 && $scope.precio > 0) {
+
+                var tempc = $scope.precio;
+                var TamTab = tablef.column(0).data().length;
+                for (var i = 0; i < TamTab; i++) {
+                    if (tablef.cell(i, 0).data() == $scope.funcion) {
+                        tablef.row(i).remove().draw();
+                    }
+
+                }
+                tablef.row.add([$scope.funcion,$scope.precio]).draw();
+
+            } else {
+
+                $scope.messageCant = "Error debe seleccionar una actividad, la duración y el precio deben ser mayor que 0 (Cero) ";
+            }
+        }
+
+        $scope.eliminar1 = function () {
+            if ($scope.rowt >= 0) {
+                tablet.row($scope.rowt).remove().draw();
+
+            }
+        }
+
+        $scope.eliminar2 = function () {
+            if ($scope.rowf >= 0) {
+                tablef.row($scope.rowf).remove().draw();
+
+            }
+        }
+
+
+
+        $scope.guardar = function (){
+
+            $scope.jmedidas = "";
+            $scope.tempt = tablet.column(0).data().length;
+            for (var i = 0; i < $scope.tempt; i++) {
+                $scope.jmedidas = $scope.jmedidas + '{ "IdListadoProduccion": '+$scope.idticket+',"IdMedida": ' + tablet.cell(i, 2).data() + ',"Medida":' + tablet.cell(i, 5).data() + ' }';
+                if (i < $scope.tempt - 1) {
+                    $scope.jmedidas = $scope.jmedidas + ",";
+                }
+
+            }
+            console.log($scope.jmedidas);
+            $scope.jreparacion = "";
+            $scope.tempt = tablef.column(0).data().length;
+            for (var i = 0; i < $scope.tempt; i++) {
+                $scope.jreparacion = $scope.jreparacion + '{ "IdListadoProduccion": '+$scope.idticket+',"NombreFuncion": "' + tablef.cell(i, 0).data() + '","PrecioMO":' + tablef.cell(i, 1).data() + ' }';
+                if (i < $scope.tempt - 1) {
+                    $scope.jreparacion = $scope.jreparacion + ",";
+                }
+
+            }
+            console.log( $scope.jreparacion);
+            var jt = JSON.parse("[" + $scope.jmedidas + "]");
+            var jr = JSON.parse("[" + $scope.jreparacion + "]");
+            var parameter = JSON.stringify({ IdListadoProduccion: $scope.idticket, IdDescripcionHechura:$scope.iddescripcionhechura,IdTalla : $scope.talla,Nombre:$scope.nombre,Cantidad: $scope.cantidad,"isReparacion":$scope.reparacion,Observaciones: $scope.observaciones,IdColor : $scope.color,"medidas": jt,"precioReparacion": jr});
+
+            if ($scope.nombre.length > 0 &&
+                           $scope.talla > 0 &&
+                           $scope.cantidad > 0
+                           ) {
+
+                if($scope.isReparacion && tablet.column(0).data().length==0){
+                    toastr['warning']('Si va realizar una reparación debe agregar actividades.');
+                }else{
+                    $http({
+                        url: "../ListadoProduccion/Create",
+                        method: "POST",
+                        data: parameter,
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            toastr['success']('Se ha creado correctamente el ticket');
+                            setTimeout(function () {
+                                $window.location = "../ListadoProduccion/create?hechura="+$scope.iddescripcionhechura+"&pieza="+$scope.idpieza+"&ticket=0";
+                            }, 2000);
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                }
+
+            } else {
+                toastr['warning']('Revise el nombre, la talla y la cantidad debe ser mayor que cero(0)');
+            }
+        };
+
+
+
+
+
+        $scope.editar = function (){
+
+            $scope.jmedidas = "";
+            $scope.tempt = tablet.column(0).data().length;
+            for (var i = 0; i < $scope.tempt; i++) {
+                $scope.jmedidas = $scope.jmedidas + '{ "IdListadoProduccion": '+$scope.idticket+',"IdMedida": ' + tablet.cell(i, 2).data() + ',"Medida":' + tablet.cell(i, 5).data() + ' }';
+                if (i < $scope.tempt - 1) {
+                    $scope.jmedidas = $scope.jmedidas + ",";
+                }
+
+            }
+            console.log($scope.jmedidas);
+            $scope.jreparacion = "";
+            $scope.tempt = tablef.column(0).data().length;
+            for (var i = 0; i < $scope.tempt; i++) {
+                $scope.jreparacion = $scope.jreparacion + '{ "IdListadoProduccion": '+$scope.idticket+',"NombreFuncion": "' + tablef.cell(i, 0).data() + '","PrecioMO":' + tablef.cell(i, 1).data() + ' }';
+                if (i < $scope.tempt - 1) {
+                    $scope.jreparacion = $scope.jreparacion + ",";
+                }
+
+            }
+            console.log( $scope.jreparacion);
+            var jt = JSON.parse("[" + $scope.jmedidas + "]");
+            var jr = JSON.parse("[" + $scope.jreparacion + "]");
+            var parameter = JSON.stringify({ IdListadoProduccion: $scope.idticket, IdDescripcionHechura:$scope.iddescripcionhechura,IdTalla : $scope.talla,Nombre:$scope.nombre,Cantidad: $scope.cantidad,"isReparacion":$scope.reparacion,Observaciones: $scope.observaciones, IdColor : $scope.color,"medidas": jt,"precioReparacion": jr});
+
+            if ($scope.nombre.length > 0 &&
+                           $scope.talla > 0 &&
+                           $scope.cantidad > 0
+                           ) {
+
+                if($scope.isReparacion && tablet.column(0).data().length==0){
+                    toastr['warning']('Si va realizar una reparación debe agregar actividades.');
+                }else{
+                    $http({
+                        url: "../ListadoProduccion/Edit",
+                        method: "POST",
+                        data: parameter,
+                    }).then(function (response) {
+                        if (response.data.Message == "Exito") {
+                            toastr['success']('Se ha editado correctamente el ticket');
+                            setTimeout(function () {
+                                $window.location = "../ListadoProduccion/index";
+                            }, 2000);
+
+                        } else {
+                            $scope.message = "Error: " + response.data.Message;
+
+                        }
+
+                    }, function (response) {
+                        $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                    });
+                }
+
+            } else {
+                toastr['warning']('Revise el nombre, la talla y la cantidad debe ser mayor que cero(0)');
+            }
+        };
+
+
+        $scope.gestionar = function (){
+            if($scope.idticket>0){
+                $scope.editar();
+            }else{
+                $scope.guardar();
+            }
+        }
+
+        $scope.regresar = function (){
+            $window.location = "../ListadoProduccion/index";
+
+        }
+
+
+        $scope.get1 = function () {
+
+            setTimeout(function () {
+                $scope.rowt = tablet.row('.selected').index();
+                toastr['success']('Actualmente esta seleccionando la medida ' + tablet.cell($scope.rowt, 4).data());
+
+
+            }, 100);
+        };
+
+        $scope.get2 = function () {
+
+            setTimeout(function () {
+                $scope.rowf = tablef.row('.selected').index();
+                toastr['success']('Actualmente esta seleccionando la funcion' + tablef.cell($scope.rowf,0).data());
+
+
+            }, 100);
+        };
+
+    });
+</script>
+
+
+
+
+
+
+

@@ -1,0 +1,441 @@
+﻿@{
+    ViewBag.Title = "Cotización Paso 3";
+}
+<style>
+    #table1_filter {
+        display: none;
+    }
+
+
+    #table1_paginate {
+        display: none;
+    }
+
+    #table2_filter {
+        display: none;
+    }
+
+
+    #table2_paginate {
+        display: none;
+    }
+
+    #table3_filter {
+        display: none;
+    }
+
+
+    #table3_paginate {
+        display: none;
+    }
+        #table4_filter {
+        display: none;
+    }
+
+
+    #table4_paginate {
+        display: none;
+    }
+        #table5_filter {
+        display: none;
+    }
+
+
+    #table5_paginate {
+        display: none;
+    }
+</style>
+
+<ng-controller ng-controller="ConPaso2" ng-cloak>
+
+    <div class="card card-block rounded smooth-scroll">
+        <br />
+        <div class="row col-12">
+            <div class="col-8">
+
+            </div>
+            <h2 class="h2-responsive  font-weight-bold blue-grey-text"> Cotización No. {{idcotizacion}}</h2>
+        </div>
+        <br />
+        <h4 class="h4-responsive font-weight-bold">Costo de la Hechura</h4>
+        <div class="table-responsive " data-animation="false" >
+            <table class="table table-hover  table-bordered table-striped" id="table1">
+                <thead class="light-green  white-text">
+                    <tr>
+                        <th>
+                            id
+                        </th>
+                        <th>
+                            id
+                        </th>
+                        <th>
+                          Pieza
+                        </th>
+                        <th>
+                           Descripción Hechura
+                        </th>
+                        <th>
+                            Tela
+                        </th>
+                        <th>
+                            Color
+                        </th>
+                        <th>
+                            Cantidad Requerida
+                        </th>
+                        <th>
+                            Costo Unit. Estimado (C$)
+                        </th>
+                        <th>
+                           Precio Unit. (C$)
+                        </th>
+                        <th>
+                           Margen de Ganancia
+                        </th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody ng-click="get()"></tbody>
+
+            </table>
+
+        </div>
+        <hr />
+        <h6 class="h6-responsive font-weight-bold">Detalle de Costos por hechura</h6>
+        <div class="row">
+            <div class="col-12">
+                <div class="table-responsive ">
+                    <table class="table table-hover  table-bordered table-striped" id="table2">
+                        <thead class="light-green  white-text">
+                            <tr>
+                                <th>
+                                    orden
+                                </th>
+                                <th>
+                                    Concepto
+                                </th>
+                                <th>
+                                    Costo Unitario
+                                </th>
+
+                            </tr>
+                        </thead>
+
+
+                    </table>
+
+                </div>
+            </div>
+            
+        </div>
+
+            <hr />
+        <div class="row">
+            <div class="progress col-12">
+                <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100       " aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <a class="col-7">Paso 3 de 3</a> <p class="red-text">{{message}}</p>
+        </div>
+             
+        <div class="row">
+            <a class="btn btn-sm green darken-4 col-2" ng-click="anterior()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Anterior</a>
+            <div class="col-7"></div> 
+            <a class="btn btn-sm green darken-4 col-2" ng-click="siguiente()">Generar <i class="fa fa-arrow-right" aria-hidden="true"></i> </a>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating yellow darken-1" data-animation="false" ng-click="editar()" data-tooltip=tooltip data-placement="left" title="Edita el costo de la pieza seleccionada."><i class="fa fa-pencil"></i>
+            </a>
+
+          
+        </div>
+    </div>
+  
+    <div class="modal fade right" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-animation="false">
+        <div class="modal-dialog modal-full-height modal-sm" role="document">
+            <!--Content-->
+            <div class="modal-content">
+
+                <!--Header-->
+                <div class="modal-header light-green  white-text">
+                    <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" data-animation="false" data-tooltip="tooltip" data.placement="right" title="Cerrar esta ventana">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="title"><i class="fa fa-pied-piper" aria-hidden="true"></i> Editando precio unitario de la {{pieza}}</h4>
+                </div>
+                <!--Body-->
+                <div class="modal-body mb-0">
+                    <label>Costo Estimado:</label>
+                    <input ng-model="costoestimado" readonly type="text" id="focus1"/>
+                    <label>Precio Unitario:</label>
+                    <input ng-model="cell" ng-keyup="Escell()" type="text" id="focus2"/>
+                  
+                    <div class="form-group font-weight-bold text-center">
+                        <div class="text-center">
+                            <input type="submit" value="Guardar" class="btn btn-sm light-green darken-4" ng-click="guardar()" />
+                        </div>
+                        <p class="red-text">{{message}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ng-controller>
+
+<script>
+    $('[data-tooltip=tooltip]').tooltip();
+    $('[data-toggle=tab]').tooltip();
+    
+   
+
+    
+  
+
+    app.controller('ConPaso2', function ($scope, $http,$window) {
+      
+        
+
+        
+        $scope.idcotizacion = @ViewBag.cotizacion;
+
+        var table = $('#table1').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../Cotizaciones/searchResumenDescripcionHechura",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                 
+                { "data": "IdCotizacion", "name": "IdCotizacion",visible : false },
+                   { "data": "IdDescripcionHechura", "name": "IdDescripcionHechura" ,visible : false},                      
+                            { "data": "Pieza", "name": "Pieza" },
+                             { "data": "DescripcionHechura", "name": "DescripcionHechura" },
+            { "data": "Tela", "name": "Tela" },
+            { "data": "ColorTela", "name": "ColorTela" },
+            { "data": "CantidadRequerida", "name": "CantidadRequerida" },
+            { "data": "CostoEstimado", "name": "CostoEstimado" },
+            { "data": "PrecioUnit", "name": "PrecioUnit" },
+            { "data": "MargenGanancia", "name": "MargenGanancia", render: function (data) { return data+" %"}  }
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "Lo sentimos, no hay piezas agregadas a esta cotización",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+        var tablec = $('#table2').DataTable({
+            select: true,
+            "processing": true,
+            "serverSide": true,
+            "orderMulti": false,
+            "bFilter": false,
+            bInfo: false,
+            "bLengthChange": false,
+            "searching": true,
+            "ajax": {
+                "url": "../Cotizaciones/searchCostosEstimados",
+                "type": "POST",
+                "dataType": "JSON"
+
+            },
+            "columns": [
+                  { "data": "Orden", "name": "Orden" ,visible : false},
+                    { "data": "Concepto", "name": "Concepto" },
+                    { "data": "CostoUnitario", "name": "CostoUnitario",render: function (data) { return data.toFixed(2)} }
+
+
+
+
+
+            ],
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ Entradas por página",
+                "zeroRecords": "No ha seleccionado un descripcion de hechura",
+                "info": "Mostrando Página _PAGE_ de _PAGES_ (Registros Totales _TOTAL_)",
+                "infoEmpty": "No hay entradas Disponibles",
+                "infoFiltered": "(filtrar por _MAX_ total entradas)",
+                "search": "Buscar",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente"
+                }, "select": {
+                    rows: " "
+                }
+            }
+
+        });
+
+      
+        
+        
+
+        table.search($scope.idcotizacion).draw();
+        tablec.search("0").draw();
+
+        $scope.guardar = function () {
+
+            if ($scope.cell > 0
+         ) {
+                $http({
+                    url: "../Cotizaciones/EstablcerPrecio",
+                    method: "POST",
+                    data: {"IdDescripcionHechura": $scope.descripcionhechura,"Precio":$scope.cell},
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                        $('#modaledit').modal('hide');  
+                        setTimeout(function () {
+                            $('#table1').DataTable().ajax.reload();
+
+                        }, 100);
+
+                      
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+            } else {
+                toastr['warning']('Revise el nombre,sexo, cantidad,precio y las actividades de la pieza');
+            }
+        }
+
+        $scope.editar = function () {
+            if($scope.descripcionhechura>0){
+                $('#modaledit').modal({
+                    show: true
+                });
+
+            }
+           
+        }
+
+        $scope.Escell = function () {
+
+            $scope.cell = NoLetras($scope.cell);
+        }
+    
+
+        $scope.siguiente = function(){
+            var pasa =  true
+            var TamTaba = table.column(0).data().length;
+            for (var i = 0; i < TamTaba; i++) {
+                $scope.tempprecio = table.cell(i,8).data();
+                console.log($scope.tempprecio)
+                if($scope.tempprecio <=0){
+                    pasa = false;
+                    i = TamTaba;
+                }
+            }
+
+            if(pasa){
+                
+                $http({
+                    url: "../Cotizaciones/GenerarCotizacion",
+                    method: "POST",
+                    data: {"IdCotizacion": $scope.idcotizacion},
+                }).then(function (response) {
+                    if (response.data.Message == "Exito") {
+                   
+                        setTimeout(function () {
+                            $window.location.href = "../Cotizaciones/ReporteCotizacion?cotizacion=" + $scope.idcotizacion;
+
+                        }, 100);
+
+                      
+
+                    } else {
+                        $scope.message = "Error: " + response.data.Message;
+
+                    }
+
+                }, function (response) {
+                    $scope.message = "Error: No se puede Generar la consulta: " + response.status;
+                });
+
+            }else{
+                $scope.message = "Debe asignarle el precio unitario mayor que cero (0) a las descripciones";
+            }
+          
+                  
+         
+
+        }
+
+        $scope.anterior = function(){
+            $window.location.href = "../Cotizaciones/Paso2?cotizacion=" + $scope.idcotizacion;
+        }
+
+     
+
+        $('#modaledit').on('hidden.bs.modal', function (e) {
+
+            $scope.clean();
+
+        });
+
+       
+
+       
+
+     
+
+        $scope.clean = function() {
+            $scope.descripcionhechura = 0;
+            $scope.cell = "";
+            $scope.costoestimado = "";
+            console.log("4");
+
+        }
+
+       
+        $('#table1 tbody').on( 'click', 'td', function () {
+
+            setTimeout(function () {
+                var idt = table.row('.selected').index();
+
+                $scope.descripcionhechura = table.cell(idt, 1).data();  
+                $scope.pieza = table.cell(idt, 2).data();
+                $scope.costoestimado= table.cell(idt, 7).data(); 
+                $scope.cell = table.cell(idt, 8).data(); 
+
+                tablec.search($scope.descripcionhechura).draw();
+                console.log("1");
+            }, 100);
+
+
+        } );
+
+
+
+    });
+
+
+</script>
